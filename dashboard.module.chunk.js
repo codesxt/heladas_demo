@@ -45,7 +45,7 @@ var DashboardRoutingModule = (function () {
 /***/ "../../../../../src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"animated fadeIn\">\n  <div class=\"card\">\n    <div class=\"card-header\">\n      <strong>Sistema de Alerta Temprana y Sectorizada de Heladas</strong>\n    </div>\n    <div class=\"card-body\">\n      <p>Bienvenido al Sistema de Alerta Temprana y Sectorizada de Heladas desarrollado mediante un Poryecto FIC.</p>\n      <p>Para consultar la predicción de heladas disponible, por favor, utilice el link que se le envió.</p>\n  </div>\n</div>\n"
+module.exports = "<div class=\"animated fadeIn\">\n  <div class=\"card\">\n    <div class=\"card-header\">\n      <strong>Sistema de Alerta Temprana y Sectorizada de Heladas</strong>\n    </div>\n    <div class=\"card-body\">\n      <p>Bienvenido al Sistema de Alerta Temprana y Sectorizada de Heladas desarrollado mediante un Proyecto FIC.</p>\n      <p>Para consultar la predicción de heladas disponible, por favor, utilice el link que se le envió.</p>\n  </div>\n</div>\n"
 
 /***/ }),
 
