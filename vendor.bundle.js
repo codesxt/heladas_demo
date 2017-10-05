@@ -29704,6 +29704,2272 @@ __export(__webpack_require__("../../../../ng2-charts/index.js"));
 
 /***/ }),
 
+/***/ "../../../../ng2-page-scroll/ng2-page-scroll.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_ng2_page_scroll_directive__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll.directive.js");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_ng2_page_scroll_service__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll.service.js");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_ng2_page_scroll_config__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll-config.js");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_ng2_page_scroll_instance__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll-instance.js");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_ng2_page_scroll_util_service__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll-util.service.js");
+/* unused harmony namespace reexport */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_ng2_page_scroll_module__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll.module.js");
+/* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_5__src_ng2_page_scroll_module__["a"]; });
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "../../../../ng2-page-scroll/src/ng2-page-scroll-config.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export EasingLogic */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PageScrollConfig; });
+var EasingLogic = (function () {
+    function EasingLogic() {
+    }
+    return EasingLogic;
+}());
+
+var PageScrollConfig = (function () {
+    function PageScrollConfig() {
+    }
+    Object.defineProperty(PageScrollConfig, "defaultEasingLogic", {
+        // Getter and setter to avoid auto completion to suggest calling the method
+        get: function () {
+            return PageScrollConfig._easingLogic;
+        },
+        set: function (easingLogic) {
+            PageScrollConfig._easingLogic = easingLogic;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * The number of milliseconds to wait till updating the scroll position again.
+     * Small amounts may produce smoother animations but require more processing power.
+     * @type {number}
+     * @private
+     */
+    PageScrollConfig._interval = 10;
+    /**
+     * The amount of pixels that need to be between the current scrollTop/scrollLeft position
+     * and the target position the cause a scroll animation. In case distance is below
+     * this threshold, an immediate jump will be performed.
+     * Due to dpi or rounding irregularities in browsers floating point numbers for scrollTop/scrollLeft values
+     * are possible, making a === comparison of current scrollTop or scrollLeft and target scrollPosition error-prone.
+     * @type {number}
+     * @private
+     */
+    PageScrollConfig._minScrollDistance = 2;
+    /**
+     * Name of the default namespace.
+     * @type {string}
+     * @private
+     */
+    PageScrollConfig._defaultNamespace = 'default';
+    /**
+     * Whether by default the scrolling should happen in vertical direction (by manipulating the scrollTop property)
+     * (= true; default) or in horizontal direction (by manipulating the scrollLeft property) (= false
+     * @type {boolean}
+     */
+    PageScrollConfig.defaultIsVerticalScrolling = true;
+    /**
+     * How many console logs should be emitted.
+     * 0: None
+     * 2: If animation could not be started due to missing target, "already at destination" or similar reasons
+     * 5: All scroll position values that get set
+     * @type {boolean}
+     * @private
+     */
+    PageScrollConfig._logLevel = 2;
+    /**
+     * The duration how long a scrollTo animation should last by default.
+     * May be overridden using the page-scroll-duration attribute on a single ng2PageScroll instance.
+     * @type {number}
+     */
+    PageScrollConfig.defaultDuration = 1250;
+    /**
+     * The distance in pixels above scroll target where the animation should stop. Setting a positive number results in
+     * the scroll target being more in the middle of the screen, negative numbers will produce scrolling "too far"
+     * @type {number}
+     */
+    PageScrollConfig.defaultScrollOffset = 0;
+    /**
+     * Whether by default for inline scroll animations the advanced offset calculation should take place (true) or
+     * not (false). Default is false.
+     * The advanced offset calculation will traverse the DOM tree upwards, starting at the scrollTarget, until it finds
+     * the scrollingView container element. Along the way the offset positions of the relative positioned
+     * (position: relative) elements will be taken into account for calculating the target elements position.
+     * @type {boolean}
+     */
+    PageScrollConfig.defaultAdvancedInlineOffsetCalculation = false;
+    /**
+     * The events that are listened to on the body to decide whether a scroll animation has been interfered/interrupted by the user
+     * @type {string[]}
+     * @private
+     */
+    PageScrollConfig._interruptEvents = ['mousedown', 'wheel', 'DOMMouseScroll', 'mousewheel', 'keyup', 'touchmove'];
+    /**
+     * The keys that are considered to interrupt a scroll animation (mainly the arrow keys). All other key presses will not stop the
+     * scroll animation.
+     * @type {number[]}
+     * @private
+     */
+    PageScrollConfig._interruptKeys = [33, 34, 35, 36, 38, 40];
+    /**
+     * Whether a scroll animation should be interruptible by user interaction (true) or not (false). If the user performs an
+     * interrupting event while a scroll animation takes place, the scroll animation stops.
+     * @type {boolean}
+     */
+    PageScrollConfig.defaultInterruptible = true;
+    PageScrollConfig._easingLogic = {
+        ease: function (t, b, c, d) {
+            // Linear easing
+            return c * t / d + b;
+        }
+    };
+    return PageScrollConfig;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../ng2-page-scroll/src/ng2-page-scroll-instance.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PageScrollInstance; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll-config.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll-util.service.js");
+/**
+ * Created by sebastianfuss on 29.08.16.
+ */
+
+
+
+/**
+ * Represents a scrolling action
+ */
+var PageScrollInstance = (function () {
+    /**
+     * Private constructor, requires the properties assumed to be the bare minimum.
+     * Use the factory methods to create instances:
+     *      {@link PageScrollInstance#simpleInstance}
+     *      {@link PageScrollInstance#newInstance}
+     * @param namespace
+     * @param document
+     */
+    function PageScrollInstance(namespace, document) {
+        /**
+         * These properties will be set during instance construction and default to their defaults from PageScrollConfig
+         */
+        /* A namespace to "group" scroll animations together and stopping some does not stop others */
+        this._namespace = __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */]._defaultNamespace;
+        /* Whether we scroll vertically (true) or horizontally (false) */
+        this._verticalScrolling = __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */].defaultIsVerticalScrolling;
+        /* Offset in px that the animation should stop above that target element */
+        this._offset = __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */].defaultScrollOffset;
+        /* Duration in milliseconds the scroll animation should last */
+        this._duration = __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */].defaultDuration;
+        /* Easing function to manipulate the scrollTop/scrollLeft value over time */
+        this._easingLogic = __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */].defaultEasingLogic;
+        /* Boolean whether the scroll animation should stop on user interruption or not */
+        this._interruptible = __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */].defaultInterruptible;
+        /* Whether the advanded offset calculation for inline scrolling should be used */
+        this._advancedInlineOffsetCalculation = __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */].defaultAdvancedInlineOffsetCalculation;
+        /* Event emitter to notify the world about the scrolling */
+        this._pageScrollFinish = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        /**
+         * These properties will be set/manipulated if the scroll animation starts
+         */
+        /* The initial value of the scrollTop or scrollLeft position when the animation starts */
+        this._startScrollPosition = 0;
+        /* Whether an interrupt listener is attached to the body or not */
+        this._interruptListenersAttached = false;
+        /* References to the timer instance that is used to perform the scroll animation to be
+         able to clear it on animation end*/
+        this._timer = null;
+        this._namespace = namespace;
+        this.document = document;
+    }
+    /*
+     * Factory methods for instance creation
+     */
+    PageScrollInstance.simpleInstance = function (document, scrollTarget, namespace) {
+        return PageScrollInstance.newInstance({
+            document: document,
+            scrollTarget: scrollTarget,
+            namespace: namespace
+        });
+    };
+    PageScrollInstance.newInstance = function (options) {
+        if (__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(options.namespace) || options.namespace.length <= 0) {
+            options.namespace = __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */]._defaultNamespace;
+        }
+        var pageScrollInstance = new PageScrollInstance(options.namespace, document);
+        if (__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(options.scrollingViews) || options.scrollingViews.length === 0) {
+            pageScrollInstance._isInlineScrolling = false;
+            pageScrollInstance._scrollingViews = [document.documentElement, document.body, document.body.parentNode];
+        }
+        else {
+            pageScrollInstance._isInlineScrolling = true;
+            pageScrollInstance._scrollingViews = options.scrollingViews;
+        }
+        pageScrollInstance._scrollTarget = options.scrollTarget;
+        if (!__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(options.verticalScrolling)) {
+            pageScrollInstance._verticalScrolling = options.verticalScrolling;
+        }
+        if (!__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(options.pageScrollOffset)) {
+            pageScrollInstance._offset = options.pageScrollOffset;
+        }
+        if (!__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(options.pageScrollEasingLogic)) {
+            pageScrollInstance._easingLogic = options.pageScrollEasingLogic;
+        }
+        if (__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(options.pageScrollDuration) && !__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(options.pageScrollSpeed)) {
+            // No duration specified in the options, only in this case we use the speed option when present
+            pageScrollInstance._speed = options.pageScrollSpeed;
+            pageScrollInstance._duration = undefined;
+        }
+        else if (!__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(options.pageScrollDuration)) {
+            pageScrollInstance._duration = options.pageScrollDuration;
+        }
+        if (!__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(options.pageScrollFinishListener)) {
+            pageScrollInstance._pageScrollFinish = options.pageScrollFinishListener;
+        }
+        pageScrollInstance._interruptible = options.pageScrollInterruptible ||
+            (__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(options.pageScrollInterruptible) && __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */].defaultInterruptible);
+        pageScrollInstance._advancedInlineOffsetCalculation = options.advancedInlineOffsetCalculation ||
+            (__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(options.advancedInlineOffsetCalculation) &&
+                __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */].defaultAdvancedInlineOffsetCalculation);
+        return pageScrollInstance;
+    };
+    PageScrollInstance.prototype.getScrollPropertyValue = function (scrollingView) {
+        if (!this.verticalScrolling) {
+            return scrollingView.scrollLeft;
+        }
+        return scrollingView.scrollTop;
+    };
+    /**
+     * Extract the exact location of the scrollTarget element.
+     *
+     * Extract the scrollTarget HTMLElement from the given PageScrollTarget object. The latter one may be
+     * a string like "#heading2", then this method returns the corresponding DOM element for that id.
+     *
+     * @returns {HTMLElement}
+     */
+    PageScrollInstance.prototype.extractScrollTargetPosition = function () {
+        var scrollTargetElement;
+        if (typeof this._scrollTarget === 'string') {
+            scrollTargetElement = this.document.querySelector(this._scrollTarget);
+        }
+        else {
+            scrollTargetElement = this._scrollTarget;
+        }
+        if (scrollTargetElement === null || scrollTargetElement === undefined) {
+            // Scroll target not found
+            return { top: NaN, left: NaN };
+        }
+        if (this._isInlineScrolling) {
+            var position = { top: scrollTargetElement.offsetTop, left: scrollTargetElement.offsetLeft };
+            if (this._advancedInlineOffsetCalculation && this.scrollingViews.length === 1) {
+                var accumulatedParentsPos = { top: 0, left: 0 };
+                // not named window to make sure we're not getting the global window variable by accident
+                var theWindow = scrollTargetElement.ownerDocument.defaultView;
+                var parentFound = false;
+                // Start parent is the immediate parent
+                var parent_1 = scrollTargetElement.parentElement;
+                // Iterate upwards all parents
+                while (!parentFound && !__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(parent_1)) {
+                    if (theWindow.getComputedStyle(parent_1).getPropertyValue('position') === 'relative') {
+                        accumulatedParentsPos.top += parent_1.offsetTop;
+                        accumulatedParentsPos.left += parent_1.offsetLeft;
+                    }
+                    // Next iteration
+                    parent_1 = parent_1.parentElement;
+                    parentFound = parent_1 === this.scrollingViews[0];
+                }
+                if (parentFound) {
+                    // Only use the results if we found the parent, otherwise we accumulated too much anyway
+                    position.top += accumulatedParentsPos.top;
+                    position.left += accumulatedParentsPos.left;
+                }
+                else {
+                    if (__WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */]._logLevel >= 2) {
+                        console.warn('Unable to find nested scrolling targets parent!');
+                    }
+                }
+            }
+            return position;
+        }
+        return __WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].extractElementPosition(this.document, scrollTargetElement);
+    };
+    /**
+     * Get the top offset of the scroll animation.
+     * This automatically takes the offset location of the scrolling container/scrolling view
+     * into account (for nested/inline scrolling).
+     *
+     * @returns {number}
+     */
+    PageScrollInstance.prototype.getCurrentOffset = function () {
+        return this._offset;
+    };
+    /**
+     * Sets the "scrollTop" or "scrollLeft" property for all scrollingViews to the provided value
+     * @param position
+     * @return true if at least for one ScrollTopSource the scrollTop/scrollLeft value could be set and it kept the new value.
+     *          false if it failed for all ScrollingViews, meaning that we should stop the animation
+     *          (probably because we're at the end of the scrolling region)
+     */
+    PageScrollInstance.prototype.setScrollPosition = function (position) {
+        var _this = this;
+        if (__WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */]._logLevel >= 5) {
+            console.warn('Scroll Position: ' + position);
+        }
+        // Set the new scrollTop/scrollLeft to all scrollingViews elements
+        return this.scrollingViews.reduce(function (oneAlreadyWorked, scrollingView) {
+            var startScrollPropertyValue = _this.getScrollPropertyValue(scrollingView);
+            if (scrollingView && !__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(startScrollPropertyValue)) {
+                var scrollDistance = Math.abs(startScrollPropertyValue - position);
+                // The movement we need to perform is less than 2px
+                // This we consider a small movement which some browser may not perform when
+                // changing the scrollTop/scrollLeft property
+                // Thus in this cases we do not stop the scroll animation, although setting the
+                // scrollTop/scrollLeft value "fails"
+                var isSmallMovement = scrollDistance < __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */]._minScrollDistance;
+                if (!_this.verticalScrolling) {
+                    scrollingView.scrollLeft = position;
+                }
+                else {
+                    scrollingView.scrollTop = position;
+                }
+                // Return true of setting the new scrollTop/scrollLeft value worked
+                // We consider that it worked if the new scrollTop/scrollLeft value is closer to the
+                // desired scrollTop/scrollLeft than before (it might not be exactly the value we
+                // set due to dpi or rounding irregularities)
+                if (isSmallMovement || scrollDistance > Math.abs(_this.getScrollPropertyValue(scrollingView) - position)) {
+                    return true;
+                }
+            }
+            return oneAlreadyWorked;
+        }, false);
+    };
+    /**
+     * Trigger firing a animation finish event
+     * @param value Whether the animation finished at the target (true) or got interrupted (false)
+     */
+    PageScrollInstance.prototype.fireEvent = function (value) {
+        if (this._pageScrollFinish) {
+            this._pageScrollFinish.emit(value);
+        }
+    };
+    /**
+     * Attach the interrupt listeners to the PageScrollInstance body. The given interruptReporter
+     * will be called if any of the attached events is fired.
+     *
+     * Possibly attached interruptListeners are automatically removed from the body before the new one will be attached.
+     *
+     * @param interruptReporter
+     */
+    PageScrollInstance.prototype.attachInterruptListeners = function (interruptReporter) {
+        var _this = this;
+        if (this._interruptListenersAttached) {
+            // Detach possibly existing listeners first
+            this.detachInterruptListeners();
+        }
+        this._interruptListener = function (event) {
+            interruptReporter.report(event, _this);
+        };
+        __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */]._interruptEvents.forEach(function (event) { return _this.document.body.addEventListener(event, _this._interruptListener); });
+        this._interruptListenersAttached = true;
+    };
+    /**
+     * Remove event listeners from the body and stop listening for events that might be treated as "animation
+     * interrupt" events.
+     */
+    PageScrollInstance.prototype.detachInterruptListeners = function () {
+        var _this = this;
+        __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */]._interruptEvents.forEach(function (event) { return _this.document.body.removeEventListener(event, _this._interruptListener); });
+        this._interruptListenersAttached = false;
+    };
+    Object.defineProperty(PageScrollInstance.prototype, "namespace", {
+        get: function () {
+            return this._namespace;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "scrollTarget", {
+        get: function () {
+            return this._scrollTarget;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "verticalScrolling", {
+        get: function () {
+            return this._verticalScrolling;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "scrollingViews", {
+        get: function () {
+            return this._scrollingViews;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "startScrollPosition", {
+        get: function () {
+            return this._startScrollPosition;
+        },
+        set: function (value) {
+            this._startScrollPosition = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "targetScrollPosition", {
+        get: function () {
+            return this._targetScrollPosition;
+        },
+        set: function (value) {
+            this._targetScrollPosition = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "distanceToScroll", {
+        get: function () {
+            return this._distanceToScroll;
+        },
+        set: function (value) {
+            this._distanceToScroll = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "executionDuration", {
+        get: function () {
+            return this._executionDuration;
+        },
+        set: function (value) {
+            this._executionDuration = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "duration", {
+        get: function () {
+            return this._duration;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "speed", {
+        get: function () {
+            return this._speed;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "easingLogic", {
+        get: function () {
+            return this._easingLogic;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "interruptible", {
+        get: function () {
+            return this._interruptible;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "startTime", {
+        get: function () {
+            return this._startTime;
+        },
+        set: function (value) {
+            this._startTime = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "endTime", {
+        get: function () {
+            return this._endTime;
+        },
+        set: function (value) {
+            this._endTime = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "timer", {
+        get: function () {
+            return this._timer;
+        },
+        set: function (value) {
+            this._timer = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PageScrollInstance.prototype, "interruptListenersAttached", {
+        get: function () {
+            return this._interruptListenersAttached;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return PageScrollInstance;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../ng2-page-scroll/src/ng2-page-scroll-util.service.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PageScrollUtilService; });
+/**
+ * Created by sebastianfuss on 02.09.16.
+ */
+var PageScrollUtilService = (function () {
+    function PageScrollUtilService() {
+    }
+    /**
+     * Util method to check whether a given variable is either undefined or null
+     * @param variable
+     * @returns {boolean} true the variable is undefined or null
+     */
+    PageScrollUtilService.isUndefinedOrNull = function (variable) {
+        return (typeof variable === 'undefined') || variable === undefined || variable === null;
+    };
+    PageScrollUtilService.extractElementPosition = function (document, scrollTargetElement) {
+        var body = document.body;
+        var docEl = document.documentElement;
+        var windowPageYOffset = document.defaultView && document.defaultView.pageYOffset || undefined;
+        var windowPageXOffset = document.defaultView && document.defaultView.pageXOffset || undefined;
+        var scrollTop = windowPageYOffset || docEl.scrollTop || body.scrollTop;
+        var scrollLeft = windowPageXOffset || docEl.scrollLeft || body.scrollLeft;
+        var clientTop = docEl.clientTop || body.clientTop || 0;
+        var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+        if (PageScrollUtilService.isUndefinedOrNull(scrollTargetElement)) {
+            // No element found, so return the current position to not cause any change in scroll position
+            return { top: scrollTop, left: scrollLeft };
+        }
+        var box = scrollTargetElement.getBoundingClientRect();
+        var top = box.top + scrollTop - clientTop;
+        var left = box.left + scrollLeft - clientLeft;
+        return { top: Math.round(top), left: Math.round(left) };
+    };
+    return PageScrollUtilService;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../ng2-page-scroll/src/ng2-page-scroll.directive.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PageScroll; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ng2_page_scroll_service__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll.service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ng2_page_scroll_instance__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll-instance.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ng2_page_scroll_util_service__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll-util.service.js");
+
+
+
+
+
+
+var PageScroll = (function () {
+    function PageScroll(pageScrollService, router, document) {
+        this.pageScrollService = pageScrollService;
+        this.router = router;
+        this.pageScrollTarget = null;
+        this.pageScrollHorizontal = null;
+        this.pageScrollOffset = null;
+        this.pageScrollDuration = null;
+        this.pageScrollSpeed = null;
+        this.pageScrollEasing = null;
+        this.pageScrollAdjustHash = false;
+        this.pageScroll = null;
+        this.pageScrollFinish = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.document = document;
+    }
+    PageScroll.prototype.ngOnChanges = function (changes) {
+        // Some inputs changed, reset the pageScrollInstance
+        this.pageScrollInstance = undefined;
+    };
+    PageScroll.prototype.ngOnDestroy = function () {
+        if (this.pageScrollInstance) {
+            this.pageScrollService.stop(this.pageScrollInstance);
+        }
+        return undefined;
+    };
+    PageScroll.prototype.generatePageScrollInstance = function () {
+        if (__WEBPACK_IMPORTED_MODULE_5__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(this.pageScrollInstance)) {
+            this.pageScrollInstance = __WEBPACK_IMPORTED_MODULE_4__ng2_page_scroll_instance__["a" /* PageScrollInstance */].newInstance({
+                document: this.document,
+                scrollTarget: this.pageScrollTarget || this.href,
+                scrollingViews: null,
+                namespace: this.pageScroll,
+                verticalScrolling: !this.pageScrollHorizontal,
+                pageScrollOffset: this.pageScrollOffset,
+                pageScrollInterruptible: this.pageScrollInterruptible,
+                pageScrollEasingLogic: this.pageScrollEasing,
+                pageScrollDuration: this.pageScrollDuration,
+                pageScrollSpeed: this.pageScrollSpeed,
+                pageScrollFinishListener: this.pageScrollFinish
+            });
+        }
+        return this.pageScrollInstance;
+    };
+    PageScroll.prototype.pushRouterState = function () {
+        if (this.pageScrollAdjustHash && typeof this.pageScrollInstance.scrollTarget === 'string'
+            && this.pageScrollInstance.scrollTarget.substr(0, 1) === '#') {
+            // "Navigate" to the current route again and this time set the fragment/hash
+            this.router.navigate([], {
+                fragment: this.pageScrollInstance.scrollTarget.substr(1),
+                preserveQueryParams: true
+            });
+        }
+    };
+    PageScroll.prototype.scroll = function () {
+        var pageScrollInstance = this.generatePageScrollInstance();
+        this.pushRouterState();
+        this.pageScrollService.start(pageScrollInstance);
+    };
+    PageScroll.prototype.handleClick = function (clickEvent) {
+        var _this = this;
+        if (this.routerLink && this.router !== null && this.router !== undefined) {
+            var urlTree = void 0;
+            if (typeof this.routerLink === 'string') {
+                urlTree = this.router.parseUrl(this.routerLink);
+            }
+            else {
+                urlTree = this.router.createUrlTree(this.routerLink);
+            }
+            if (!this.router.isActive(urlTree, true)) {
+                // We need to navigate their first.
+                // Navigation is handled by the routerLink directive
+                // so we only need to listen for route change
+                var subscription_1 = this.router.events.subscribe(function (routerEvent) {
+                    if (routerEvent instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* NavigationEnd */]) {
+                        subscription_1.unsubscribe();
+                        _this.scroll();
+                    }
+                    else if (routerEvent instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* NavigationError */] || routerEvent instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* NavigationCancel */]) {
+                        subscription_1.unsubscribe();
+                    }
+                });
+                return false; // to preventDefault()
+            }
+        }
+        this.scroll();
+        return false; // to preventDefault()
+    };
+    PageScroll.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
+                    selector: '[pageScroll]',
+                    host: {
+                        '(click)': 'handleClick($event)',
+                    }
+                },] },
+    ];
+    /** @nocollapse */
+    PageScroll.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_3__ng2_page_scroll_service__["b" /* PageScrollService */], },
+        { type: __WEBPACK_IMPORTED_MODULE_1__angular_router__["e" /* Router */], decorators: [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"] },] },
+        { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Inject"], args: [__WEBPACK_IMPORTED_MODULE_2__angular_common__["c" /* DOCUMENT */],] },] },
+    ]; };
+    PageScroll.propDecorators = {
+        'routerLink': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'href': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'pageScrollTarget': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'pageScrollHorizontal': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'pageScrollOffset': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'pageScrollDuration': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'pageScrollSpeed': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'pageScrollEasing': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'pageScrollInterruptible': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'pageScrollAdjustHash': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'pageScroll': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'pageScrollFinish': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+    };
+    return PageScroll;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../ng2-page-scroll/src/ng2-page-scroll.module.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Ng2PageScrollModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_service__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll.service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ng2_page_scroll_directive__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll.directive.js");
+/**
+ * Created by sebastianfuss on 03.09.16.
+ */
+
+
+
+
+var Ng2PageScrollModule = (function () {
+    function Ng2PageScrollModule() {
+    }
+    /** @deprecated since v4.0.0-beta.10 (https://github.com/Nolanus/ng2-page-scroll/pull/190) */
+    Ng2PageScrollModule.forRoot = function () {
+        return {
+            ngModule: Ng2PageScrollModule,
+            providers: [
+                { provide: __WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_service__["b" /* PageScrollService */], useClass: __WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_service__["b" /* PageScrollService */] }
+            ]
+        };
+    };
+    Ng2PageScrollModule.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"], args: [{
+                    imports: [__WEBPACK_IMPORTED_MODULE_0__angular_common__["b" /* CommonModule */]],
+                    declarations: [__WEBPACK_IMPORTED_MODULE_3__ng2_page_scroll_directive__["a" /* PageScroll */]],
+                    exports: [__WEBPACK_IMPORTED_MODULE_3__ng2_page_scroll_directive__["a" /* PageScroll */]],
+                    providers: [__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_service__["a" /* NG2PAGESCROLL_SERVICE_PROVIDER */]]
+                },] },
+    ];
+    /** @nocollapse */
+    Ng2PageScrollModule.ctorParameters = function () { return []; };
+    return Ng2PageScrollModule;
+}());
+
+
+
+/***/ }),
+
+/***/ "../../../../ng2-page-scroll/src/ng2-page-scroll.service.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return PageScrollService; });
+/* unused harmony export NG2PAGESCROLL_SERVICE_PROVIDER_FACTORY */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NG2PAGESCROLL_SERVICE_PROVIDER; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll-config.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__ = __webpack_require__("../../../../ng2-page-scroll/src/ng2-page-scroll-util.service.js");
+
+
+
+var PageScrollService = (function () {
+    function PageScrollService() {
+        var _this = this;
+        this.runningInstances = [];
+        this.onInterrupted = {
+            report: function (event, pageScrollInstance) {
+                if (!pageScrollInstance.interruptible) {
+                    // Non-interruptible anyway, so do not stop anything
+                    return;
+                }
+                var shouldStop = true;
+                if (event.type === 'keyup') {
+                    // Only stop if specific keys have been pressed, for all others don't stop anything
+                    if (__WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */]._interruptKeys.indexOf(event.keyCode) === -1) {
+                        // The pressed key is not in the list of interrupting keys
+                        shouldStop = false;
+                    }
+                }
+                else if (event.type === 'mousedown') {
+                    // For mousedown events we only stop the scroll animation of the mouse has
+                    // been clicked inside the scrolling container
+                    if (!pageScrollInstance.scrollingViews.some(function (scrollingView) { return scrollingView.contains(event.target); })) {
+                        // Mouse clicked an element which is not inside any of the the scrolling containers
+                        shouldStop = false;
+                    }
+                }
+                if (shouldStop) {
+                    _this.stopAll(pageScrollInstance.namespace);
+                }
+            }
+        };
+        if (PageScrollService.instanceCounter > 0 && Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["isDevMode"])()) {
+            console.warn('An instance of PageScrollService already exists, usually ' +
+                'including one provider should be enough, so double check.');
+        }
+        PageScrollService.instanceCounter++;
+    }
+    PageScrollService.prototype.stopInternal = function (interrupted, pageScrollInstance) {
+        var index = this.runningInstances.indexOf(pageScrollInstance);
+        if (index >= 0) {
+            this.runningInstances.splice(index, 1);
+        }
+        if (pageScrollInstance.interruptListenersAttached) {
+            pageScrollInstance.detachInterruptListeners();
+        }
+        if (pageScrollInstance.timer) {
+            // Clear/Stop the timer
+            clearInterval(pageScrollInstance.timer);
+            // Clear the reference to this timer
+            pageScrollInstance.timer = undefined;
+            pageScrollInstance.fireEvent(!interrupted);
+            return true;
+        }
+        return false;
+    };
+    /**
+     * Start a scroll animation. All properties of the animation are stored in the given {@link PageScrollInstance} object.
+     *
+     * This is the core functionality of the whole library.
+     *
+     * @param pageScrollInstance
+     */
+    PageScrollService.prototype.start = function (pageScrollInstance) {
+        var _this = this;
+        // Stop all possibly running scroll animations in the same namespace
+        this.stopAll(pageScrollInstance.namespace);
+        if (pageScrollInstance.scrollingViews === null || pageScrollInstance.scrollingViews.length === 0) {
+            // No scrollingViews specified, thus we can't animate anything
+            if (Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["isDevMode"])()) {
+                console.warn('No scrollingViews specified, this ng2-page-scroll does not know which DOM elements to scroll');
+            }
+            return;
+        }
+        var startScrollPositionFound = false;
+        // Reset start scroll position to 0. If any of the scrollingViews has a different one, it will be extracted next
+        pageScrollInstance.startScrollPosition = 0;
+        // Get the start scroll position from the scrollingViews (e.g. if the user already scrolled down the content)
+        pageScrollInstance.scrollingViews.forEach(function (scrollingView) {
+            if (__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(scrollingView)) {
+                return;
+            }
+            // Get the scrollTop or scrollLeft value of the first scrollingView that returns a value for its "scrollTop"
+            // or "scrollLeft" property that is not undefined and unequal to 0
+            var scrollPosition = pageScrollInstance.getScrollPropertyValue(scrollingView);
+            if (!startScrollPositionFound && scrollPosition) {
+                // We found a scrollingView that does not have scrollTop or scrollLeft 0
+                // Return the scroll position value, as this will be our startScrollPosition
+                pageScrollInstance.startScrollPosition = scrollPosition;
+                startScrollPositionFound = true;
+            }
+        });
+        var pageScrollOffset = pageScrollInstance.getCurrentOffset();
+        // Calculate the target position that the scroll animation should go to
+        var scrollTargetPosition = pageScrollInstance.extractScrollTargetPosition();
+        pageScrollInstance.targetScrollPosition = Math.round((pageScrollInstance.verticalScrolling ? scrollTargetPosition.top : scrollTargetPosition.left) - pageScrollOffset);
+        // Calculate the distance we need to go in total
+        pageScrollInstance.distanceToScroll = pageScrollInstance.targetScrollPosition - pageScrollInstance.startScrollPosition;
+        if (isNaN(pageScrollInstance.distanceToScroll)) {
+            // We weren't able to find the target position, maybe the element does not exist?
+            if (Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["isDevMode"])()) {
+                console.log('Scrolling not possible, as we can\'t find the specified target');
+            }
+            pageScrollInstance.fireEvent(false);
+            return;
+        }
+        // We're at the final destination already
+        // OR we need to scroll down but are already at the end
+        // OR we need to scroll up but are at the top already
+        var allReadyAtDestination = Math.abs(pageScrollInstance.distanceToScroll) < __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */]._minScrollDistance;
+        // Check how long we need to scroll if a speed option is given
+        // Default executionDuration is the specified duration
+        pageScrollInstance.executionDuration = pageScrollInstance.duration;
+        // Maybe we need to pay attention to the speed option?
+        if (!__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(pageScrollInstance.speed) && __WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(pageScrollInstance.duration)) {
+            // Speed option is set and no duration => calculate duration based on speed and scroll distance
+            pageScrollInstance.executionDuration = Math.abs(pageScrollInstance.distanceToScroll) / pageScrollInstance.speed * 1000;
+        }
+        // We should go there directly, as our "animation" would have one big step
+        // only anyway and this way we save the interval stuff
+        var tooShortInterval = pageScrollInstance.executionDuration <= __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */]._interval;
+        if (allReadyAtDestination || tooShortInterval) {
+            if (Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["isDevMode"])()) {
+                if (allReadyAtDestination) {
+                    console.log('Scrolling not possible, as we can\'t get any closer to the destination');
+                }
+                else {
+                    console.log('Scroll duration shorter that interval length, jumping to target');
+                }
+            }
+            pageScrollInstance.setScrollPosition(pageScrollInstance.targetScrollPosition);
+            pageScrollInstance.fireEvent(true);
+            return;
+        }
+        // Register the interrupt listeners if we want an interruptible scroll animation
+        if (pageScrollInstance.interruptible ||
+            (__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(pageScrollInstance.interruptible) && __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */].defaultInterruptible)) {
+            pageScrollInstance.attachInterruptListeners(this.onInterrupted);
+        }
+        // Let's get started, get the start time...
+        pageScrollInstance.startTime = new Date().getTime();
+        // .. and calculate the end time (when we need to finish at last)
+        pageScrollInstance.endTime = pageScrollInstance.startTime + pageScrollInstance.executionDuration;
+        pageScrollInstance.timer = setInterval(function (_pageScrollInstance) {
+            // Take the current time
+            var currentTime = new Date().getTime();
+            // Determine the new scroll position
+            var newScrollPosition;
+            var stopNow = false;
+            if (_pageScrollInstance.endTime <= currentTime) {
+                // We're over the time already, so go the targetScrollPosition (aka destination)
+                newScrollPosition = _pageScrollInstance.targetScrollPosition;
+                stopNow = true;
+            }
+            else {
+                // Calculate the scroll position based on the current time using the easing function
+                newScrollPosition = Math.round(_pageScrollInstance.easingLogic.ease(currentTime - _pageScrollInstance.startTime, _pageScrollInstance.startScrollPosition, _pageScrollInstance.distanceToScroll, _pageScrollInstance.executionDuration));
+            }
+            // Set the new scrollPosition to all scrollingViews elements
+            if (!_pageScrollInstance.setScrollPosition(newScrollPosition)) {
+                // Setting the new scrollTop/scrollLeft value failed for all ScrollingViews
+                // early stop the scroll animation to save resources
+                stopNow = true;
+            }
+            // At the end do the internal stop maintenance and fire the pageScrollFinish event
+            // (otherwise the event might arrive at "too early")
+            if (stopNow) {
+                _this.stopInternal(false, _pageScrollInstance);
+            }
+        }, __WEBPACK_IMPORTED_MODULE_1__ng2_page_scroll_config__["a" /* PageScrollConfig */]._interval, pageScrollInstance);
+        // Register the instance as running one
+        this.runningInstances.push(pageScrollInstance);
+    };
+    /**
+     * Stop all running scroll animations. Optionally limit to stop only the ones of specific namespace.
+     *
+     * @param namespace
+     * @returns {boolean}
+     */
+    PageScrollService.prototype.stopAll = function (namespace) {
+        if (this.runningInstances.length > 0) {
+            var stoppedSome = false;
+            for (var i = 0; i < this.runningInstances.length; ++i) {
+                var pageScrollInstance = this.runningInstances[i];
+                if (__WEBPACK_IMPORTED_MODULE_2__ng2_page_scroll_util_service__["a" /* PageScrollUtilService */].isUndefinedOrNull(namespace) || namespace.length === 0 ||
+                    pageScrollInstance.namespace === namespace) {
+                    stoppedSome = true;
+                    this.stopInternal(true, pageScrollInstance);
+                    // Decrease the counter, as we removed an item from the array we iterate over
+                    i--;
+                }
+            }
+            return stoppedSome;
+        }
+        return false;
+    };
+    PageScrollService.prototype.stop = function (pageScrollInstance) {
+        return this.stopInternal(true, pageScrollInstance);
+    };
+    PageScrollService.instanceCounter = 0;
+    PageScrollService.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+    ];
+    /** @nocollapse */
+    PageScrollService.ctorParameters = function () { return []; };
+    return PageScrollService;
+}());
+
+/* singleton pattern taken from https://github.com/angular/angular/issues/13854 */
+function NG2PAGESCROLL_SERVICE_PROVIDER_FACTORY(parentDispatcher) {
+    return parentDispatcher || new PageScrollService();
+}
+var NG2PAGESCROLL_SERVICE_PROVIDER = {
+    provide: PageScrollService,
+    deps: [[new __WEBPACK_IMPORTED_MODULE_0__angular_core__["Optional"](), new __WEBPACK_IMPORTED_MODULE_0__angular_core__["SkipSelf"](), PageScrollService]],
+    useFactory: NG2PAGESCROLL_SERVICE_PROVIDER_FACTORY
+};
+
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/format-functions.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return formatFunctions; });
+/* unused harmony export formatTokenFunctions */
+/* unused harmony export formattingTokens */
+/* harmony export (immutable) */ __webpack_exports__["a"] = addFormatToken;
+/* harmony export (immutable) */ __webpack_exports__["c"] = makeFormatFunction;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type_checks__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/type-checks.js");
+
+
+var formatFunctions = {};
+var formatTokenFunctions = {};
+var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g;
+// token:    'M'
+// padded:   ['MM', 2]
+// ordinal:  'Mo'
+// callback: function () { this.month() + 1 }
+function addFormatToken(token, padded, ordinal, callback) {
+    var func = callback;
+    if (token) {
+        formatTokenFunctions[token] = func;
+    }
+    if (padded) {
+        var key = padded[0];
+        formatTokenFunctions[key] = function (date, format, locale) {
+            return Object(__WEBPACK_IMPORTED_MODULE_0__utils__["d" /* zeroFill */])(func.apply(null, arguments), padded[1], padded[2]);
+        };
+    }
+    if (ordinal) {
+        formatTokenFunctions[ordinal] = function (date, format, locale) {
+            // todo: fix this
+            return locale.ordinal(func.apply(null, arguments), token);
+        };
+    }
+}
+function makeFormatFunction(format) {
+    var array = format.match(formattingTokens);
+    var length = array.length;
+    var formatArr = new Array(length);
+    for (var i = 0; i < length; i++) {
+        formatArr[i] = formatTokenFunctions[array[i]]
+            ? formatTokenFunctions[array[i]]
+            : removeFormattingTokens(array[i]);
+    }
+    return function (date, locale) {
+        var output = '';
+        for (var j = 0; j < length; j++) {
+            output += Object(__WEBPACK_IMPORTED_MODULE_1__utils_type_checks__["d" /* isFunction */])(formatArr[j])
+                ? formatArr[j].call(null, date, format, locale)
+                : formatArr[j];
+        }
+        return output;
+    };
+}
+function removeFormattingTokens(input) {
+    if (input.match(/\[[\s\S]/)) {
+        return input.replace(/^\[|\]$/g, '');
+    }
+    return input.replace(/\\/g, '');
+}
+//# sourceMappingURL=format-functions.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/format.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = formatDate;
+/* unused harmony export formatMoment */
+/* unused harmony export expandFormat */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format_functions__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format-functions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__locale__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/locale/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__units__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__locale_locales_service__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/locale/locales.service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__utils_type_checks__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/type-checks.js");
+// moment.js
+// version : 2.18.1
+// authors : Tim Wood, Iskren Chernev, Moment.js contributors
+// license : MIT
+// momentjs.com
+
+
+
+
+
+function formatDate(date, format, locale) {
+    if (locale === void 0) { locale = 'en'; }
+    var _locale = Object(__WEBPACK_IMPORTED_MODULE_3__locale_locales_service__["b" /* getLocale */])(locale);
+    if (!_locale) {
+        throw new Error("Locale \"" + locale + "\" is not defined, please add it with \"defineLocale(...)\"");
+    }
+    var output = formatMoment(date, format, _locale);
+    return _locale.postformat(output);
+}
+// format date using native date object
+function formatMoment(date, format, locale) {
+    if (!Object(__WEBPACK_IMPORTED_MODULE_4__utils_type_checks__["c" /* isDateValid */])(date)) {
+        return locale.invalidDate;
+    }
+    format = expandFormat(format, locale);
+    __WEBPACK_IMPORTED_MODULE_0__format_functions__["b" /* formatFunctions */][format] = __WEBPACK_IMPORTED_MODULE_0__format_functions__["b" /* formatFunctions */][format] || Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["c" /* makeFormatFunction */])(format);
+    return __WEBPACK_IMPORTED_MODULE_0__format_functions__["b" /* formatFunctions */][format](date, locale);
+}
+function expandFormat(format, locale) {
+    var i = 5;
+    var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
+    var replaceLongDateFormatTokens = function (input) {
+        return locale.longDateFormat(input) || input;
+    };
+    localFormattingTokens.lastIndex = 0;
+    while (i >= 0 && localFormattingTokens.test(format)) {
+        format = format.replace(localFormattingTokens, replaceLongDateFormatTokens);
+        localFormattingTokens.lastIndex = 0;
+        i -= 1;
+    }
+    return format;
+}
+//# sourceMappingURL=format.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/locale/en.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locales_service__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/locale/locales.service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type_checks__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/type-checks.js");
+
+
+Object(__WEBPACK_IMPORTED_MODULE_0__locales_service__["c" /* getSetGlobalLocale */])('en', {
+    dayOfMonthOrdinalParse: /\d{1,2}(th|st|nd|rd)/,
+    ordinal: function (num) {
+        var b = num % 10;
+        var output = (Object(__WEBPACK_IMPORTED_MODULE_1__utils_type_checks__["g" /* toInt */])(num % 100 / 10) === 1) ? 'th' :
+            (b === 1) ? 'st' :
+                (b === 2) ? 'nd' :
+                    (b === 3) ? 'rd' : 'th';
+        return num + output;
+    }
+});
+//# sourceMappingURL=en.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/locale/index.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__en__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/locale/en.js");
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/locale/locale.class.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return defaultLocaleMonths; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return defaultLocaleMonthsShort; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return defaultLocaleWeekdays; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return defaultLocaleWeekdaysShort; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return defaultLocaleWeekdaysMin; });
+/* unused harmony export defaultLongDateFormat */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Locale; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__units_week_calendar_utils__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/week-calendar-utils.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_type_checks__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/type-checks.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+
+
+
+var MONTHS_IN_FORMAT = /D[oD]?(\[[^\[\]]*\]|\s)+MMMM?/;
+var defaultLocaleMonths = 'January_February_March_April_May_June_July_August_September_October_November_December'.split('_');
+var defaultLocaleMonthsShort = 'Jan_Feb_Mar_Apr_May_Jun_Jul_Aug_Sep_Oct_Nov_Dec'.split('_');
+var defaultLocaleWeekdays = 'Sunday_Monday_Tuesday_Wednesday_Thursday_Friday_Saturday'.split('_');
+var defaultLocaleWeekdaysShort = 'Sun_Mon_Tue_Wed_Thu_Fri_Sat'.split('_');
+var defaultLocaleWeekdaysMin = 'Su_Mo_Tu_We_Th_Fr_Sa'.split('_');
+var defaultLongDateFormat = {
+    LTS: 'h:mm:ss A',
+    LT: 'h:mm A',
+    L: 'MM/DD/YYYY',
+    LL: 'MMMM D, YYYY',
+    LLL: 'MMMM D, YYYY h:mm A',
+    LLLL: 'dddd, MMMM D, YYYY h:mm A'
+};
+var Locale = (function () {
+    function Locale(config) {
+        if (!!config) {
+            this.set(config);
+        }
+    }
+    Locale.prototype.set = function (config) {
+        for (var i in config) {
+            if (!config.hasOwnProperty(i)) {
+                continue;
+            }
+            var prop = config[i];
+            var key = Object(__WEBPACK_IMPORTED_MODULE_1__utils_type_checks__["d" /* isFunction */])(prop) ? i : "_" + i;
+            this[key] = prop;
+        }
+        this._config = config;
+    };
+    // Months
+    // LOCALES
+    Locale.prototype.months = function (date, format) {
+        if (!date) {
+            return Object(__WEBPACK_IMPORTED_MODULE_1__utils_type_checks__["b" /* isArray */])(this._months)
+                ? this._months
+                : this._months.standalone;
+        }
+        if (Object(__WEBPACK_IMPORTED_MODULE_1__utils_type_checks__["b" /* isArray */])(this._months)) {
+            return this._months[Object(__WEBPACK_IMPORTED_MODULE_2__utils_date_getters__["g" /* getMonth */])(date)];
+        }
+        var key = (this._months.isFormat || MONTHS_IN_FORMAT)
+            .test(format) ? 'format' : 'standalone';
+        return this._months[key][Object(__WEBPACK_IMPORTED_MODULE_2__utils_date_getters__["g" /* getMonth */])(date)];
+    };
+    Locale.prototype.monthsShort = function (date, format) {
+        if (!date) {
+            return Object(__WEBPACK_IMPORTED_MODULE_1__utils_type_checks__["b" /* isArray */])(this._monthsShort)
+                ? this._monthsShort
+                : this._monthsShort.standalone;
+        }
+        if (Object(__WEBPACK_IMPORTED_MODULE_1__utils_type_checks__["b" /* isArray */])(this._monthsShort)) {
+            return this._monthsShort[Object(__WEBPACK_IMPORTED_MODULE_2__utils_date_getters__["g" /* getMonth */])(date)];
+        }
+        var key = MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone';
+        return this._monthsShort[key][Object(__WEBPACK_IMPORTED_MODULE_2__utils_date_getters__["g" /* getMonth */])(date)];
+    };
+    // Days of week
+    // LOCALES
+    Locale.prototype.weekdays = function (date, format) {
+        var _isArray = Object(__WEBPACK_IMPORTED_MODULE_1__utils_type_checks__["b" /* isArray */])(this._weekdays);
+        if (!date) {
+            return _isArray
+                ? this._weekdays
+                : this._weekdays.standalone;
+        }
+        if (_isArray) {
+            return this._weekdays[Object(__WEBPACK_IMPORTED_MODULE_2__utils_date_getters__["b" /* getDayOfWeek */])(date)];
+        }
+        var _key = this._weekdays.isFormat.test(format) ? 'format' : 'standalone';
+        return this._weekdays[_key][Object(__WEBPACK_IMPORTED_MODULE_2__utils_date_getters__["b" /* getDayOfWeek */])(date)];
+    };
+    Locale.prototype.weekdaysMin = function (date) {
+        return (date) ? this._weekdaysShort[Object(__WEBPACK_IMPORTED_MODULE_2__utils_date_getters__["b" /* getDayOfWeek */])(date)] : this._weekdaysShort;
+    };
+    Locale.prototype.weekdaysShort = function (date) {
+        return (date) ? this._weekdaysMin[Object(__WEBPACK_IMPORTED_MODULE_2__utils_date_getters__["b" /* getDayOfWeek */])(date)] : this._weekdaysMin;
+    };
+    Locale.prototype.week = function (date) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0__units_week_calendar_utils__["a" /* weekOfYear */])(date, this._week.dow, this._week.doy).week;
+    };
+    Locale.prototype.firstDayOfWeek = function () {
+        return this._week.dow;
+    };
+    Locale.prototype.firstDayOfYear = function () {
+        return this._week.doy;
+    };
+    Locale.prototype.meridiem = function (hours, minutes, isLower) {
+        if (hours > 11) {
+            return isLower ? 'pm' : 'PM';
+        }
+        return isLower ? 'am' : 'AM';
+    };
+    Locale.prototype.ordinal = function (num, token) {
+        return this._ordinal.replace('%d', num.toString(10));
+    };
+    Locale.prototype.preparse = function (str) { return str; };
+    Locale.prototype.postformat = function (str) { return str; };
+    Locale.prototype.longDateFormat = function (key) {
+        var format = defaultLongDateFormat[key];
+        var formatUpper = defaultLongDateFormat[key.toUpperCase()];
+        if (format || !formatUpper) {
+            return format;
+        }
+        defaultLongDateFormat[key] = formatUpper.replace(/MMMM|MM|DD|dddd/g, function (val) {
+            return val.slice(1);
+        });
+        return defaultLongDateFormat[key];
+    };
+    return Locale;
+}());
+
+//# sourceMappingURL=locale.class.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/locale/locale.defaults.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export defaultInvalidDate */
+/* unused harmony export defaultLocaleWeek */
+/* unused harmony export defaultLocaleMeridiemParse */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return baseConfig; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locale_class__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/locale/locale.class.js");
+
+var defaultInvalidDate = 'Invalid date';
+var defaultLocaleWeek = {
+    dow: 0,
+    doy: 6 // The week that contains Jan 1st is the first week of the year.
+};
+var defaultLocaleMeridiemParse = /[ap]\.?m?\.?/i;
+var baseConfig = {
+    // calendar: defaultCalendar,
+    // longDateFormat: defaultLongDateFormat,
+    invalidDate: defaultInvalidDate,
+    // ordinal: defaultOrdinal,
+    // dayOfMonthOrdinalParse: defaultDayOfMonthOrdinalParse,
+    // relativeTime: defaultRelativeTime,
+    months: __WEBPACK_IMPORTED_MODULE_0__locale_class__["b" /* defaultLocaleMonths */],
+    monthsShort: __WEBPACK_IMPORTED_MODULE_0__locale_class__["c" /* defaultLocaleMonthsShort */],
+    week: defaultLocaleWeek,
+    weekdays: __WEBPACK_IMPORTED_MODULE_0__locale_class__["d" /* defaultLocaleWeekdays */],
+    weekdaysMin: __WEBPACK_IMPORTED_MODULE_0__locale_class__["e" /* defaultLocaleWeekdaysMin */],
+    weekdaysShort: __WEBPACK_IMPORTED_MODULE_0__locale_class__["f" /* defaultLocaleWeekdaysShort */],
+    meridiemParse: defaultLocaleMeridiemParse
+};
+//# sourceMappingURL=locale.defaults.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/locale/locales.service.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["b"] = getLocale;
+/* unused harmony export listLocales */
+/* unused harmony export mergeConfigs */
+/* harmony export (immutable) */ __webpack_exports__["c"] = getSetGlobalLocale;
+/* harmony export (immutable) */ __webpack_exports__["a"] = defineLocale;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__locale_class__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/locale/locale.class.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__locale_defaults__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/locale/locale.defaults.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_type_checks__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/type-checks.js");
+// internal storage for locale config files
+
+
+
+var locales = {};
+var localeFamilies = {};
+var globalLocale;
+function chooseLocale(name) {
+    return locales[name];
+}
+// returns locale data
+function getLocale(key) {
+    if (!key) {
+        return globalLocale;
+    }
+    return chooseLocale(key);
+}
+function listLocales() {
+    return Object.keys(locales);
+}
+function mergeConfigs(parentConfig, childConfig) {
+    var res = Object.assign({}, parentConfig);
+    for (var childProp in childConfig) {
+        if (!Object(__WEBPACK_IMPORTED_MODULE_2__utils_type_checks__["a" /* hasOwnProp */])(childConfig, childProp)) {
+            continue;
+        }
+        if (Object(__WEBPACK_IMPORTED_MODULE_2__utils_type_checks__["e" /* isObject */])(parentConfig[childProp]) && Object(__WEBPACK_IMPORTED_MODULE_2__utils_type_checks__["e" /* isObject */])(childConfig[childProp])) {
+            (res[childProp]) = {};
+            Object.assign(res[childProp], parentConfig[childProp]);
+            Object.assign(res[childProp], childConfig[childProp]);
+        }
+        else if (childConfig[childProp] != null) {
+            (res[childProp]) = childConfig[childProp];
+        }
+        else {
+            delete res[childProp];
+        }
+    }
+    for (var parentProp in parentConfig) {
+        if (Object(__WEBPACK_IMPORTED_MODULE_2__utils_type_checks__["a" /* hasOwnProp */])(parentConfig, parentProp) &&
+            !Object(__WEBPACK_IMPORTED_MODULE_2__utils_type_checks__["a" /* hasOwnProp */])(childConfig, parentProp) &&
+            Object(__WEBPACK_IMPORTED_MODULE_2__utils_type_checks__["e" /* isObject */])(parentConfig[parentProp])) {
+            // make sure changes to properties don't modify parent config
+            (res[parentProp]) = Object.assign({}, res[parentProp]);
+        }
+    }
+    return res;
+}
+// This function will load locale and then set the global locale.  If
+// no arguments are passed in, it will simply return the current global
+// locale key.
+function getSetGlobalLocale(key, values) {
+    var data;
+    if (key) {
+        data = Object(__WEBPACK_IMPORTED_MODULE_2__utils_type_checks__["f" /* isUndefined */])(values) ? getLocale(key) : defineLocale(key, values);
+        if (data) {
+            globalLocale = data;
+        }
+    }
+    return globalLocale._abbr;
+}
+function defineLocale(name, config) {
+    if (config === null) {
+        // useful for testing
+        delete locales[name];
+        return null;
+    }
+    config.abbr = name;
+    locales[name] = new __WEBPACK_IMPORTED_MODULE_0__locale_class__["a" /* Locale */](mergeConfigs(__WEBPACK_IMPORTED_MODULE_1__locale_defaults__["a" /* baseConfig */], config));
+    if (localeFamilies[name]) {
+        localeFamilies[name].forEach(function (x) {
+            defineLocale(x.name, x.config);
+        });
+    }
+    // backwards compat for now: also set the locale
+    // make sure we set the locale AFTER all child locales have been
+    // created, so we won't end up with the child locale set.
+    getSetGlobalLocale(name);
+    return locales[name];
+}
+//# sourceMappingURL=locales.service.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/units/day-of-month.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format_functions__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format-functions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+
+
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('D', ['DD', 2], 'Do', function (date) {
+    return Object(__WEBPACK_IMPORTED_MODULE_1__utils_date_getters__["a" /* getDate */])(date).toString(10);
+});
+//# sourceMappingURL=day-of-month.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/units/day-of-week.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export getLocaleDayOfWeek */
+/* unused harmony export getISODayOfWeek */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format_functions__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format-functions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+
+
+// FORMATTING
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('d', null, 'do', function (date) {
+    return Object(__WEBPACK_IMPORTED_MODULE_1__utils_date_getters__["b" /* getDayOfWeek */])(date).toString(10);
+});
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('dd', null, null, function (date, format, locale) {
+    return locale.weekdaysShort(date);
+});
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('ddd', null, null, function (date, format, locale) {
+    return locale.weekdaysMin(date);
+});
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('dddd', null, null, function (date, format, locale) {
+    return locale.weekdays(date, format);
+});
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('e', null, null, function (date) {
+    return Object(__WEBPACK_IMPORTED_MODULE_1__utils_date_getters__["b" /* getDayOfWeek */])(date).toString(10);
+});
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('E', null, null, function (date) {
+    return getISODayOfWeek(date).toString(10);
+});
+function getLocaleDayOfWeek(date, locale) {
+    return (Object(__WEBPACK_IMPORTED_MODULE_1__utils_date_getters__["b" /* getDayOfWeek */])(date) + 7 - locale.firstDayOfWeek()) % 7;
+}
+function getISODayOfWeek(date) {
+    return Object(__WEBPACK_IMPORTED_MODULE_1__utils_date_getters__["b" /* getDayOfWeek */])(date) || 7;
+}
+//# sourceMappingURL=day-of-week.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/units/day-of-year.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = getDayOfYear;
+/* unused harmony export _getDayOfYear */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format_functions__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format-functions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_start_end_of__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/start-end-of.js");
+
+
+// FORMATTING
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('DDD', ['DDDD', 3], 'DDDo', function (date) {
+    return getDayOfYear(date).toString(10);
+});
+function getDayOfYear(date) {
+    var date1 = +Object(__WEBPACK_IMPORTED_MODULE_1__utils_start_end_of__["b" /* startOf */])(date, 'day');
+    var date2 = +Object(__WEBPACK_IMPORTED_MODULE_1__utils_start_end_of__["b" /* startOf */])(date, 'year');
+    var someDate = date1 - date2;
+    var oneDay = 1000 * 60 * 60 * 24;
+    return Math.round(someDate / oneDay) + 1;
+}
+function _getDayOfYear(date) {
+    var start = new Date(date.getFullYear(), 0, 0);
+    var diff = date.getTime() - start.getTime();
+    var oneDay = 1000 * 60 * 60 * 24;
+    return Math.round(diff / oneDay) + 1;
+}
+//# sourceMappingURL=day-of-year.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/units/hour.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__format_functions__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format-functions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils.js");
+// import { makeGetSet } from '../moment/get-set';
+// import { addFormatToken } from '../format/format';
+// import { addUnitAlias } from './aliases';
+// import { addUnitPriority } from './priorities';
+// import { addRegexToken, match1to2, match2, match3to4, match5to6 } from '../parse/regex';
+// import { addParseToken } from '../parse/token';
+// import { HOUR, MINUTE, SECOND } from './constants';
+// import toInt from '../utils/to-int';
+// import zeroFill from '../utils/zero-fill';
+// import getParsingFlags from '../create/parsing-flags';
+// FORMATTING
+
+
+
+function hFormat(date) {
+    return Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["e" /* getHours */])(date) % 12 || 12;
+}
+function kFormat(date) {
+    return Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["e" /* getHours */])(date) || 24;
+}
+Object(__WEBPACK_IMPORTED_MODULE_1__format_functions__["a" /* addFormatToken */])('H', ['HH', 2], null, function (date, format, locale) {
+    return Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["e" /* getHours */])(date).toString(10);
+});
+Object(__WEBPACK_IMPORTED_MODULE_1__format_functions__["a" /* addFormatToken */])('h', ['hh', 2], null, function (date, format, locale) {
+    return hFormat(date).toString(10);
+});
+Object(__WEBPACK_IMPORTED_MODULE_1__format_functions__["a" /* addFormatToken */])('k', ['kk', 2], null, function (date, format, locale) {
+    return kFormat(date).toString(10);
+});
+Object(__WEBPACK_IMPORTED_MODULE_1__format_functions__["a" /* addFormatToken */])('hmm', null, null, function (date, format, locale) {
+    return "" + hFormat(date) + Object(__WEBPACK_IMPORTED_MODULE_2__utils__["d" /* zeroFill */])(Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["f" /* getMinutes */])(date), 2);
+});
+Object(__WEBPACK_IMPORTED_MODULE_1__format_functions__["a" /* addFormatToken */])('hmmss', null, null, function (date, format, locale) {
+    return "" + hFormat(date) + Object(__WEBPACK_IMPORTED_MODULE_2__utils__["d" /* zeroFill */])(Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["f" /* getMinutes */])(date), 2) + Object(__WEBPACK_IMPORTED_MODULE_2__utils__["d" /* zeroFill */])(Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["h" /* getSeconds */])(date), 2);
+});
+Object(__WEBPACK_IMPORTED_MODULE_1__format_functions__["a" /* addFormatToken */])('Hmm', null, null, function (date, format, locale) {
+    return "" + Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["e" /* getHours */])(date) + Object(__WEBPACK_IMPORTED_MODULE_2__utils__["d" /* zeroFill */])(Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["f" /* getMinutes */])(date), 2);
+});
+Object(__WEBPACK_IMPORTED_MODULE_1__format_functions__["a" /* addFormatToken */])('Hmmss', null, null, function (date, format, locale) {
+    return "" + Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["e" /* getHours */])(date) + Object(__WEBPACK_IMPORTED_MODULE_2__utils__["d" /* zeroFill */])(Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["f" /* getMinutes */])(date), 2) + Object(__WEBPACK_IMPORTED_MODULE_2__utils__["d" /* zeroFill */])(Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["h" /* getSeconds */])(date), 2);
+});
+function meridiem(token, lowercase) {
+    Object(__WEBPACK_IMPORTED_MODULE_1__format_functions__["a" /* addFormatToken */])(token, null, null, function (date, format, locale) {
+        return locale.meridiem(Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["e" /* getHours */])(date), Object(__WEBPACK_IMPORTED_MODULE_0__utils_date_getters__["f" /* getMinutes */])(date), lowercase);
+    });
+}
+meridiem('a', true);
+meridiem('A', false);
+//# sourceMappingURL=hour.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/units/index.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__day_of_month__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/day-of-month.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__day_of_week__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/day-of-week.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__day_of_year__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/day-of-year.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__hour__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/hour.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__minute__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/minute.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__month__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/month.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__second__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/second.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__week__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/week.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__week_calendar_utils__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/week-calendar-utils.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__year__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/year.js");
+
+
+
+
+
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/units/minute.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format_functions__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format-functions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+
+
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('m', ['mm', 2], null, function (date) {
+    return Object(__WEBPACK_IMPORTED_MODULE_1__utils_date_getters__["f" /* getMinutes */])(date).toString(10);
+});
+//# sourceMappingURL=minute.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/units/month.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export daysInMonth */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format_functions__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format-functions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__year__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/year.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+
+
+
+
+function daysInMonth(year, month) {
+    if (isNaN(year) || isNaN(month)) {
+        return NaN;
+    }
+    var modMonth = Object(__WEBPACK_IMPORTED_MODULE_2__utils__["c" /* mod */])(month, 12);
+    year += (month - modMonth) / 12;
+    return modMonth === 1 ? (Object(__WEBPACK_IMPORTED_MODULE_1__year__["b" /* isLeapYear */])(year) ? 29 : 28) : (31 - modMonth % 7 % 2);
+}
+// FORMATTING
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('M', ['MM', 2], 'Mo', function (date, format) {
+    return (Object(__WEBPACK_IMPORTED_MODULE_3__utils_date_getters__["g" /* getMonth */])(date) + 1).toString();
+});
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('MMM', null, null, function (date, format, locale) {
+    return locale.monthsShort(date, format);
+});
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('MMMM', null, null, function (date, format, locale) {
+    return locale.months(date, format);
+});
+//# sourceMappingURL=month.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/units/second.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format_functions__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format-functions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+
+
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('s', ['ss', 2], null, function (date) {
+    return Object(__WEBPACK_IMPORTED_MODULE_1__utils_date_getters__["h" /* getSeconds */])(date).toString(10);
+});
+//# sourceMappingURL=second.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/units/week-calendar-utils.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export dayOfYearFromWeeks */
+/* harmony export (immutable) */ __webpack_exports__["a"] = weekOfYear;
+/* unused harmony export weeksInYear */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__year__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/year.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__day_of_year__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/day-of-year.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+/**
+ *
+ * @param {number} year
+ * @param {number} dow - start-of-first-week
+ * @param {number} doy - start-of-year
+ * @returns {number}
+ */
+
+
+
+
+function firstWeekOffset(year, dow, doy) {
+    // first-week day -- which january is always in the first week (4 for iso, 1 for other)
+    var fwd = 7 + dow - doy;
+    // first-week day local weekday -- which local weekday is fwd
+    var fwdlw = (7 + Object(__WEBPACK_IMPORTED_MODULE_0__utils__["b" /* createUTCDate */])(year, 0, fwd).getUTCDay() - dow) % 7;
+    return -fwdlw + fwd - 1;
+}
+// https://en.wikipedia.org/wiki/ISO_week_date#Calculating_a_date_given_the_year.2C_week_number_and_weekday
+function dayOfYearFromWeeks(year, week, weekday, dow, doy) {
+    var localWeekday = (7 + weekday - dow) % 7;
+    var weekOffset = firstWeekOffset(year, dow, doy);
+    var dayOfYear = 1 + 7 * (week - 1) + localWeekday + weekOffset;
+    var resYear;
+    var resDayOfYear;
+    if (dayOfYear <= 0) {
+        resYear = year - 1;
+        resDayOfYear = Object(__WEBPACK_IMPORTED_MODULE_1__year__["a" /* daysInYear */])(resYear) + dayOfYear;
+    }
+    else if (dayOfYear > Object(__WEBPACK_IMPORTED_MODULE_1__year__["a" /* daysInYear */])(year)) {
+        resYear = year + 1;
+        resDayOfYear = dayOfYear - Object(__WEBPACK_IMPORTED_MODULE_1__year__["a" /* daysInYear */])(year);
+    }
+    else {
+        resYear = year;
+        resDayOfYear = dayOfYear;
+    }
+    return {
+        year: resYear,
+        dayOfYear: resDayOfYear
+    };
+}
+function weekOfYear(date, dow, doy) {
+    var weekOffset = firstWeekOffset(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date_getters__["d" /* getFullYear */])(date), dow, doy);
+    var week = Math.floor((Object(__WEBPACK_IMPORTED_MODULE_2__day_of_year__["a" /* getDayOfYear */])(date) - weekOffset - 1) / 7) + 1;
+    var resWeek;
+    var resYear;
+    if (week < 1) {
+        resYear = Object(__WEBPACK_IMPORTED_MODULE_3__utils_date_getters__["d" /* getFullYear */])(date) - 1;
+        resWeek = week + weeksInYear(resYear, dow, doy);
+    }
+    else if (week > weeksInYear(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date_getters__["d" /* getFullYear */])(date), dow, doy)) {
+        resWeek = week - weeksInYear(Object(__WEBPACK_IMPORTED_MODULE_3__utils_date_getters__["d" /* getFullYear */])(date), dow, doy);
+        resYear = Object(__WEBPACK_IMPORTED_MODULE_3__utils_date_getters__["d" /* getFullYear */])(date) + 1;
+    }
+    else {
+        resYear = Object(__WEBPACK_IMPORTED_MODULE_3__utils_date_getters__["d" /* getFullYear */])(date);
+        resWeek = week;
+    }
+    return {
+        week: resWeek,
+        year: resYear
+    };
+}
+function weeksInYear(year, dow, doy) {
+    var weekOffset = firstWeekOffset(year, dow, doy);
+    var weekOffsetNext = firstWeekOffset(year + 1, dow, doy);
+    return (Object(__WEBPACK_IMPORTED_MODULE_1__year__["a" /* daysInYear */])(year) - weekOffset + weekOffsetNext) / 7;
+}
+//# sourceMappingURL=week-calendar-utils.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/units/week.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export getWeek */
+/* unused harmony export getISOWeek */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format_functions__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format-functions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__week_calendar_utils__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/units/week-calendar-utils.js");
+
+
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('w', ['ww', 2], 'wo', function (date, format, locale) {
+    return getWeek(date, locale).toString(10);
+});
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('W', ['WW', 2], 'Wo', function (date) {
+    return getISOWeek(date).toString(10);
+});
+function getWeek(date, locale) {
+    return locale.week(date);
+}
+function getISOWeek(date) {
+    return Object(__WEBPACK_IMPORTED_MODULE_1__week_calendar_utils__["a" /* weekOfYear */])(date, 1, 4).week;
+}
+//# sourceMappingURL=week.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/units/year.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = daysInYear;
+/* harmony export (immutable) */ __webpack_exports__["b"] = isLeapYear;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__format_functions__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format-functions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+
+
+// FORMATTING
+function getYear(date) {
+    return Object(__WEBPACK_IMPORTED_MODULE_1__utils_date_getters__["d" /* getFullYear */])(date).toString();
+}
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])('Y', null, null, function (date) {
+    var y = Object(__WEBPACK_IMPORTED_MODULE_1__utils_date_getters__["d" /* getFullYear */])(date);
+    return y <= 9999 ? '' + y : '+' + y;
+});
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])(null, ['YY', 2], null, function (date) {
+    return (Object(__WEBPACK_IMPORTED_MODULE_1__utils_date_getters__["d" /* getFullYear */])(date) % 100).toString(10);
+});
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])(null, ['YYYY', 4], null, getYear);
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])(null, ['YYYYY', 5], null, getYear);
+Object(__WEBPACK_IMPORTED_MODULE_0__format_functions__["a" /* addFormatToken */])(null, ['YYYYYY', 6, true], null, getYear);
+function daysInYear(year) {
+    return isLeapYear(year) ? 366 : 365;
+}
+function isLeapYear(year) {
+    return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+}
+//# sourceMappingURL=year.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/utils.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["d"] = zeroFill;
+/* harmony export (immutable) */ __webpack_exports__["c"] = mod;
+/* harmony export (immutable) */ __webpack_exports__["a"] = absFloor;
+/* harmony export (immutable) */ __webpack_exports__["b"] = createUTCDate;
+function zeroFill(num, targetLength, forceSign) {
+    var absNumber = "" + Math.abs(num);
+    var zerosToFill = targetLength - absNumber.length;
+    var sign = num >= 0;
+    return (sign ? (forceSign ? '+' : '') : '-') +
+        Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) + absNumber;
+}
+function mod(n, x) {
+    return ((n % x) + x) % x;
+}
+function absFloor(number) {
+    return number < 0
+        ? Math.ceil(number) || 0
+        : Math.floor(number);
+}
+function createUTCDate(y, m, d, h, M, s, ms) {
+    var date = new Date(Date.UTC.apply(null, arguments));
+    // the Date.UTC function remaps years 0-99 to 1900-1999
+    if (y < 100 && y >= 0 && isFinite(date.getUTCFullYear())) {
+        date.setUTCFullYear(y);
+    }
+    return date;
+}
+//# sourceMappingURL=utils.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/utils/date-compare.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = isAfter;
+/* harmony export (immutable) */ __webpack_exports__["b"] = isBefore;
+/* unused harmony export isBetween */
+/* unused harmony export isSame */
+/* harmony export (immutable) */ __webpack_exports__["c"] = isSameOrAfter;
+/* harmony export (immutable) */ __webpack_exports__["d"] = isSameOrBefore;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__start_end_of__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/start-end-of.js");
+
+function isAfter(date1, date2, units) {
+    if (units === void 0) { units = 'milliseconds'; }
+    if (!date1 || !date2) {
+        return false;
+    }
+    if (units === 'milliseconds') {
+        return date1.valueOf() > date2.valueOf();
+    }
+    return date2.valueOf() < Object(__WEBPACK_IMPORTED_MODULE_0__start_end_of__["b" /* startOf */])(date1, units).valueOf();
+}
+function isBefore(date1, date2, units) {
+    if (units === void 0) { units = 'milliseconds'; }
+    if (!date1 || !date2) {
+        return false;
+    }
+    if (units === 'milliseconds') {
+        return date1.valueOf() < date2.valueOf();
+    }
+    return Object(__WEBPACK_IMPORTED_MODULE_0__start_end_of__["a" /* endOf */])(date1, units).valueOf() < date2.valueOf();
+}
+function isBetween(date, from, to, units, inclusivity) {
+    if (inclusivity === void 0) { inclusivity = '()'; }
+    var leftBound = inclusivity[0] === '('
+        ? isAfter(date, from, units) :
+        !isBefore(date, from, units);
+    var rightBound = inclusivity[1] === ')'
+        ? isBefore(date, to, units)
+        : !isAfter(date, to, units);
+    return leftBound && rightBound;
+}
+function isSame(date1, date2, units) {
+    if (units === void 0) { units = 'milliseconds'; }
+    if (!date1 || !date2) {
+        return false;
+    }
+    if (units === 'milliseconds') {
+        return date1.valueOf() === date2.valueOf();
+    }
+    var inputMs = date2.valueOf();
+    return Object(__WEBPACK_IMPORTED_MODULE_0__start_end_of__["b" /* startOf */])(date1, units).valueOf() <= inputMs
+        && inputMs <= Object(__WEBPACK_IMPORTED_MODULE_0__start_end_of__["a" /* endOf */])(date1, units).valueOf();
+}
+function isSameOrAfter(date1, date2, units) {
+    return isSame(date1, date2, units) || isAfter(date1, date2, units);
+}
+function isSameOrBefore(date1, date2, units) {
+    return isSame(date1, date2, units) || isBefore(date1, date2, units);
+}
+//# sourceMappingURL=date-compare.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/utils/date-getters.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["e"] = getHours;
+/* harmony export (immutable) */ __webpack_exports__["f"] = getMinutes;
+/* harmony export (immutable) */ __webpack_exports__["h"] = getSeconds;
+/* harmony export (immutable) */ __webpack_exports__["b"] = getDayOfWeek;
+/* harmony export (immutable) */ __webpack_exports__["a"] = getDate;
+/* harmony export (immutable) */ __webpack_exports__["g"] = getMonth;
+/* harmony export (immutable) */ __webpack_exports__["d"] = getFullYear;
+/* harmony export (immutable) */ __webpack_exports__["c"] = getFirstDayOfMonth;
+/* unused harmony export daysInMonth */
+/* unused harmony export _daysInMonth */
+/* harmony export (immutable) */ __webpack_exports__["i"] = isFirstDayOfWeek;
+/* harmony export (immutable) */ __webpack_exports__["k"] = isSameMonth;
+/* harmony export (immutable) */ __webpack_exports__["l"] = isSameYear;
+/* harmony export (immutable) */ __webpack_exports__["j"] = isSameDay;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__date_setters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-setters.js");
+
+function getHours(date, isUTC) {
+    if (isUTC === void 0) { isUTC = false; }
+    return isUTC ? date.getUTCHours() : date.getHours();
+}
+function getMinutes(date, isUTC) {
+    if (isUTC === void 0) { isUTC = false; }
+    return isUTC ? date.getUTCMinutes() : date.getMinutes();
+}
+function getSeconds(date, isUTC) {
+    if (isUTC === void 0) { isUTC = false; }
+    return isUTC ? date.getUTCSeconds() : date.getSeconds();
+}
+function getDayOfWeek(date, isUTC) {
+    if (isUTC === void 0) { isUTC = false; }
+    return isUTC ? date.getUTCDay() : date.getDay();
+}
+function getDate(date, isUTC) {
+    if (isUTC === void 0) { isUTC = false; }
+    return isUTC ? date.getUTCDate() : date.getDate();
+}
+function getMonth(date, isUTC) {
+    if (isUTC === void 0) { isUTC = false; }
+    return isUTC ? date.getUTCMonth() : date.getMonth();
+}
+function getFullYear(date, isUTC) {
+    if (isUTC === void 0) { isUTC = false; }
+    return isUTC ? date.getUTCFullYear() : date.getFullYear();
+}
+function getFirstDayOfMonth(date) {
+    return Object(__WEBPACK_IMPORTED_MODULE_0__date_setters__["a" /* createDate */])(date.getFullYear(), date.getMonth(), 1, date.getHours(), date.getMinutes(), date.getSeconds());
+}
+function daysInMonth(date) {
+    return _daysInMonth(date.getFullYear(), date.getMonth());
+}
+function _daysInMonth(year, month) {
+    return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+}
+function isFirstDayOfWeek(date, firstDayOfWeek) {
+    return date.getDay() === firstDayOfWeek;
+}
+function isSameMonth(date1, date2) {
+    if (!date1 || !date2) {
+        return false;
+    }
+    return isSameYear(date1, date2) && getMonth(date1) === getMonth(date2);
+}
+function isSameYear(date1, date2) {
+    if (!date1 || !date2) {
+        return false;
+    }
+    return getFullYear(date1) === getFullYear(date2);
+}
+function isSameDay(date1, date2) {
+    if (!date1 || !date2) {
+        return false;
+    }
+    return isSameYear(date1, date2) && isSameMonth(date1, date2)
+        && getDate(date1) === getDate(date2);
+}
+//# sourceMappingURL=date-getters.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/utils/date-setters.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = createDate;
+/* harmony export (immutable) */ __webpack_exports__["c"] = shiftDate;
+/* harmony export (immutable) */ __webpack_exports__["b"] = setDate;
+var defaultTimeUnit = {
+    year: 0, month: 0, day: 0, hour: 0, minute: 0, seconds: 0
+};
+function createDate(year, month, day, hour, minute, seconds) {
+    if (month === void 0) { month = 0; }
+    if (day === void 0) { day = 1; }
+    if (hour === void 0) { hour = 0; }
+    if (minute === void 0) { minute = 0; }
+    if (seconds === void 0) { seconds = 0; }
+    var _date = new Date();
+    return new Date(year || _date.getFullYear(), month, day, hour, minute, seconds);
+}
+function shiftDate(date, unit) {
+    var _unit = Object.assign({}, defaultTimeUnit, unit);
+    return createDate(date.getFullYear() + _unit.year, date.getMonth() + _unit.month, date.getDate() + _unit.day, date.getHours() + _unit.hour, date.getMinutes() + _unit.minute, date.getSeconds() + _unit.seconds);
+}
+function setDate(date, unit) {
+    return createDate(getNum(date.getFullYear(), unit.year), getNum(date.getMonth(), unit.month), getNum(date.getDate(), unit.day), getNum(date.getHours(), unit.hour), getNum(date.getMinutes(), unit.minute), getNum(date.getSeconds(), unit.seconds));
+}
+function getNum(def, num) {
+    return typeof num === 'number' ? num : def;
+}
+//# sourceMappingURL=date-setters.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/utils/start-end-of.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["b"] = startOf;
+/* harmony export (immutable) */ __webpack_exports__["a"] = endOf;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__date_setters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-setters.js");
+
+function startOf(date, units) {
+    var unit = getDateShift(units);
+    return Object(__WEBPACK_IMPORTED_MODULE_0__date_setters__["b" /* setDate */])(date, unit);
+}
+function endOf(date, units) {
+    var start = startOf(date, units);
+    var shift = (_a = {}, _a[units] = 1, _a);
+    var change = Object(__WEBPACK_IMPORTED_MODULE_0__date_setters__["c" /* shiftDate */])(start, shift);
+    change.setMilliseconds(-1);
+    return change;
+    var _a;
+}
+function getDateShift(units) {
+    var unit = {};
+    switch (units) {
+        case 'year':
+            unit.month = 0;
+        /* falls through */
+        case 'month':
+            unit.day = 1;
+        /* falls through */
+        case 'week':
+        case 'day':
+            unit.hour = 0;
+        /* falls through */
+        case 'hour':
+            unit.minute = 0;
+        /* falls through */
+        case 'minute':
+            unit.seconds = 0;
+    }
+    return unit;
+}
+//# sourceMappingURL=start-end-of.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/bs-moment/utils/type-checks.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["c"] = isDateValid;
+/* harmony export (immutable) */ __webpack_exports__["d"] = isFunction;
+/* harmony export (immutable) */ __webpack_exports__["b"] = isArray;
+/* harmony export (immutable) */ __webpack_exports__["a"] = hasOwnProp;
+/* harmony export (immutable) */ __webpack_exports__["e"] = isObject;
+/* harmony export (immutable) */ __webpack_exports__["f"] = isUndefined;
+/* harmony export (immutable) */ __webpack_exports__["g"] = toInt;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils.js");
+
+function isDateValid(date) {
+    return date && !isNaN(date.getTime());
+}
+function isFunction(fn) {
+    return fn instanceof Function || Object.prototype.toString.call(fn) === '[object Function]';
+}
+function isArray(input) {
+    return input instanceof Array || Object.prototype.toString.call(input) === '[object Array]';
+}
+function hasOwnProp(a /*object*/, b) {
+    return Object.prototype.hasOwnProperty.call(a, b);
+}
+function isObject(input /*object*/) {
+    // IE8 will treat undefined and null as object if it wasn't for
+    // input != null
+    return input != null && Object.prototype.toString.call(input) === '[object Object]';
+}
+function isUndefined(input) {
+    return input === void 0;
+}
+function toInt(argumentForCoercion) {
+    var coercedNumber = +argumentForCoercion;
+    var value = 0;
+    if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+        value = Object(__WEBPACK_IMPORTED_MODULE_0__utils__["a" /* absFloor */])(coercedNumber);
+    }
+    return value;
+}
+//# sourceMappingURL=type-checks.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/collapse/collapse.directive.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CollapseDirective; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+// todo: add animations when https://github.com/angular/angular/issues/9947 solved
+
+var CollapseDirective = (function () {
+    function CollapseDirective(_el, _renderer) {
+        /** This event fires as soon as content collapses */
+        this.collapsed = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        /** This event fires as soon as content becomes visible */
+        this.expanded = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        // shown
+        this.isExpanded = true;
+        // hidden
+        this.isCollapsed = false;
+        // stale state
+        this.isCollapse = true;
+        // animation state
+        this.isCollapsing = false;
+        this._el = _el;
+        this._renderer = _renderer;
+    }
+    Object.defineProperty(CollapseDirective.prototype, "collapse", {
+        get: function () {
+            return this.isExpanded;
+        },
+        /** A flag indicating visibility of content (shown or hidden) */
+        set: function (value) {
+            this.isExpanded = value;
+            this.toggle();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /** allows to manually toggle content visibility */
+    CollapseDirective.prototype.toggle = function () {
+        if (this.isExpanded) {
+            this.hide();
+        }
+        else {
+            this.show();
+        }
+    };
+    /** allows to manually hide content */
+    CollapseDirective.prototype.hide = function () {
+        this.isCollapse = false;
+        this.isCollapsing = true;
+        this.isExpanded = false;
+        this.isCollapsed = true;
+        this.isCollapse = true;
+        this.isCollapsing = false;
+        this.display = 'none';
+        this.collapsed.emit(this);
+    };
+    /** allows to manually show collapsed content */
+    CollapseDirective.prototype.show = function () {
+        this.isCollapse = false;
+        this.isCollapsing = true;
+        this.isExpanded = true;
+        this.isCollapsed = false;
+        this.display = 'block';
+        // this.height = 'auto';
+        this.isCollapse = true;
+        this.isCollapsing = false;
+        this._renderer.setElementStyle(this._el.nativeElement, 'overflow', 'visible');
+        this._renderer.setElementStyle(this._el.nativeElement, 'height', 'auto');
+        this.expanded.emit(this);
+    };
+    CollapseDirective.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
+                    selector: '[collapse]',
+                    exportAs: 'bs-collapse',
+                    /* tslint:disable-next-line */
+                    host: { '[class.collapse]': 'true' } /*,
+                    animations: [
+                      trigger('active', [
+                        state('void', style({height: 0})),
+                        state('closed', style({height: 0})),
+                        state('open', style({height: '*'})),
+                        transition('void => closed', [animate(0)]),
+                        transition('closed => open', [animate('350ms ease-out')]),
+                        transition('open => closed', [animate('350ms ease-out')])
+                      ])
+                    ]*/
+                },] },
+    ];
+    /** @nocollapse */
+    CollapseDirective.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
+    ]; };
+    CollapseDirective.propDecorators = {
+        'collapsed': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'expanded': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'display': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"], args: ['style.display',] },],
+        'isExpanded': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"], args: ['class.in',] }, { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"], args: ['class.show',] }, { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"], args: ['attr.aria-expanded',] },],
+        'isCollapsed': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"], args: ['attr.aria-hidden',] },],
+        'isCollapse': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"], args: ['class.collapse',] },],
+        'isCollapsing': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["HostBinding"], args: ['class.collapsing',] },],
+        'collapse': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    };
+    return CollapseDirective;
+}());
+
+//# sourceMappingURL=collapse.directive.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/collapse/collapse.module.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CollapseModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__collapse_directive__ = __webpack_require__("../../../../ngx-bootstrap/collapse/collapse.directive.js");
+
+
+var CollapseModule = (function () {
+    function CollapseModule() {
+    }
+    CollapseModule.forRoot = function () {
+        return { ngModule: CollapseModule, providers: [] };
+    };
+    CollapseModule.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"], args: [{
+                    declarations: [__WEBPACK_IMPORTED_MODULE_1__collapse_directive__["a" /* CollapseDirective */]],
+                    exports: [__WEBPACK_IMPORTED_MODULE_1__collapse_directive__["a" /* CollapseDirective */]]
+                },] },
+    ];
+    /** @nocollapse */
+    CollapseModule.ctorParameters = function () { return []; };
+    return CollapseModule;
+}());
+
+//# sourceMappingURL=collapse.module.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/collapse/index.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__collapse_directive__ = __webpack_require__("../../../../ngx-bootstrap/collapse/collapse.directive.js");
+/* unused harmony reexport CollapseDirective */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__collapse_module__ = __webpack_require__("../../../../ngx-bootstrap/collapse/collapse.module.js");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_1__collapse_module__["a"]; });
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
 /***/ "../../../../ngx-bootstrap/component-loader/component-loader.class.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -29712,6 +31978,9 @@ __export(__webpack_require__("../../../../ng2-charts/index.js"));
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_triggers__ = __webpack_require__("../../../../ngx-bootstrap/utils/triggers.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__content_ref_class__ = __webpack_require__("../../../../ngx-bootstrap/component-loader/content-ref.class.js");
+// todo: add delay support
+// todo: merge events onShow, onShown, etc...
+// todo: add global positioning configuration?
 
 
 
@@ -29736,6 +32005,8 @@ var ComponentLoader = (function () {
         this.onBeforeHide = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this.onHidden = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
         this._providers = [];
+        this._listenOpts = {};
+        this._globalListener = Function.prototype;
     }
     Object.defineProperty(ComponentLoader.prototype, "isShown", {
         get: function () {
@@ -29771,7 +32042,7 @@ var ComponentLoader = (function () {
         this._innerComponent = null;
         if (!this._componentRef) {
             this.onBeforeShow.emit();
-            this._contentRef = this._getContentRef(opts.content);
+            this._contentRef = this._getContentRef(opts.content, opts.context);
             var injector = __WEBPACK_IMPORTED_MODULE_0__angular_core__["ReflectiveInjector"].resolveAndCreate(this._providers, this._injector);
             this._componentRef = this._componentFactory.create(injector, this._contentRef.nodes);
             this._applicationRef.attachView(this._componentRef.hostView);
@@ -29804,6 +32075,7 @@ var ComponentLoader = (function () {
             this._componentRef.changeDetectorRef.detectChanges();
             this.onShown.emit(this._componentRef.instance);
         }
+        this._registerOutsideClick();
         return this._componentRef;
     };
     ComponentLoader.prototype.hide = function () {
@@ -29827,6 +32099,7 @@ var ComponentLoader = (function () {
         // }
         this._contentRef = null;
         this._componentRef = null;
+        this._removeGlobalListener();
         this.onHidden.emit();
         return this;
     };
@@ -29849,14 +32122,49 @@ var ComponentLoader = (function () {
     ComponentLoader.prototype.listen = function (listenOpts) {
         var _this = this;
         this.triggers = listenOpts.triggers || this.triggers;
-        listenOpts.target = listenOpts.target || this._elementRef;
-        listenOpts.show = listenOpts.show || (function () { return _this.show(); });
-        listenOpts.hide = listenOpts.hide || (function () { return _this.hide(); });
-        listenOpts.toggle = listenOpts.toggle || (function () { return _this.isShown
-            ? listenOpts.hide()
-            : listenOpts.show(); });
-        this._unregisterListenersFn = Object(__WEBPACK_IMPORTED_MODULE_1__utils_triggers__["a" /* listenToTriggers */])(this._renderer, listenOpts.target.nativeElement, this.triggers, listenOpts.show, listenOpts.hide, listenOpts.toggle);
+        this._listenOpts.outsideClick = listenOpts.outsideClick;
+        listenOpts.target = listenOpts.target || this._elementRef.nativeElement;
+        var hide = this._listenOpts.hide = function () { return listenOpts.hide ? listenOpts.hide() : _this.hide(); };
+        var show = this._listenOpts.show = function (registerHide) {
+            listenOpts.show ? listenOpts.show(registerHide) : _this.show(registerHide);
+            registerHide();
+        };
+        var toggle = function (registerHide) {
+            _this.isShown ? hide() : show(registerHide);
+        };
+        this._unregisterListenersFn = Object(__WEBPACK_IMPORTED_MODULE_1__utils_triggers__["a" /* listenToTriggersV2 */])(this._renderer, {
+            target: listenOpts.target,
+            triggers: listenOpts.triggers,
+            show: show, hide: hide, toggle: toggle
+        });
         return this;
+    };
+    ComponentLoader.prototype._removeGlobalListener = function () {
+        if (this._globalListener) {
+            this._globalListener();
+            this._globalListener = null;
+        }
+    };
+    ComponentLoader.prototype.attachInline = function (vRef, template) {
+        this._inlineViewRef = vRef.createEmbeddedView(template);
+        return this;
+    };
+    ComponentLoader.prototype._registerOutsideClick = function () {
+        var _this = this;
+        if (!this._componentRef || !this._componentRef.location) {
+            return;
+        }
+        // why: should run after first event bubble
+        if (this._listenOpts.outsideClick) {
+            var target_1 = this._componentRef.location.nativeElement;
+            setTimeout(function () {
+                _this._globalListener = Object(__WEBPACK_IMPORTED_MODULE_1__utils_triggers__["b" /* registerOutsideClick */])(_this._renderer, {
+                    targets: [target_1, _this._elementRef.nativeElement],
+                    outsideClick: _this._listenOpts.outsideClick,
+                    hide: function () { return _this._listenOpts.hide(); }
+                });
+            });
+        }
     };
     ComponentLoader.prototype.getInnerComponent = function () {
         return this._innerComponent;
@@ -29886,13 +32194,14 @@ var ComponentLoader = (function () {
         this._zoneSubscription.unsubscribe();
         this._zoneSubscription = null;
     };
-    ComponentLoader.prototype._getContentRef = function (content) {
+    ComponentLoader.prototype._getContentRef = function (content, context) {
         if (!content) {
             return new __WEBPACK_IMPORTED_MODULE_2__content_ref_class__["a" /* ContentRef */]([]);
         }
         if (content instanceof __WEBPACK_IMPORTED_MODULE_0__angular_core__["TemplateRef"]) {
             if (this._viewContainerRef) {
-                var viewRef_1 = this._viewContainerRef.createEmbeddedView(content);
+                var viewRef_1 = this._viewContainerRef.createEmbeddedView(content, context);
+                viewRef_1.markForCheck();
                 return new __WEBPACK_IMPORTED_MODULE_2__content_ref_class__["a" /* ContentRef */]([viewRef_1.rootNodes], viewRef_1);
             }
             var viewRef = content.createEmbeddedView({});
@@ -29910,6 +32219,7 @@ var ComponentLoader = (function () {
     };
     return ComponentLoader;
 }());
+
 //# sourceMappingURL=component-loader.class.js.map
 
 /***/ }),
@@ -29956,6 +32266,7 @@ var ComponentLoaderFactory = (function () {
     ]; };
     return ComponentLoaderFactory;
 }());
+
 //# sourceMappingURL=component-loader.factory.js.map
 
 /***/ }),
@@ -29977,6 +32288,7 @@ var ContentRef = (function () {
     }
     return ContentRef;
 }());
+
 //# sourceMappingURL=content-ref.class.js.map
 
 /***/ }),
@@ -29998,6 +32310,3182 @@ var ContentRef = (function () {
 
 /***/ }),
 
+/***/ "../../../../ngx-bootstrap/datepicker/base/bs-datepicker-container.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDatepickerAbstractComponent; });
+var BsDatepickerAbstractComponent = (function () {
+    function BsDatepickerAbstractComponent() {
+        this._customRangesFish = [];
+    }
+    Object.defineProperty(BsDatepickerAbstractComponent.prototype, "minDate", {
+        set: function (value) {
+            this._effects.setMinDate(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BsDatepickerAbstractComponent.prototype, "maxDate", {
+        set: function (value) {
+            this._effects.setMaxDate(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BsDatepickerAbstractComponent.prototype, "isDisabled", {
+        set: function (value) {
+            this._effects.setDisabled(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BsDatepickerAbstractComponent.prototype.setViewMode = function (event) { };
+    BsDatepickerAbstractComponent.prototype.navigateTo = function (event) { };
+    BsDatepickerAbstractComponent.prototype.dayHoverHandler = function (event) { };
+    BsDatepickerAbstractComponent.prototype.monthHoverHandler = function (event) { };
+    BsDatepickerAbstractComponent.prototype.yearHoverHandler = function (event) { };
+    BsDatepickerAbstractComponent.prototype.daySelectHandler = function (day) { };
+    ;
+    BsDatepickerAbstractComponent.prototype.monthSelectHandler = function (event) { };
+    BsDatepickerAbstractComponent.prototype.yearSelectHandler = function (event) { };
+    BsDatepickerAbstractComponent.prototype._stopPropagation = function (event) {
+        event.stopPropagation();
+    };
+    return BsDatepickerAbstractComponent;
+}());
+
+//# sourceMappingURL=bs-datepicker-container.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/bs-datepicker-input.directive.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDatepickerInputDirective; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bs_datepicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__bs_moment_format__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__bs_datepicker_config__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.config.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__bs_moment_locale_locales_service__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/locale/locales.service.js");
+
+
+
+
+
+
+var BS_DATEPICKER_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* NG_VALUE_ACCESSOR */],
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"])(function () { return BsDatepickerInputDirective; }),
+    multi: true
+};
+var BsDatepickerInputDirective = (function () {
+    function BsDatepickerInputDirective(_picker, _config, _renderer, _elRef) {
+        this._picker = _picker;
+        this._config = _config;
+        this._renderer = _renderer;
+        this._elRef = _elRef;
+        this._onChange = Function.prototype;
+        this._onTouched = Function.prototype;
+    }
+    BsDatepickerInputDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        this._picker.bsValueChange.subscribe(function (v) {
+            _this._renderer.setElementProperty(_this._elRef.nativeElement, 'value', Object(__WEBPACK_IMPORTED_MODULE_3__bs_moment_format__["a" /* formatDate */])(v, _this._picker._config.dateInputFormat, _this._picker._config.locale) || '');
+            _this._onChange(v);
+        });
+    };
+    BsDatepickerInputDirective.prototype.onChange = function (event) {
+        this.writeValue(event.target.value);
+        this._onTouched();
+    };
+    BsDatepickerInputDirective.prototype.writeValue = function (value) {
+        if (!value) {
+            this._picker.bsValue = null;
+        }
+        var _locale = Object(__WEBPACK_IMPORTED_MODULE_5__bs_moment_locale_locales_service__["b" /* getLocale */])(this._picker._config.locale);
+        if (!_locale) {
+            throw new Error("Locale \"" + this._picker._config.locale + "\" is not defined, please add it with \"defineLocale(...)\"");
+        }
+        if (typeof value === 'string') {
+            var date = new Date(_locale.preparse(value));
+            this._picker.bsValue = isNaN(date.valueOf()) ? null : date;
+        }
+        if (value instanceof Date) {
+            this._picker.bsValue = value;
+        }
+    };
+    BsDatepickerInputDirective.prototype.setDisabledState = function (isDisabled) {
+        this._picker.isDisabled = isDisabled;
+        this._renderer.setElementAttribute(this._elRef.nativeElement, 'disabled', 'disabled');
+    };
+    BsDatepickerInputDirective.prototype.registerOnChange = function (fn) { this._onChange = fn; };
+    BsDatepickerInputDirective.prototype.registerOnTouched = function (fn) { this._onTouched = fn; };
+    BsDatepickerInputDirective.prototype.onBlur = function () { this._onTouched(); };
+    BsDatepickerInputDirective.prototype.hide = function () {
+        this._picker.hide();
+    };
+    BsDatepickerInputDirective.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
+                    selector: "input[bsDatepicker]",
+                    host: {
+                        '(change)': 'onChange($event)',
+                        '(keyup.esc)': 'hide()',
+                        '(blur)': 'onBlur()'
+                    },
+                    providers: [BS_DATEPICKER_VALUE_ACCESSOR]
+                },] },
+    ];
+    /** @nocollapse */
+    BsDatepickerInputDirective.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_2__bs_datepicker_component__["a" /* BsDatepickerComponent */], decorators: [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Host"] },] },
+        { type: __WEBPACK_IMPORTED_MODULE_4__bs_datepicker_config__["a" /* BsDatepickerConfig */], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
+    ]; };
+    return BsDatepickerInputDirective;
+}());
+
+//# sourceMappingURL=bs-datepicker-input.directive.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/bs-datepicker.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDatepickerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__component_loader_component_loader_factory__ = __webpack_require__("../../../../ngx-bootstrap/component-loader/component-loader.factory.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__themes_bs_bs_datepicker_container_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-datepicker-container.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_filter__ = __webpack_require__("../../../../rxjs/add/operator/filter.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_filter__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__bs_datepicker_config__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.config.js");
+
+
+
+
+
+var BsDatepickerComponent = (function () {
+    function BsDatepickerComponent(_config, _elementRef, _renderer, _viewContainerRef, cis) {
+        this._config = _config;
+        /**
+         * Placement of a datepicker. Accepts: "top", "bottom", "left", "right"
+         */
+        this.placement = 'bottom';
+        /**
+         * Specifies events that should trigger. Supports a space separated list of
+         * event names.
+         */
+        this.triggers = 'click';
+        /**
+         * Close datepicker on outside click
+         */
+        this.outsideClick = true;
+        /**
+         * A selector specifying the element the datepicker should be appended to.
+         * Currently only supports "body".
+         */
+        this.container = 'body';
+        /**
+         * Emits when datepicker value has been changed
+         */
+        this.bsValueChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this._subs = [];
+        // todo: assign only subset of fields
+        Object.assign(this, this._config);
+        this._datepicker = cis
+            .createLoader(_elementRef, _viewContainerRef, _renderer);
+        this.onShown = this._datepicker.onShown;
+        this.onHidden = this._datepicker.onHidden;
+    }
+    Object.defineProperty(BsDatepickerComponent.prototype, "isOpen", {
+        /**
+         * Returns whether or not the datepicker is currently being shown
+         */
+        get: function () {
+            return this._datepicker.isShown;
+        },
+        set: function (value) {
+            if (value) {
+                this.show();
+            }
+            else {
+                this.hide();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BsDatepickerComponent.prototype, "bsValue", {
+        /**
+         * Initial value of datepicker
+         */
+        set: function (value) {
+            if (this._bsValue === value) {
+                return;
+            }
+            this._bsValue = value;
+            this.bsValueChange.emit(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BsDatepickerComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._datepicker.listen({
+            outsideClick: this.outsideClick,
+            triggers: this.triggers,
+            show: function () { return _this.show(); }
+        });
+    };
+    BsDatepickerComponent.prototype.ngOnChanges = function (changes) {
+        if (!this._datepickerRef || !this._datepickerRef.instance) {
+            return;
+        }
+        if (changes.minDate) {
+            this._datepickerRef.instance.minDate = this.minDate;
+        }
+        if (changes.maxDate) {
+            this._datepickerRef.instance.maxDate = this.maxDate;
+        }
+        if (changes.isDisabled) {
+            this._datepickerRef.instance.isDisabled = this.isDisabled;
+        }
+    };
+    /**
+     * Opens an element’s datepicker. This is considered a “manual” triggering of
+     * the datepicker.
+     */
+    BsDatepickerComponent.prototype.show = function () {
+        var _this = this;
+        if (this._datepicker.isShown) {
+            return;
+        }
+        this._config = Object.assign({}, this._config, this.bsConfig, {
+            value: this._bsValue,
+            isDisabled: this.isDisabled,
+            minDate: this.minDate || this._config.minDate,
+            maxDate: this.maxDate || this._config.maxDate
+        });
+        this._datepickerRef = this._datepicker
+            .provide({ provide: __WEBPACK_IMPORTED_MODULE_4__bs_datepicker_config__["a" /* BsDatepickerConfig */], useValue: this._config })
+            .attach(__WEBPACK_IMPORTED_MODULE_2__themes_bs_bs_datepicker_container_component__["a" /* BsDatepickerContainerComponent */])
+            .to(this.container)
+            .position({ attachment: this.placement })
+            .show({ placement: this.placement });
+        // if date changes from external source (model -> view)
+        this._subs.push(this.bsValueChange.subscribe(function (value) {
+            _this._datepickerRef.instance.value = value;
+        }));
+        // if date changes from picker (view -> model)
+        this._subs.push(this._datepickerRef.instance
+            .valueChange.subscribe(function (value) {
+            _this.bsValue = value;
+            _this.hide();
+        }));
+    };
+    /**
+     * Closes an element’s datepicker. This is considered a “manual” triggering of
+     * the datepicker.
+     */
+    BsDatepickerComponent.prototype.hide = function () {
+        if (this.isOpen) {
+            this._datepicker.hide();
+        }
+        for (var _i = 0, _a = this._subs; _i < _a.length; _i++) {
+            var sub = _a[_i];
+            sub.unsubscribe();
+        }
+    };
+    /**
+     * Toggles an element’s datepicker. This is considered a “manual” triggering of
+     * the datepicker.
+     */
+    BsDatepickerComponent.prototype.toggle = function () {
+        if (this.isOpen) {
+            return this.hide();
+        }
+        this.show();
+    };
+    BsDatepickerComponent.prototype.ngOnDestroy = function () {
+        this._datepicker.dispose();
+    };
+    BsDatepickerComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-datepicker,[bsDatepicker]',
+                    exportAs: 'bsDatepicker',
+                    template: '<ng-content></ng-content>'
+                },] },
+    ];
+    /** @nocollapse */
+    BsDatepickerComponent.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_4__bs_datepicker_config__["a" /* BsDatepickerConfig */], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_1__component_loader_component_loader_factory__["a" /* ComponentLoaderFactory */], },
+    ]; };
+    BsDatepickerComponent.propDecorators = {
+        'placement': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'triggers': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'outsideClick': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'container': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'isOpen': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'onShown': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'onHidden': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'bsValue': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'bsConfig': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'isDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'minDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'maxDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'bsValueChange': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+    };
+    return BsDatepickerComponent;
+}());
+
+//# sourceMappingURL=bs-datepicker.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/bs-datepicker.config.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDatepickerConfig; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+
+var BsDatepickerConfig = (function () {
+    function BsDatepickerConfig() {
+        /** CSS class which will be applied to datepicker container,
+         * usually used to set color theme
+         */
+        this.containerClass = 'theme-green';
+        // DatepickerRenderOptions
+        this.displayMonths = 1;
+        /**
+         * Allows to hide week numbers in datepicker
+         */
+        this.showWeekNumbers = true;
+        this.dateInputFormat = 'L';
+        // range picker
+        this.rangeSeparator = ' - ';
+        this.rangeInputFormat = 'L';
+        // DatepickerFormatOptions
+        /**
+         * Allows to globally set default locale of datepicker,
+         * see documentation on how to enable custom locales
+         */
+        this.locale = 'en';
+        this.monthTitle = 'MMMM';
+        this.yearTitle = 'YYYY';
+        this.dayLabel = 'D';
+        this.monthLabel = 'MMMM';
+        this.yearLabel = 'YYYY';
+        this.weekNumbers = 'w';
+    }
+    BsDatepickerConfig.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+    ];
+    /** @nocollapse */
+    BsDatepickerConfig.ctorParameters = function () { return []; };
+    return BsDatepickerConfig;
+}());
+
+//# sourceMappingURL=bs-datepicker.config.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/bs-datepicker.module.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDatepickerModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__reducer_bs_datepicker_actions__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.actions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__reducer_bs_datepicker_store__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.store.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__themes_bs_bs_datepicker_container_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-datepicker-container.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__themes_bs_bs_datepicker_navigation_view_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-datepicker-navigation-view.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__themes_bs_bs_days_calendar_view_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-days-calendar-view.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__reducer_bs_datepicker_effects__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.effects.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__themes_bs_bs_daterangepicker_container_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-daterangepicker-container.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__bs_daterangepicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-daterangepicker.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__bs_datepicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__component_loader_component_loader_factory__ = __webpack_require__("../../../../ngx-bootstrap/component-loader/component-loader.factory.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__positioning_positioning_service__ = __webpack_require__("../../../../ngx-bootstrap/positioning/positioning.service.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__themes_bs_bs_datepicker_day_decorator_directive__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-datepicker-day-decorator.directive.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__themes_bs_bs_months_calendar_view_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-months-calendar-view.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__themes_bs_bs_years_calendar_view_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-years-calendar-view.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__themes_bs_bs_custom_dates_view_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-custom-dates-view.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__themes_bs_bs_current_date_view_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-current-date-view.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__themes_bs_bs_timepicker_view_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-timepicker-view.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__bs_datepicker_config__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.config.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__themes_bs_bs_calendar_layout_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-calendar-layout.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__bs_datepicker_input_directive__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker-input.directive.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__bs_daterangepicker_input_directive__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-daterangepicker-input.directive.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__utils_warn_once__ = __webpack_require__("../../../../ngx-bootstrap/utils/warn-once.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var _exports = [
+    __WEBPACK_IMPORTED_MODULE_4__themes_bs_bs_datepicker_container_component__["a" /* BsDatepickerContainerComponent */],
+    __WEBPACK_IMPORTED_MODULE_8__themes_bs_bs_daterangepicker_container_component__["a" /* BsDaterangepickerContainerComponent */],
+    __WEBPACK_IMPORTED_MODULE_10__bs_datepicker_component__["a" /* BsDatepickerComponent */],
+    __WEBPACK_IMPORTED_MODULE_21__bs_datepicker_input_directive__["a" /* BsDatepickerInputDirective */],
+    __WEBPACK_IMPORTED_MODULE_22__bs_daterangepicker_input_directive__["a" /* BsDaterangepickerInputDirective */],
+    __WEBPACK_IMPORTED_MODULE_9__bs_daterangepicker_component__["a" /* BsDaterangepickerComponent */]
+];
+var BsDatepickerModule = (function () {
+    function BsDatepickerModule() {
+        Object(__WEBPACK_IMPORTED_MODULE_23__utils_warn_once__["a" /* warnOnce */])("BsDatepickerModule is under development,\n      BREAKING CHANGES are possible,\n      PLEASE, read changelog");
+    }
+    BsDatepickerModule.forRoot = function () {
+        return {
+            ngModule: BsDatepickerModule,
+            providers: [
+                __WEBPACK_IMPORTED_MODULE_11__component_loader_component_loader_factory__["a" /* ComponentLoaderFactory */], __WEBPACK_IMPORTED_MODULE_12__positioning_positioning_service__["a" /* PositioningService */],
+                __WEBPACK_IMPORTED_MODULE_3__reducer_bs_datepicker_store__["a" /* BsDatepickerStore */], __WEBPACK_IMPORTED_MODULE_2__reducer_bs_datepicker_actions__["a" /* BsDatepickerActions */], __WEBPACK_IMPORTED_MODULE_19__bs_datepicker_config__["a" /* BsDatepickerConfig */], __WEBPACK_IMPORTED_MODULE_7__reducer_bs_datepicker_effects__["a" /* BsDatepickerEffects */]
+            ]
+        };
+    };
+    BsDatepickerModule.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"], args: [{
+                    imports: [__WEBPACK_IMPORTED_MODULE_0__angular_common__["b" /* CommonModule */]],
+                    declarations: [
+                        __WEBPACK_IMPORTED_MODULE_13__themes_bs_bs_datepicker_day_decorator_directive__["a" /* BsDatepickerDayDecoratorComponent */],
+                        __WEBPACK_IMPORTED_MODULE_17__themes_bs_bs_current_date_view_component__["a" /* BsCurrentDateViewComponent */],
+                        __WEBPACK_IMPORTED_MODULE_5__themes_bs_bs_datepicker_navigation_view_component__["a" /* BsDatepickerNavigationViewComponent */],
+                        __WEBPACK_IMPORTED_MODULE_18__themes_bs_bs_timepicker_view_component__["a" /* BsTimepickerViewComponent */],
+                        __WEBPACK_IMPORTED_MODULE_20__themes_bs_bs_calendar_layout_component__["a" /* BsCalendarLayoutComponent */],
+                        __WEBPACK_IMPORTED_MODULE_6__themes_bs_bs_days_calendar_view_component__["a" /* BsDaysCalendarViewComponent */],
+                        __WEBPACK_IMPORTED_MODULE_14__themes_bs_bs_months_calendar_view_component__["a" /* BsMonthCalendarViewComponent */],
+                        __WEBPACK_IMPORTED_MODULE_15__themes_bs_bs_years_calendar_view_component__["a" /* BsYearsCalendarViewComponent */],
+                        __WEBPACK_IMPORTED_MODULE_16__themes_bs_bs_custom_dates_view_component__["a" /* BsCustomDatesViewComponent */]
+                    ].concat(_exports),
+                    entryComponents: [__WEBPACK_IMPORTED_MODULE_4__themes_bs_bs_datepicker_container_component__["a" /* BsDatepickerContainerComponent */], __WEBPACK_IMPORTED_MODULE_8__themes_bs_bs_daterangepicker_container_component__["a" /* BsDaterangepickerContainerComponent */]],
+                    exports: _exports
+                },] },
+    ];
+    /** @nocollapse */
+    BsDatepickerModule.ctorParameters = function () { return []; };
+    return BsDatepickerModule;
+}());
+
+//# sourceMappingURL=bs-datepicker.module.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/bs-daterangepicker-input.directive.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDaterangepickerInputDirective; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bs_datepicker_config__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.config.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__bs_daterangepicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-daterangepicker.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__bs_moment_format__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__bs_moment_locale_locales_service__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/locale/locales.service.js");
+
+
+
+
+
+
+var BS_DATERANGEPICKER_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* NG_VALUE_ACCESSOR */],
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"])(function () { return BsDaterangepickerInputDirective; }),
+    multi: true
+};
+var BsDaterangepickerInputDirective = (function () {
+    function BsDaterangepickerInputDirective(_picker, _config, _renderer, _elRef) {
+        this._picker = _picker;
+        this._config = _config;
+        this._renderer = _renderer;
+        this._elRef = _elRef;
+        this._onChange = Function.prototype;
+        this._onTouched = Function.prototype;
+    }
+    BsDaterangepickerInputDirective.prototype.ngOnInit = function () {
+        var _this = this;
+        this._picker.bsValueChange.subscribe(function (v) {
+            var range = '';
+            if (v) {
+                var start = Object(__WEBPACK_IMPORTED_MODULE_4__bs_moment_format__["a" /* formatDate */])(v[0], _this._picker._config.rangeInputFormat, _this._picker._config.locale);
+                var end = Object(__WEBPACK_IMPORTED_MODULE_4__bs_moment_format__["a" /* formatDate */])(v[1], _this._picker._config.rangeInputFormat, _this._picker._config.locale);
+                range = start + _this._picker._config.rangeSeparator + end;
+            }
+            _this._renderer.setElementProperty(_this._elRef.nativeElement, 'value', range);
+            _this._onChange(v);
+        });
+    };
+    BsDaterangepickerInputDirective.prototype.onChange = function (event) {
+        this.writeValue(event.target.value);
+        this._onTouched();
+    };
+    BsDaterangepickerInputDirective.prototype.writeValue = function (value) {
+        if (!value) {
+            this._picker.bsValue = null;
+        }
+        var _locale = Object(__WEBPACK_IMPORTED_MODULE_5__bs_moment_locale_locales_service__["b" /* getLocale */])(this._picker._config.locale);
+        if (!_locale) {
+            throw new Error("Locale \"" + this._picker._config.locale + "\" is not defined, please add it with \"defineLocale(...)\"");
+        }
+        if (typeof value === 'string') {
+            this._picker.bsValue = value
+                .split(this._picker._config.rangeSeparator)
+                .map(function (date) { return new Date(_locale.preparse(date)); })
+                .map(function (date) { return isNaN(date.valueOf()) ? null : date; });
+        }
+        if (Array.isArray(value)) {
+            this._picker.bsValue = value;
+        }
+    };
+    BsDaterangepickerInputDirective.prototype.setDisabledState = function (isDisabled) {
+        this._picker.isDisabled = isDisabled;
+        this._renderer.setElementAttribute(this._elRef.nativeElement, 'disabled', 'disabled');
+    };
+    BsDaterangepickerInputDirective.prototype.registerOnChange = function (fn) { this._onChange = fn; };
+    BsDaterangepickerInputDirective.prototype.registerOnTouched = function (fn) { this._onTouched = fn; };
+    BsDaterangepickerInputDirective.prototype.onBlur = function () { this._onTouched(); };
+    BsDaterangepickerInputDirective.prototype.hide = function () {
+        this._picker.hide();
+    };
+    BsDaterangepickerInputDirective.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
+                    selector: "input[bsDaterangepicker]",
+                    host: {
+                        '(change)': 'onChange($event)',
+                        '(keyup.esc)': 'hide()',
+                        '(blur)': 'onBlur()'
+                    },
+                    providers: [BS_DATERANGEPICKER_VALUE_ACCESSOR]
+                },] },
+    ];
+    /** @nocollapse */
+    BsDaterangepickerInputDirective.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_3__bs_daterangepicker_component__["a" /* BsDaterangepickerComponent */], decorators: [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Host"] },] },
+        { type: __WEBPACK_IMPORTED_MODULE_2__bs_datepicker_config__["a" /* BsDatepickerConfig */], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
+    ]; };
+    return BsDaterangepickerInputDirective;
+}());
+
+//# sourceMappingURL=bs-daterangepicker-input.directive.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/bs-daterangepicker.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDaterangepickerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__themes_bs_bs_daterangepicker_container_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/themes/bs/bs-daterangepicker-container.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__component_loader_component_loader_factory__ = __webpack_require__("../../../../ngx-bootstrap/component-loader/component-loader.factory.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__bs_datepicker_config__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.config.js");
+
+
+
+
+var BsDaterangepickerComponent = (function () {
+    function BsDaterangepickerComponent(_config, _elementRef, _renderer, _viewContainerRef, cis) {
+        this._config = _config;
+        /**
+         * Placement of a daterangepicker. Accepts: "top", "bottom", "left", "right"
+         */
+        this.placement = 'bottom';
+        /**
+         * Specifies events that should trigger. Supports a space separated list of
+         * event names.
+         */
+        this.triggers = 'click';
+        /**
+         * Close daterangepicker on outside click
+         */
+        this.outsideClick = true;
+        /**
+         * A selector specifying the element the daterangepicker should be appended to.
+         * Currently only supports "body".
+         */
+        this.container = 'body';
+        /**
+         * Emits when daterangepicker value has been changed
+         */
+        this.bsValueChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this._subs = [];
+        this._datepicker = cis
+            .createLoader(_elementRef, _viewContainerRef, _renderer);
+        Object.assign(this, _config);
+        this.onShown = this._datepicker.onShown;
+        this.onHidden = this._datepicker.onHidden;
+    }
+    Object.defineProperty(BsDaterangepickerComponent.prototype, "isOpen", {
+        /**
+         * Returns whether or not the daterangepicker is currently being shown
+         */
+        get: function () {
+            return this._datepicker.isShown;
+        },
+        set: function (value) {
+            if (value) {
+                this.show();
+            }
+            else {
+                this.hide();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(BsDaterangepickerComponent.prototype, "bsValue", {
+        /**
+         * Initial value of daterangepicker
+         */
+        set: function (value) {
+            if (this._bsValue === value) {
+                return;
+            }
+            this._bsValue = value;
+            this.bsValueChange.emit(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BsDaterangepickerComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._datepicker.listen({
+            outsideClick: this.outsideClick,
+            triggers: this.triggers,
+            show: function () { return _this.show(); }
+        });
+    };
+    BsDaterangepickerComponent.prototype.ngOnChanges = function (changes) {
+        if (!this._datepickerRef || !this._datepickerRef.instance) {
+            return;
+        }
+        if (changes.minDate) {
+            this._datepickerRef.instance.minDate = this.minDate;
+        }
+        if (changes.maxDate) {
+            this._datepickerRef.instance.maxDate = this.maxDate;
+        }
+        if (changes.isDisabled) {
+            this._datepickerRef.instance.isDisabled = this.isDisabled;
+        }
+    };
+    /**
+     * Opens an element’s datepicker. This is considered a “manual” triggering of
+     * the datepicker.
+     */
+    BsDaterangepickerComponent.prototype.show = function () {
+        var _this = this;
+        if (this._datepicker.isShown) {
+            return;
+        }
+        this._config = Object.assign({}, this._config, { displayMonths: 2 }, this.bsConfig, {
+            value: this._bsValue,
+            isDisabled: this.isDisabled,
+            minDate: this.minDate || this._config.minDate,
+            maxDate: this.maxDate || this._config.maxDate
+        });
+        this._datepickerRef = this._datepicker
+            .provide({ provide: __WEBPACK_IMPORTED_MODULE_3__bs_datepicker_config__["a" /* BsDatepickerConfig */], useValue: this._config })
+            .attach(__WEBPACK_IMPORTED_MODULE_1__themes_bs_bs_daterangepicker_container_component__["a" /* BsDaterangepickerContainerComponent */])
+            .to(this.container)
+            .position({ attachment: this.placement })
+            .show({ placement: this.placement });
+        // if date changes from external source (model -> view)
+        this._subs.push(this.bsValueChange.subscribe(function (value) {
+            _this._datepickerRef.instance.value = value;
+        }));
+        // if date changes from picker (view -> model)
+        this._subs.push(this._datepickerRef.instance
+            .valueChange
+            .filter(function (range) { return range && range[0] && !!range[1]; })
+            .subscribe(function (value) {
+            _this.bsValue = value;
+            _this.hide();
+        }));
+    };
+    /**
+     * Closes an element’s datepicker. This is considered a “manual” triggering of
+     * the datepicker.
+     */
+    BsDaterangepickerComponent.prototype.hide = function () {
+        if (this.isOpen) {
+            this._datepicker.hide();
+        }
+        for (var _i = 0, _a = this._subs; _i < _a.length; _i++) {
+            var sub = _a[_i];
+            sub.unsubscribe();
+        }
+    };
+    /**
+     * Toggles an element’s datepicker. This is considered a “manual” triggering of
+     * the datepicker.
+     */
+    BsDaterangepickerComponent.prototype.toggle = function () {
+        if (this.isOpen) {
+            return this.hide();
+        }
+        this.show();
+    };
+    BsDaterangepickerComponent.prototype.ngOnDestroy = function () {
+        this._datepicker.dispose();
+    };
+    BsDaterangepickerComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-daterangepicker,[bsDaterangepicker]',
+                    exportAs: 'bsDaterangepicker',
+                    template: ' '
+                },] },
+    ];
+    /** @nocollapse */
+    BsDaterangepickerComponent.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_3__bs_datepicker_config__["a" /* BsDatepickerConfig */], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewContainerRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_2__component_loader_component_loader_factory__["a" /* ComponentLoaderFactory */], },
+    ]; };
+    BsDaterangepickerComponent.propDecorators = {
+        'placement': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'triggers': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'outsideClick': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'container': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'isOpen': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'onShown': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'onHidden': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'bsValue': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'bsConfig': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'isDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'minDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'maxDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'bsValueChange': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+    };
+    return BsDaterangepickerComponent;
+}());
+
+//# sourceMappingURL=bs-daterangepicker.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/date-formatter.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DateFormatter; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bs_moment_format__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format.js");
+
+var DateFormatter = (function () {
+    function DateFormatter() {
+    }
+    DateFormatter.prototype.format = function (date, format, locale) {
+        return Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_format__["a" /* formatDate */])(date, format, locale);
+    };
+    return DateFormatter;
+}());
+
+//# sourceMappingURL=date-formatter.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/datepicker-inner.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DatePickerInnerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__date_formatter__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/date-formatter.js");
+/* tslint:disable:max-file-line-count */
+
+
+// const MIN_DATE:Date = void 0;
+// const MAX_DATE:Date = void 0;
+// const DAYS_IN_MONTH = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+/*
+ const KEYS = {
+ 13: 'enter',
+ 32: 'space',
+ 33: 'pageup',
+ 34: 'pagedown',
+ 35: 'end',
+ 36: 'home',
+ 37: 'left',
+ 38: 'up',
+ 39: 'right',
+ 40: 'down'
+ };
+ */
+var DatePickerInnerComponent = (function () {
+    function DatePickerInnerComponent() {
+        this.selectionDone = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"](undefined);
+        this.update = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"](false);
+        this.activeDateChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"](undefined);
+        this.stepDay = {};
+        this.stepMonth = {};
+        this.stepYear = {};
+        this.modes = ['day', 'month', 'year'];
+        this.dateFormatter = new __WEBPACK_IMPORTED_MODULE_1__date_formatter__["a" /* DateFormatter */]();
+    }
+    Object.defineProperty(DatePickerInnerComponent.prototype, "activeDate", {
+        get: function () {
+            return this._activeDate;
+        },
+        set: function (value) {
+            this._activeDate = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    // todo: add formatter value to Date object
+    DatePickerInnerComponent.prototype.ngOnInit = function () {
+        // todo: use date for unique value
+        this.uniqueId = 'datepicker-' + '-' + Math.floor(Math.random() * 10000);
+        if (this.initDate) {
+            this.activeDate = this.initDate;
+            this.selectedDate = new Date(this.activeDate.valueOf());
+            this.update.emit(this.activeDate);
+        }
+        else if (this.activeDate === undefined) {
+            this.activeDate = new Date();
+        }
+    };
+    // this.refreshView should be called here to reflect the changes on the fly
+    // tslint:disable-next-line:no-unused-variable
+    DatePickerInnerComponent.prototype.ngOnChanges = function (changes) {
+        this.refreshView();
+        this.checkIfActiveDateGotUpdated(changes['activeDate']);
+    };
+    // Check if activeDate has been update and then emit the activeDateChange with the new date
+    DatePickerInnerComponent.prototype.checkIfActiveDateGotUpdated = function (activeDate) {
+        if (activeDate && !activeDate.firstChange) {
+            var previousValue = activeDate.previousValue;
+            if (previousValue && previousValue instanceof Date && previousValue.getTime() !== activeDate.currentValue.getTime()) {
+                this.activeDateChange.emit(this.activeDate);
+            }
+        }
+    };
+    DatePickerInnerComponent.prototype.setCompareHandler = function (handler, type) {
+        if (type === 'day') {
+            this.compareHandlerDay = handler;
+        }
+        if (type === 'month') {
+            this.compareHandlerMonth = handler;
+        }
+        if (type === 'year') {
+            this.compareHandlerYear = handler;
+        }
+    };
+    DatePickerInnerComponent.prototype.compare = function (date1, date2) {
+        if (date1 === undefined || date2 === undefined) {
+            return undefined;
+        }
+        if (this.datepickerMode === 'day' && this.compareHandlerDay) {
+            return this.compareHandlerDay(date1, date2);
+        }
+        if (this.datepickerMode === 'month' && this.compareHandlerMonth) {
+            return this.compareHandlerMonth(date1, date2);
+        }
+        if (this.datepickerMode === 'year' && this.compareHandlerYear) {
+            return this.compareHandlerYear(date1, date2);
+        }
+        return void 0;
+    };
+    DatePickerInnerComponent.prototype.setRefreshViewHandler = function (handler, type) {
+        if (type === 'day') {
+            this.refreshViewHandlerDay = handler;
+        }
+        if (type === 'month') {
+            this.refreshViewHandlerMonth = handler;
+        }
+        if (type === 'year') {
+            this.refreshViewHandlerYear = handler;
+        }
+    };
+    DatePickerInnerComponent.prototype.refreshView = function () {
+        if (this.datepickerMode === 'day' && this.refreshViewHandlerDay) {
+            this.refreshViewHandlerDay();
+        }
+        if (this.datepickerMode === 'month' && this.refreshViewHandlerMonth) {
+            this.refreshViewHandlerMonth();
+        }
+        if (this.datepickerMode === 'year' && this.refreshViewHandlerYear) {
+            this.refreshViewHandlerYear();
+        }
+    };
+    DatePickerInnerComponent.prototype.dateFilter = function (date, format) {
+        return this.dateFormatter.format(date, format, this.locale);
+    };
+    DatePickerInnerComponent.prototype.isActive = function (dateObject) {
+        if (this.compare(dateObject.date, this.activeDate) === 0) {
+            this.activeDateId = dateObject.uid;
+            return true;
+        }
+        return false;
+    };
+    DatePickerInnerComponent.prototype.createDateObject = function (date, format) {
+        var dateObject = {};
+        dateObject.date = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        dateObject.label = this.dateFilter(date, format);
+        dateObject.selected = this.compare(date, this.selectedDate) === 0;
+        dateObject.disabled = this.isDisabled(date);
+        dateObject.current = this.compare(date, new Date()) === 0;
+        dateObject.customClass = this.getCustomClassForDate(dateObject.date);
+        return dateObject;
+    };
+    DatePickerInnerComponent.prototype.split = function (arr, size) {
+        var arrays = [];
+        while (arr.length > 0) {
+            arrays.push(arr.splice(0, size));
+        }
+        return arrays;
+    };
+    // Fix a hard-reproducible bug with timezones
+    // The bug depends on OS, browser, current timezone and current date
+    // i.e.
+    // var date = new Date(2014, 0, 1);
+    // console.log(date.getFullYear(), date.getMonth(), date.getDate(),
+    // date.getHours()); can result in "2013 11 31 23" because of the bug.
+    DatePickerInnerComponent.prototype.fixTimeZone = function (date) {
+        var hours = date.getHours();
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours === 23 ? hours + 2 : 0);
+    };
+    DatePickerInnerComponent.prototype.select = function (date, isManual) {
+        if (isManual === void 0) { isManual = true; }
+        if (this.datepickerMode === this.minMode) {
+            if (!this.activeDate) {
+                this.activeDate = new Date(0, 0, 0, 0, 0, 0, 0);
+            }
+            this.activeDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            if (isManual) {
+                this.selectionDone.emit(this.activeDate);
+            }
+        }
+        else {
+            this.activeDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+            if (isManual) {
+                this.datepickerMode = this.modes[this.modes.indexOf(this.datepickerMode) - 1];
+            }
+        }
+        this.selectedDate = new Date(this.activeDate.valueOf());
+        this.update.emit(this.activeDate);
+        this.refreshView();
+    };
+    DatePickerInnerComponent.prototype.move = function (direction) {
+        var expectedStep;
+        if (this.datepickerMode === 'day') {
+            expectedStep = this.stepDay;
+        }
+        if (this.datepickerMode === 'month') {
+            expectedStep = this.stepMonth;
+        }
+        if (this.datepickerMode === 'year') {
+            expectedStep = this.stepYear;
+        }
+        if (expectedStep) {
+            var year = this.activeDate.getFullYear() + direction * (expectedStep.years || 0);
+            var month = this.activeDate.getMonth() + direction * (expectedStep.months || 0);
+            this.activeDate = new Date(year, month, 1);
+            this.refreshView();
+            this.activeDateChange.emit(this.activeDate);
+        }
+    };
+    DatePickerInnerComponent.prototype.toggleMode = function (direction) {
+        direction = direction || 1;
+        if ((this.datepickerMode === this.maxMode && direction === 1) ||
+            (this.datepickerMode === this.minMode && direction === -1)) {
+            return;
+        }
+        this.datepickerMode = this.modes[this.modes.indexOf(this.datepickerMode) + direction];
+        this.refreshView();
+    };
+    DatePickerInnerComponent.prototype.getCustomClassForDate = function (date) {
+        var _this = this;
+        if (!this.customClass) {
+            return '';
+        }
+        // todo: build a hash of custom classes, it will work faster
+        var customClassObject = this.customClass
+            .find(function (customClass) {
+            return customClass.date.valueOf() === date.valueOf() &&
+                customClass.mode === _this.datepickerMode;
+        }, this);
+        return customClassObject === undefined ? '' : customClassObject.clazz;
+    };
+    DatePickerInnerComponent.prototype.compareDateDisabled = function (date1Disabled, date2) {
+        if (date1Disabled === undefined || date2 === undefined) {
+            return undefined;
+        }
+        if (date1Disabled.mode === 'day' && this.compareHandlerDay) {
+            return this.compareHandlerDay(date1Disabled.date, date2);
+        }
+        if (date1Disabled.mode === 'month' && this.compareHandlerMonth) {
+            return this.compareHandlerMonth(date1Disabled.date, date2);
+        }
+        if (date1Disabled.mode === 'year' && this.compareHandlerYear) {
+            return this.compareHandlerYear(date1Disabled.date, date2);
+        }
+        return undefined;
+    };
+    DatePickerInnerComponent.prototype.isDisabled = function (date) {
+        var _this = this;
+        var isDateDisabled = false;
+        if (this.dateDisabled) {
+            this.dateDisabled.forEach(function (disabledDate) {
+                if (_this.compareDateDisabled(disabledDate, date) === 0) {
+                    isDateDisabled = true;
+                }
+            });
+        }
+        return (isDateDisabled || (this.minDate && this.compare(date, this.minDate) < 0) ||
+            (this.maxDate && this.compare(date, this.maxDate) > 0));
+    };
+    DatePickerInnerComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'datepicker-inner',
+                    template: "\n    <div *ngIf=\"datepickerMode\" class=\"well well-sm bg-faded p-a card\" role=\"application\" ><!--&lt;!&ndash;ng-keydown=\"keydown($event)\"&ndash;&gt;-->\n      <ng-content></ng-content>\n    </div>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    DatePickerInnerComponent.ctorParameters = function () { return []; };
+    DatePickerInnerComponent.propDecorators = {
+        'locale': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'datepickerMode': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'startingDay': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'yearRange': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'minDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'maxDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'minMode': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'maxMode': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'showWeeks': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'formatDay': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'formatMonth': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'formatYear': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'formatDayHeader': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'formatDayTitle': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'formatMonthTitle': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'onlyCurrentMonth': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'shortcutPropagation': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'customClass': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'monthColLimit': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'yearColLimit': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'dateDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'initDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'selectionDone': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'update': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'activeDateChange': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'activeDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    };
+    return DatePickerInnerComponent;
+}());
+
+//# sourceMappingURL=datepicker-inner.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/datepicker.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export DATEPICKER_CONTROL_VALUE_ACCESSOR */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DatePickerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__datepicker_inner_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/datepicker-inner.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__datepicker_config__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/datepicker.config.js");
+
+
+
+
+var DATEPICKER_CONTROL_VALUE_ACCESSOR = {
+    provide: __WEBPACK_IMPORTED_MODULE_1__angular_forms__["b" /* NG_VALUE_ACCESSOR */],
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["forwardRef"])(function () { return DatePickerComponent; }),
+    multi: true
+};
+/* tslint:disable:component-selector-name component-selector-type */
+/* tslint:enable:component-selector-name component-selector-type */
+var DatePickerComponent = (function () {
+    function DatePickerComponent(config) {
+        /** sets datepicker mode, supports: `day`, `month`, `year` */
+        this.datepickerMode = 'day';
+        /** if false week numbers will be hidden */
+        this.showWeeks = true;
+        this.selectionDone = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"](undefined);
+        /** callback to invoke when the activeDate is changed. */
+        this.activeDateChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"](undefined);
+        this.onChange = Function.prototype;
+        this.onTouched = Function.prototype;
+        this._now = new Date();
+        this.config = config;
+        this.configureOptions();
+    }
+    Object.defineProperty(DatePickerComponent.prototype, "activeDate", {
+        /** currently active date */
+        get: function () {
+            return this._activeDate || this._now;
+        },
+        set: function (value) {
+            this._activeDate = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    DatePickerComponent.prototype.configureOptions = function () {
+        Object.assign(this, this.config);
+    };
+    DatePickerComponent.prototype.onUpdate = function (event) {
+        this.activeDate = event;
+        this.onChange(event);
+    };
+    DatePickerComponent.prototype.onSelectionDone = function (event) {
+        this.selectionDone.emit(event);
+    };
+    DatePickerComponent.prototype.onActiveDateChange = function (event) {
+        this.activeDateChange.emit(event);
+    };
+    // todo: support null value
+    DatePickerComponent.prototype.writeValue = function (value) {
+        if (this._datePicker.compare(value, this._activeDate) === 0) {
+            return;
+        }
+        if (value && value instanceof Date) {
+            this.activeDate = value;
+            this._datePicker.select(value, false);
+            return;
+        }
+        this.activeDate = value ? new Date(value) : void 0;
+    };
+    DatePickerComponent.prototype.registerOnChange = function (fn) {
+        this.onChange = fn;
+    };
+    DatePickerComponent.prototype.registerOnTouched = function (fn) {
+        this.onTouched = fn;
+    };
+    DatePickerComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'datepicker',
+                    template: "\n    <datepicker-inner [activeDate]=\"activeDate\"\n                      (update)=\"onUpdate($event)\"\n                      [locale]=\"config.locale\"\n                      [datepickerMode]=\"datepickerMode\"\n                      [initDate]=\"initDate\"\n                      [minDate]=\"minDate\"\n                      [maxDate]=\"maxDate\"\n                      [minMode]=\"minMode\"\n                      [maxMode]=\"maxMode\"\n                      [showWeeks]=\"showWeeks\"\n                      [formatDay]=\"formatDay\"\n                      [formatMonth]=\"formatMonth\"\n                      [formatYear]=\"formatYear\"\n                      [formatDayHeader]=\"formatDayHeader\"\n                      [formatDayTitle]=\"formatDayTitle\"\n                      [formatMonthTitle]=\"formatMonthTitle\"\n                      [startingDay]=\"startingDay\"\n                      [yearRange]=\"yearRange\"\n                      [customClass]=\"customClass\"\n                      [dateDisabled]=\"dateDisabled\"\n                      [onlyCurrentMonth]=\"onlyCurrentMonth\"\n                      [shortcutPropagation]=\"shortcutPropagation\"\n                      [monthColLimit]=\"monthColLimit\"\n                      [yearColLimit]=\"yearColLimit\"\n                      (selectionDone)=\"onSelectionDone($event)\"\n                      (activeDateChange)=\"onActiveDateChange($event)\">\n      <daypicker tabindex=\"0\"></daypicker>\n      <monthpicker tabindex=\"0\"></monthpicker>\n      <yearpicker tabindex=\"0\"></yearpicker>\n    </datepicker-inner>\n    ",
+                    providers: [DATEPICKER_CONTROL_VALUE_ACCESSOR]
+                },] },
+    ];
+    /** @nocollapse */
+    DatePickerComponent.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_3__datepicker_config__["a" /* DatepickerConfig */], },
+    ]; };
+    DatePickerComponent.propDecorators = {
+        'datepickerMode': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'initDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'minDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'maxDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'minMode': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'maxMode': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'showWeeks': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'formatDay': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'formatMonth': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'formatYear': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'formatDayHeader': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'formatDayTitle': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'formatMonthTitle': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'startingDay': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'yearRange': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'onlyCurrentMonth': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'shortcutPropagation': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'monthColLimit': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'yearColLimit': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'customClass': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'dateDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'activeDate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'selectionDone': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'activeDateChange': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        '_datePicker': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"], args: [__WEBPACK_IMPORTED_MODULE_2__datepicker_inner_component__["a" /* DatePickerInnerComponent */],] },],
+    };
+    return DatePickerComponent;
+}());
+
+//# sourceMappingURL=datepicker.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/datepicker.config.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DatepickerConfig; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+
+var DatepickerConfig = (function () {
+    function DatepickerConfig() {
+        this.locale = 'en';
+        this.datepickerMode = 'day';
+        this.startingDay = 0;
+        this.yearRange = 20;
+        this.minMode = 'day';
+        this.maxMode = 'year';
+        this.showWeeks = true;
+        this.formatDay = 'DD';
+        this.formatMonth = 'MMMM';
+        this.formatYear = 'YYYY';
+        this.formatDayHeader = 'dd';
+        this.formatDayTitle = 'MMMM YYYY';
+        this.formatMonthTitle = 'YYYY';
+        this.onlyCurrentMonth = false;
+        this.monthColLimit = 3;
+        this.yearColLimit = 5;
+        this.shortcutPropagation = false;
+    }
+    DatepickerConfig.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+    ];
+    /** @nocollapse */
+    DatepickerConfig.ctorParameters = function () { return []; };
+    return DatepickerConfig;
+}());
+
+//# sourceMappingURL=datepicker.config.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/datepicker.module.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export DatepickerModule */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__datepicker_inner_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/datepicker-inner.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__datepicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/datepicker.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__daypicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/daypicker.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__monthpicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/monthpicker.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__yearpicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/yearpicker.component.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__datepicker_config__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/datepicker.config.js");
+
+
+
+
+
+
+
+
+
+var DatepickerModule = (function () {
+    function DatepickerModule() {
+    }
+    DatepickerModule.forRoot = function () {
+        return { ngModule: DatepickerModule, providers: [__WEBPACK_IMPORTED_MODULE_8__datepicker_config__["a" /* DatepickerConfig */]] };
+    };
+    DatepickerModule.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"], args: [{
+                    imports: [__WEBPACK_IMPORTED_MODULE_0__angular_common__["b" /* CommonModule */], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */]],
+                    declarations: [__WEBPACK_IMPORTED_MODULE_4__datepicker_component__["a" /* DatePickerComponent */], __WEBPACK_IMPORTED_MODULE_3__datepicker_inner_component__["a" /* DatePickerInnerComponent */], __WEBPACK_IMPORTED_MODULE_5__daypicker_component__["a" /* DayPickerComponent */],
+                        __WEBPACK_IMPORTED_MODULE_6__monthpicker_component__["a" /* MonthPickerComponent */], __WEBPACK_IMPORTED_MODULE_7__yearpicker_component__["a" /* YearPickerComponent */]],
+                    exports: [__WEBPACK_IMPORTED_MODULE_4__datepicker_component__["a" /* DatePickerComponent */], __WEBPACK_IMPORTED_MODULE_3__datepicker_inner_component__["a" /* DatePickerInnerComponent */], __WEBPACK_IMPORTED_MODULE_5__daypicker_component__["a" /* DayPickerComponent */],
+                        __WEBPACK_IMPORTED_MODULE_6__monthpicker_component__["a" /* MonthPickerComponent */], __WEBPACK_IMPORTED_MODULE_7__yearpicker_component__["a" /* YearPickerComponent */]],
+                    entryComponents: [__WEBPACK_IMPORTED_MODULE_4__datepicker_component__["a" /* DatePickerComponent */]]
+                },] },
+    ];
+    /** @nocollapse */
+    DatepickerModule.ctorParameters = function () { return []; };
+    return DatepickerModule;
+}());
+
+//# sourceMappingURL=datepicker.module.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/daypicker.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DayPickerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_ng2_bootstrap_config__ = __webpack_require__("../../../../ngx-bootstrap/utils/ng2-bootstrap-config.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__datepicker_inner_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/datepicker-inner.component.js");
+
+
+
+var DayPickerComponent = (function () {
+    function DayPickerComponent(datePicker) {
+        this.labels = [];
+        this.rows = [];
+        this.weekNumbers = [];
+        this.datePicker = datePicker;
+    }
+    Object.defineProperty(DayPickerComponent.prototype, "isBs4", {
+        get: function () {
+            return !Object(__WEBPACK_IMPORTED_MODULE_1__utils_ng2_bootstrap_config__["a" /* isBs3 */])();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /*protected getDaysInMonth(year:number, month:number) {
+     return ((month === 1) && (year % 4 === 0) &&
+     ((year % 100 !== 0) || (year % 400 === 0))) ? 29 : DAYS_IN_MONTH[month];
+     }*/
+    DayPickerComponent.prototype.ngOnInit = function () {
+        var self = this;
+        this.datePicker.stepDay = { months: 1 };
+        this.datePicker.setRefreshViewHandler(function () {
+            var year = this.activeDate.getFullYear();
+            var month = this.activeDate.getMonth();
+            var firstDayOfMonth = new Date(year, month, 1);
+            var difference = this.startingDay - firstDayOfMonth.getDay();
+            var numDisplayedFromPreviousMonth = (difference > 0)
+                ? 7 - difference
+                : -difference;
+            var firstDate = new Date(firstDayOfMonth.getTime());
+            if (numDisplayedFromPreviousMonth > 0) {
+                firstDate.setDate(-numDisplayedFromPreviousMonth + 1);
+            }
+            // 42 is the number of days on a six-week calendar
+            var _days = self.getDates(firstDate, 42);
+            var days = [];
+            for (var i = 0; i < 42; i++) {
+                var _dateObject = this.createDateObject(_days[i], this.formatDay);
+                _dateObject.secondary = _days[i].getMonth() !== month;
+                _dateObject.uid = this.uniqueId + '-' + i;
+                days[i] = _dateObject;
+            }
+            self.labels = [];
+            for (var j = 0; j < 7; j++) {
+                self.labels[j] = {};
+                self.labels[j].abbr = this.dateFilter(days[j].date, this.formatDayHeader);
+                self.labels[j].full = this.dateFilter(days[j].date, 'EEEE');
+            }
+            self.title = this.dateFilter(this.activeDate, this.formatDayTitle);
+            self.rows = this.split(days, 7);
+            if (this.showWeeks) {
+                self.weekNumbers = [];
+                var thursdayIndex = (4 + 7 - this.startingDay) % 7;
+                var numWeeks = self.rows.length;
+                for (var curWeek = 0; curWeek < numWeeks; curWeek++) {
+                    self.weekNumbers.push(self.getISO8601WeekNumber(self.rows[curWeek][thursdayIndex].date));
+                }
+            }
+        }, 'day');
+        this.datePicker.setCompareHandler(function (date1, date2) {
+            var d1 = new Date(date1.getFullYear(), date1.getMonth(), date1.getDate());
+            var d2 = new Date(date2.getFullYear(), date2.getMonth(), date2.getDate());
+            return d1.getTime() - d2.getTime();
+        }, 'day');
+        this.datePicker.refreshView();
+    };
+    DayPickerComponent.prototype.getDates = function (startDate, n) {
+        var dates = new Array(n);
+        var current = new Date(startDate.getTime());
+        var i = 0;
+        var date;
+        while (i < n) {
+            date = new Date(current.getTime());
+            date = this.datePicker.fixTimeZone(date);
+            dates[i++] = date;
+            current = new Date(current.getFullYear(), current.getMonth(), current.getDate() + 1);
+        }
+        return dates;
+    };
+    DayPickerComponent.prototype.getISO8601WeekNumber = function (date) {
+        var checkDate = new Date(date.getTime());
+        // Thursday
+        checkDate.setDate(checkDate.getDate() + 4 - (checkDate.getDay() || 7));
+        var time = checkDate.getTime();
+        // Compare with Jan 1
+        checkDate.setMonth(0);
+        checkDate.setDate(1);
+        return Math.floor(Math.round((time - checkDate.getTime()) / 86400000) / 7) + 1;
+    };
+    // todo: key events implementation
+    DayPickerComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'daypicker',
+                    template: "\n<table *ngIf=\"datePicker.datepickerMode==='day'\" role=\"grid\" [attr.aria-labelledby]=\"datePicker.uniqueId+'-title'\" aria-activedescendant=\"activeDateId\">\n  <thead>\n    <tr>\n      <th>\n        <button *ngIf=\"!isBs4\"\n                type=\"button\"\n                class=\"btn btn-default btn-secondary btn-sm pull-left float-left\"\n                (click)=\"datePicker.move(-1)\"\n                tabindex=\"-1\">\n          <i class=\"glyphicon glyphicon-chevron-left\"></i>\n        </button>\n        <button *ngIf=\"isBs4\"\n                type=\"button\"\n                class=\"btn btn-default btn-secondary btn-sm pull-left float-left\"\n                (click)=\"datePicker.move(-1)\"\n                tabindex=\"-1\">&lt;\n        </button>\n      </th>\n      <th [attr.colspan]=\"5 + (datePicker.showWeeks ? 1 : 0)\">\n        <button [id]=\"datePicker.uniqueId + '-title'\"\n                type=\"button\" class=\"btn btn-default btn-secondary btn-sm\"\n                (click)=\"datePicker.toggleMode()\"\n                [disabled]=\"datePicker.datepickerMode === datePicker.maxMode\"\n                [ngClass]=\"{disabled: datePicker.datepickerMode === datePicker.maxMode}\" tabindex=\"-1\" style=\"width:100%;\">\n          <strong>{{title}}</strong>\n        </button>\n      </th>\n      <th>\n        <button *ngIf=\"!isBs4\"\n                type=\"button\"\n                class=\"btn btn-default btn-secondary btn-sm pull-right float-right\"\n                (click)=\"datePicker.move(1)\"\n                tabindex=\"-1\">\n          <i  class=\"glyphicon glyphicon-chevron-right\"></i>\n        </button>\n        <button *ngIf=\"isBs4\"\n                type=\"button\"\n                class=\"btn btn-default btn-secondary btn-sm pull-right float-right\"\n                (click)=\"datePicker.move(1)\"\n                tabindex=\"-1\">&gt;\n        </button>\n      </th>\n    </tr>\n    <tr>\n      <th *ngIf=\"datePicker.showWeeks\"></th>\n      <th *ngFor=\"let labelz of labels\" class=\"text-center\">\n        <small aria-label=\"labelz.full\"><b>{{labelz.abbr}}</b></small>\n      </th>\n    </tr>\n  </thead>\n  <tbody>\n    <template ngFor [ngForOf]=\"rows\" let-rowz=\"$implicit\" let-index=\"index\">\n      <tr *ngIf=\"!(datePicker.onlyCurrentMonth && rowz[0].secondary && rowz[6].secondary)\">\n        <td *ngIf=\"datePicker.showWeeks\" class=\"h6\" class=\"text-center\">\n          <em>{{ weekNumbers[index] }}</em>\n        </td>\n        <td *ngFor=\"let dtz of rowz\" class=\"text-center\" role=\"gridcell\" [id]=\"dtz.uid\">\n          <button type=\"button\" style=\"min-width:100%;\" class=\"btn btn-sm {{dtz.customClass}}\"\n                  *ngIf=\"!(datePicker.onlyCurrentMonth && dtz.secondary)\"\n                  [ngClass]=\"{'btn-secondary': isBs4 && !dtz.selected && !datePicker.isActive(dtz), 'btn-info': dtz.selected, disabled: dtz.disabled, active: !isBs4 && datePicker.isActive(dtz), 'btn-default': !isBs4}\"\n                  [disabled]=\"dtz.disabled\"\n                  (click)=\"datePicker.select(dtz.date)\" tabindex=\"-1\">\n            <span [ngClass]=\"{'text-muted': dtz.secondary || dtz.current, 'text-info': !isBs4 && dtz.current}\">{{dtz.label}}</span>\n          </button>\n        </td>\n      </tr>\n    </template>\n  </tbody>\n</table>\n  ",
+                    styles: ["\n    :host .btn-secondary {\n      color: #292b2c;\n      background-color: #fff;\n      border-color: #ccc;\n    }\n    :host .btn-info .text-muted {\n      color: #292b2c !important;\n    }\n  "]
+                },] },
+    ];
+    /** @nocollapse */
+    DayPickerComponent.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_2__datepicker_inner_component__["a" /* DatePickerInnerComponent */], },
+    ]; };
+    return DayPickerComponent;
+}());
+
+//# sourceMappingURL=daypicker.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/engine/calc-days-calendar.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = calcDaysCalendar;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_bs_calendar_utils__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/utils/bs-calendar-utils.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_matrix_utils__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/utils/matrix-utils.js");
+
+
+
+function calcDaysCalendar(startingDate, options) {
+    var firstDay = Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__["c" /* getFirstDayOfMonth */])(startingDate);
+    var initialDate = Object(__WEBPACK_IMPORTED_MODULE_1__utils_bs_calendar_utils__["a" /* getStartingDayOfCalendar */])(firstDay, options);
+    var matrixOptions = {
+        width: options.width,
+        height: options.height,
+        initialDate: initialDate, shift: { day: 1 }
+    };
+    var daysMatrix = Object(__WEBPACK_IMPORTED_MODULE_2__utils_matrix_utils__["a" /* createMatrix */])(matrixOptions, function (date) { return date; });
+    return {
+        daysMatrix: daysMatrix,
+        month: firstDay
+    };
+}
+//# sourceMappingURL=calc-days-calendar.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/engine/flag-days-calendar.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = flagDaysCalendar;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bs_moment_utils_date_compare__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-compare.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_bs_calendar_utils__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/utils/bs-calendar-utils.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__bs_moment_utils_date_setters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-setters.js");
+
+
+
+
+function flagDaysCalendar(formattedMonth, options) {
+    formattedMonth.weeks
+        .forEach(function (week, weekIndex) {
+        week.days.forEach(function (day, dayIndex) {
+            // datepicker
+            var isOtherMonth = !Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__["k" /* isSameMonth */])(day.date, formattedMonth.month);
+            var isHovered = !isOtherMonth && Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__["j" /* isSameDay */])(day.date, options.hoveredDate);
+            // date range picker
+            var isSelectionStart = !isOtherMonth
+                && options.selectedRange
+                && Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__["j" /* isSameDay */])(day.date, options.selectedRange[0]);
+            var isSelectionEnd = !isOtherMonth
+                && options.selectedRange
+                && Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__["j" /* isSameDay */])(day.date, options.selectedRange[1]);
+            var isSelected = !isOtherMonth && Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__["j" /* isSameDay */])(day.date, options.selectedDate) ||
+                isSelectionStart || isSelectionEnd;
+            var isInRange = !isOtherMonth
+                && options.selectedRange
+                && isDateInRange(day.date, options.selectedRange, options.hoveredDate);
+            var isDisabled = options.isDisabled
+                || Object(__WEBPACK_IMPORTED_MODULE_1__bs_moment_utils_date_compare__["b" /* isBefore */])(day.date, options.minDate, 'day')
+                || Object(__WEBPACK_IMPORTED_MODULE_1__bs_moment_utils_date_compare__["a" /* isAfter */])(day.date, options.maxDate, 'day');
+            // decide update or not
+            var newDay = Object.assign({}, day, {
+                isOtherMonth: isOtherMonth,
+                isHovered: isHovered,
+                isSelected: isSelected,
+                isSelectionStart: isSelectionStart,
+                isSelectionEnd: isSelectionEnd,
+                isInRange: isInRange,
+                isDisabled: isDisabled
+            });
+            if (day.isOtherMonth !== newDay.isOtherMonth ||
+                day.isHovered !== newDay.isHovered ||
+                day.isSelected !== newDay.isSelected ||
+                day.isSelectionStart !== newDay.isSelectionStart ||
+                day.isSelectionEnd !== newDay.isSelectionEnd ||
+                day.isDisabled !== newDay.isDisabled ||
+                day.isInRange !== newDay.isInRange) {
+                week.days[dayIndex] = newDay;
+            }
+        });
+    });
+    // todo: add check for linked calendars
+    formattedMonth.hideLeftArrow = options.isDisabled
+        || (options.monthIndex > 0
+            && options.monthIndex !== options.displayMonths);
+    formattedMonth.hideRightArrow = options.isDisabled
+        || (options.monthIndex < options.displayMonths
+            && (options.monthIndex + 1) !== options.displayMonths);
+    formattedMonth.disableLeftArrow = Object(__WEBPACK_IMPORTED_MODULE_2__utils_bs_calendar_utils__["b" /* isMonthDisabled */])(Object(__WEBPACK_IMPORTED_MODULE_3__bs_moment_utils_date_setters__["c" /* shiftDate */])(formattedMonth.month, { month: -1 }), options.minDate, options.maxDate);
+    formattedMonth.disableRightArrow = Object(__WEBPACK_IMPORTED_MODULE_2__utils_bs_calendar_utils__["b" /* isMonthDisabled */])(Object(__WEBPACK_IMPORTED_MODULE_3__bs_moment_utils_date_setters__["c" /* shiftDate */])(formattedMonth.month, { month: 1 }), options.minDate, options.maxDate);
+    return formattedMonth;
+}
+function isDateInRange(date, selectedRange, hoveredDate) {
+    if (!date || !selectedRange[0]) {
+        return false;
+    }
+    if (selectedRange[1]) {
+        return date > selectedRange[0] && date <= selectedRange[1];
+    }
+    if (hoveredDate) {
+        return date > selectedRange[0] && date <= hoveredDate;
+    }
+    return false;
+}
+//# sourceMappingURL=flag-days-calendar.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/engine/flag-months-calendar.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = flagMonthsCalendar;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_bs_calendar_utils__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/utils/bs-calendar-utils.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bs_moment_utils_date_setters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-setters.js");
+
+
+
+function flagMonthsCalendar(monthCalendar, options) {
+    monthCalendar.months
+        .forEach(function (months, rowIndex) {
+        months.forEach(function (month, monthIndex) {
+            var isHovered = Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__["k" /* isSameMonth */])(month.date, options.hoveredMonth);
+            var isDisabled = options.isDisabled
+                || Object(__WEBPACK_IMPORTED_MODULE_1__utils_bs_calendar_utils__["b" /* isMonthDisabled */])(month.date, options.minDate, options.maxDate);
+            var newMonth = Object.assign(/*{},*/ month, { isHovered: isHovered, isDisabled: isDisabled });
+            if (month.isHovered !== newMonth.isHovered
+                || month.isDisabled !== newMonth.isDisabled) {
+                monthCalendar.months[rowIndex][monthIndex] = newMonth;
+            }
+        });
+    });
+    // todo: add check for linked calendars
+    monthCalendar.hideLeftArrow = options.monthIndex > 0
+        && options.monthIndex !== options.displayMonths;
+    monthCalendar.hideRightArrow = options.monthIndex < options.displayMonths
+        && (options.monthIndex + 1) !== options.displayMonths;
+    monthCalendar.disableLeftArrow = Object(__WEBPACK_IMPORTED_MODULE_1__utils_bs_calendar_utils__["c" /* isYearDisabled */])(Object(__WEBPACK_IMPORTED_MODULE_2__bs_moment_utils_date_setters__["c" /* shiftDate */])(monthCalendar.months[0][0].date, { year: -1 }), options.minDate, options.maxDate);
+    monthCalendar.disableRightArrow = Object(__WEBPACK_IMPORTED_MODULE_1__utils_bs_calendar_utils__["c" /* isYearDisabled */])(Object(__WEBPACK_IMPORTED_MODULE_2__bs_moment_utils_date_setters__["c" /* shiftDate */])(monthCalendar.months[0][0].date, { year: 1 }), options.minDate, options.maxDate);
+    return monthCalendar;
+}
+//# sourceMappingURL=flag-months-calendar.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/engine/flag-years-calendar.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = flagYearsCalendar;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_bs_calendar_utils__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/utils/bs-calendar-utils.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bs_moment_utils_date_setters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-setters.js");
+
+
+
+function flagYearsCalendar(yearsCalendar, options) {
+    yearsCalendar.years
+        .forEach(function (years, rowIndex) {
+        years.forEach(function (year, yearIndex) {
+            var isHovered = Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__["l" /* isSameYear */])(year.date, options.hoveredYear);
+            var isDisabled = options.isDisabled
+                || Object(__WEBPACK_IMPORTED_MODULE_1__utils_bs_calendar_utils__["c" /* isYearDisabled */])(year.date, options.minDate, options.maxDate);
+            var newMonth = Object.assign(/*{},*/ year, { isHovered: isHovered, isDisabled: isDisabled });
+            if (year.isHovered !== newMonth.isHovered
+                || year.isDisabled !== newMonth.isDisabled) {
+                yearsCalendar.years[rowIndex][yearIndex] = newMonth;
+            }
+        });
+    });
+    // todo: add check for linked calendars
+    yearsCalendar.hideLeftArrow = options.yearIndex > 0
+        && options.yearIndex !== options.displayMonths;
+    yearsCalendar.hideRightArrow = options.yearIndex < options.displayMonths
+        && (options.yearIndex + 1) !== options.displayMonths;
+    yearsCalendar.disableLeftArrow = Object(__WEBPACK_IMPORTED_MODULE_1__utils_bs_calendar_utils__["c" /* isYearDisabled */])(Object(__WEBPACK_IMPORTED_MODULE_2__bs_moment_utils_date_setters__["c" /* shiftDate */])(yearsCalendar.years[0][0].date, { year: -1 }), options.minDate, options.maxDate);
+    var i = yearsCalendar.years.length - 1;
+    var j = yearsCalendar.years[i].length - 1;
+    yearsCalendar.disableRightArrow = Object(__WEBPACK_IMPORTED_MODULE_1__utils_bs_calendar_utils__["c" /* isYearDisabled */])(Object(__WEBPACK_IMPORTED_MODULE_2__bs_moment_utils_date_setters__["c" /* shiftDate */])(yearsCalendar.years[i][j].date, { year: 1 }), options.minDate, options.maxDate);
+    return yearsCalendar;
+}
+//# sourceMappingURL=flag-years-calendar.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/engine/format-days-calendar.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = formatDaysCalendar;
+/* unused harmony export getWeekNumbers */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bs_moment_format__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bs_moment_locale_locales_service__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/locale/locales.service.js");
+
+
+function formatDaysCalendar(daysCalendar, formatOptions, monthIndex) {
+    return {
+        month: daysCalendar.month,
+        monthTitle: Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_format__["a" /* formatDate */])(daysCalendar.month, formatOptions.monthTitle, formatOptions.locale),
+        yearTitle: Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_format__["a" /* formatDate */])(daysCalendar.month, formatOptions.yearTitle, formatOptions.locale),
+        weekNumbers: getWeekNumbers(daysCalendar.daysMatrix, formatOptions.weekNumbers, formatOptions.locale),
+        weekdays: Object(__WEBPACK_IMPORTED_MODULE_1__bs_moment_locale_locales_service__["b" /* getLocale */])(formatOptions.locale).weekdaysShort(),
+        weeks: daysCalendar.daysMatrix
+            .map(function (week, weekIndex) { return ({
+            days: week.map(function (date, dayIndex) { return ({
+                date: date,
+                label: Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_format__["a" /* formatDate */])(date, formatOptions.dayLabel, formatOptions.locale),
+                monthIndex: monthIndex, weekIndex: weekIndex, dayIndex: dayIndex
+            }); })
+        }); })
+    };
+}
+function getWeekNumbers(daysMatrix, format, locale) {
+    return daysMatrix.map(function (days) { return days[0]
+        ? Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_format__["a" /* formatDate */])(days[0], format, locale)
+        : ''; });
+}
+//# sourceMappingURL=format-days-calendar.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/engine/format-months-calendar.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = formatMonthsCalendar;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_start_end_of__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/start-end-of.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bs_moment_format__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_matrix_utils__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/utils/matrix-utils.js");
+
+
+
+var height = 4;
+var width = 3;
+var shift = { month: 1 };
+function formatMonthsCalendar(viewDate, formatOptions) {
+    var initialDate = Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_start_end_of__["b" /* startOf */])(viewDate, 'year');
+    var matrixOptions = { width: width, height: height, initialDate: initialDate, shift: shift };
+    var monthMatrix = Object(__WEBPACK_IMPORTED_MODULE_2__utils_matrix_utils__["a" /* createMatrix */])(matrixOptions, function (date) { return ({
+        date: date,
+        label: Object(__WEBPACK_IMPORTED_MODULE_1__bs_moment_format__["a" /* formatDate */])(date, formatOptions.monthLabel, formatOptions.locale)
+    }); });
+    return {
+        months: monthMatrix,
+        monthTitle: '',
+        yearTitle: Object(__WEBPACK_IMPORTED_MODULE_1__bs_moment_format__["a" /* formatDate */])(viewDate, formatOptions.yearTitle, formatOptions.locale)
+    };
+}
+//# sourceMappingURL=format-months-calendar.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/engine/format-years-calendar.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return yearsPerCalendar; });
+/* harmony export (immutable) */ __webpack_exports__["a"] = formatYearsCalendar;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_setters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-setters.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bs_moment_format__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/format.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_matrix_utils__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/utils/matrix-utils.js");
+
+
+
+var height = 4;
+var width = 4;
+var yearsPerCalendar = height * width;
+var initialShift = (Math.floor(yearsPerCalendar / 2) - 1) * -1;
+var shift = { year: 1 };
+function formatYearsCalendar(viewDate, formatOptions) {
+    var initialDate = Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_setters__["c" /* shiftDate */])(viewDate, { year: initialShift });
+    var matrixOptions = { width: width, height: height, initialDate: initialDate, shift: shift };
+    var yearsMatrix = Object(__WEBPACK_IMPORTED_MODULE_2__utils_matrix_utils__["a" /* createMatrix */])(matrixOptions, function (date) { return ({
+        date: date,
+        label: Object(__WEBPACK_IMPORTED_MODULE_1__bs_moment_format__["a" /* formatDate */])(date, formatOptions.yearLabel, formatOptions.locale)
+    }); });
+    var yearTitle = formatYearRangeTitle(yearsMatrix, formatOptions);
+    return {
+        years: yearsMatrix,
+        monthTitle: '',
+        yearTitle: yearTitle
+    };
+}
+function formatYearRangeTitle(yearsMatrix, formatOptions) {
+    var from = Object(__WEBPACK_IMPORTED_MODULE_1__bs_moment_format__["a" /* formatDate */])(yearsMatrix[0][0].date, formatOptions.yearTitle, formatOptions.locale);
+    var to = Object(__WEBPACK_IMPORTED_MODULE_1__bs_moment_format__["a" /* formatDate */])(yearsMatrix[height - 1][width - 1].date, formatOptions.yearTitle, formatOptions.locale);
+    return from + " - " + to;
+}
+//# sourceMappingURL=format-years-calendar.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/engine/view-mode.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = canSwitchMode;
+function canSwitchMode(mode) {
+    return true;
+}
+//# sourceMappingURL=view-mode.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/index.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__datepicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/datepicker.component.js");
+/* unused harmony reexport DatePickerComponent */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__datepicker_module__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/datepicker.module.js");
+/* unused harmony reexport DatepickerModule */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__daypicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/daypicker.component.js");
+/* unused harmony reexport DayPickerComponent */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__monthpicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/monthpicker.component.js");
+/* unused harmony reexport MonthPickerComponent */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__yearpicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/yearpicker.component.js");
+/* unused harmony reexport YearPickerComponent */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__date_formatter__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/date-formatter.js");
+/* unused harmony reexport DateFormatter */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__datepicker_config__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/datepicker.config.js");
+/* unused harmony reexport DatepickerConfig */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__bs_datepicker_module__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.module.js");
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_7__bs_datepicker_module__["a"]; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__bs_datepicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.component.js");
+/* unused harmony reexport BsDatepickerComponent */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__bs_daterangepicker_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-daterangepicker.component.js");
+/* unused harmony reexport BsDaterangepickerComponent */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__bs_datepicker_config__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.config.js");
+/* unused harmony reexport BsDatepickerConfig */
+
+
+
+
+
+
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/models/index.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsNavigationDirection; });
+/** *************** */
+// events
+/** *************** */
+var BsNavigationDirection;
+(function (BsNavigationDirection) {
+    BsNavigationDirection[BsNavigationDirection["UP"] = 0] = "UP";
+    BsNavigationDirection[BsNavigationDirection["DOWN"] = 1] = "DOWN";
+})(BsNavigationDirection || (BsNavigationDirection = {}));
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/monthpicker.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MonthPickerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_ng2_bootstrap_config__ = __webpack_require__("../../../../ngx-bootstrap/utils/ng2-bootstrap-config.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__datepicker_inner_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/datepicker-inner.component.js");
+
+
+
+var MonthPickerComponent = (function () {
+    function MonthPickerComponent(datePicker) {
+        this.rows = [];
+        this.datePicker = datePicker;
+    }
+    Object.defineProperty(MonthPickerComponent.prototype, "isBs4", {
+        get: function () {
+            return !Object(__WEBPACK_IMPORTED_MODULE_1__utils_ng2_bootstrap_config__["a" /* isBs3 */])();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    MonthPickerComponent.prototype.ngOnInit = function () {
+        var self = this;
+        this.datePicker.stepMonth = { years: 1 };
+        this.datePicker.setRefreshViewHandler(function () {
+            var months = new Array(12);
+            var year = this.activeDate.getFullYear();
+            var date;
+            for (var i = 0; i < 12; i++) {
+                date = new Date(year, i, 1);
+                date = this.fixTimeZone(date);
+                months[i] = this.createDateObject(date, this.formatMonth);
+                months[i].uid = this.uniqueId + '-' + i;
+            }
+            self.title = this.dateFilter(this.activeDate, this.formatMonthTitle);
+            self.rows = this.split(months, self.datePicker.monthColLimit);
+        }, 'month');
+        this.datePicker.setCompareHandler(function (date1, date2) {
+            var d1 = new Date(date1.getFullYear(), date1.getMonth());
+            var d2 = new Date(date2.getFullYear(), date2.getMonth());
+            return d1.getTime() - d2.getTime();
+        }, 'month');
+        this.datePicker.refreshView();
+    };
+    // todo: key events implementation
+    MonthPickerComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'monthpicker',
+                    template: "\n<table *ngIf=\"datePicker.datepickerMode==='month'\" role=\"grid\">\n  <thead>\n    <tr>\n      <th>\n        <button type=\"button\" class=\"btn btn-default btn-sm pull-left float-left\"\n                (click)=\"datePicker.move(-1)\" tabindex=\"-1\">\n          <i class=\"glyphicon glyphicon-chevron-left\"></i>\n        </button></th>\n      <th [attr.colspan]=\"((datePicker.monthColLimit - 2) <= 0) ? 1 : datePicker.monthColLimit - 2\">\n        <button [id]=\"datePicker.uniqueId + '-title'\"\n                type=\"button\" class=\"btn btn-default btn-sm\"\n                (click)=\"datePicker.toggleMode()\"\n                [disabled]=\"datePicker.datepickerMode === maxMode\"\n                [ngClass]=\"{disabled: datePicker.datepickerMode === maxMode}\" tabindex=\"-1\" style=\"width:100%;\">\n          <strong>{{title}}</strong>\n        </button>\n      </th>\n      <th>\n        <button type=\"button\" class=\"btn btn-default btn-sm pull-right float-right\"\n                (click)=\"datePicker.move(1)\" tabindex=\"-1\">\n          <i class=\"glyphicon glyphicon-chevron-right\"></i>\n        </button>\n      </th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let rowz of rows\">\n      <td *ngFor=\"let dtz of rowz\" class=\"text-center\" role=\"gridcell\" id=\"{{dtz.uid}}\" [ngClass]=\"dtz.customClass\">\n        <button type=\"button\" style=\"min-width:100%;\" class=\"btn btn-default\"\n                [ngClass]=\"{'btn-link': isBs4 && !dtz.selected && !datePicker.isActive(dtz), 'btn-info': dtz.selected || (isBs4 && !dtz.selected && datePicker.isActive(dtz)), disabled: dtz.disabled, active: !isBs4 && datePicker.isActive(dtz)}\"\n                [disabled]=\"dtz.disabled\"\n                (click)=\"datePicker.select(dtz.date)\" tabindex=\"-1\">\n          <span [ngClass]=\"{'text-success': isBs4 && dtz.current, 'text-info': !isBs4 && dtz.current}\">{{dtz.label}}</span>\n        </button>\n      </td>\n    </tr>\n  </tbody>\n</table>\n  ",
+                    styles: ["\n    :host .btn-info .text-success {\n      color: #fff !important;\n    }\n  "]
+                },] },
+    ];
+    /** @nocollapse */
+    MonthPickerComponent.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_2__datepicker_inner_component__["a" /* DatePickerInnerComponent */], },
+    ]; };
+    return MonthPickerComponent;
+}());
+
+//# sourceMappingURL=monthpicker.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/reducer/_defaults.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return defaultMonthOptions; });
+var defaultMonthOptions = {
+    width: 7,
+    height: 6
+};
+//# sourceMappingURL=_defaults.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.actions.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDatepickerActions; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+
+var BsDatepickerActions = (function () {
+    function BsDatepickerActions() {
+    }
+    BsDatepickerActions.prototype.calculate = function () { return { type: BsDatepickerActions.CALCULATE }; };
+    BsDatepickerActions.prototype.format = function () { return { type: BsDatepickerActions.FORMAT }; };
+    BsDatepickerActions.prototype.flag = function () { return { type: BsDatepickerActions.FLAG }; };
+    BsDatepickerActions.prototype.select = function (date) {
+        return {
+            type: BsDatepickerActions.SELECT,
+            payload: date
+        };
+    };
+    BsDatepickerActions.prototype.changeViewMode = function (event) {
+        return {
+            type: BsDatepickerActions.CHANGE_VIEWMODE,
+            payload: event
+        };
+    };
+    BsDatepickerActions.prototype.navigateTo = function (event) {
+        return {
+            type: BsDatepickerActions.NAVIGATE_TO,
+            payload: event
+        };
+    };
+    BsDatepickerActions.prototype.navigateStep = function (step) {
+        return {
+            type: BsDatepickerActions.NAVIGATE_OFFSET,
+            payload: step
+        };
+    };
+    BsDatepickerActions.prototype.setOptions = function (options) {
+        return {
+            type: BsDatepickerActions.SET_OPTIONS,
+            payload: options
+        };
+    };
+    // date range picker
+    BsDatepickerActions.prototype.selectRange = function (value) {
+        return {
+            type: BsDatepickerActions.SELECT_RANGE,
+            payload: value
+        };
+    };
+    BsDatepickerActions.prototype.hoverDay = function (event) {
+        return {
+            type: BsDatepickerActions.HOVER,
+            payload: event.isHovered ? event.cell.date : null
+        };
+    };
+    BsDatepickerActions.prototype.minDate = function (date) {
+        return {
+            type: BsDatepickerActions.SET_MIN_DATE,
+            payload: date
+        };
+    };
+    BsDatepickerActions.prototype.maxDate = function (date) {
+        return {
+            type: BsDatepickerActions.SET_MAX_DATE,
+            payload: date
+        };
+    };
+    BsDatepickerActions.prototype.isDisabled = function (value) {
+        return {
+            type: BsDatepickerActions.SET_IS_DISABLED,
+            payload: value
+        };
+    };
+    BsDatepickerActions.CALCULATE = '[datepicker] calculate dates matrix';
+    BsDatepickerActions.FORMAT = '[datepicker] format datepicker values';
+    BsDatepickerActions.FLAG = '[datepicker] set flags';
+    BsDatepickerActions.SELECT = '[datepicker] select date';
+    BsDatepickerActions.NAVIGATE_OFFSET = '[datepicker] shift view date';
+    BsDatepickerActions.NAVIGATE_TO = '[datepicker] change view date';
+    BsDatepickerActions.SET_OPTIONS = '[datepicker] update render options';
+    BsDatepickerActions.HOVER = '[datepicker] hover date';
+    BsDatepickerActions.CHANGE_VIEWMODE = '[datepicker] switch view mode';
+    BsDatepickerActions.SET_MIN_DATE = '[datepicker] set min date';
+    BsDatepickerActions.SET_MAX_DATE = '[datepicker] set max date';
+    BsDatepickerActions.SET_IS_DISABLED = '[datepicker] set is disabled';
+    BsDatepickerActions.SELECT_RANGE = '[daterangepicker] select dates range';
+    BsDatepickerActions.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+    ];
+    /** @nocollapse */
+    BsDatepickerActions.ctorParameters = function () { return []; };
+    return BsDatepickerActions;
+}());
+
+//# sourceMappingURL=bs-datepicker.actions.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.effects.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDatepickerEffects; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_filter__ = __webpack_require__("../../../../rxjs/add/operator/filter.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_filter___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_filter__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__bs_moment_utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__bs_datepicker_actions__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.actions.js");
+
+
+
+
+
+var BsDatepickerEffects = (function () {
+    function BsDatepickerEffects(_actions) {
+        this._actions = _actions;
+        this._subs = [];
+    }
+    BsDatepickerEffects.prototype.init = function (_bsDatepickerStore) {
+        this._store = _bsDatepickerStore;
+        return this;
+    };
+    /** setters */
+    BsDatepickerEffects.prototype.setValue = function (value) {
+        this._store.dispatch(this._actions.select(value));
+    };
+    BsDatepickerEffects.prototype.setRangeValue = function (value) {
+        this._store.dispatch(this._actions.selectRange(value));
+    };
+    BsDatepickerEffects.prototype.setMinDate = function (value) {
+        this._store.dispatch(this._actions.minDate(value));
+        return this;
+    };
+    BsDatepickerEffects.prototype.setMaxDate = function (value) {
+        this._store.dispatch(this._actions.maxDate(value));
+        return this;
+    };
+    BsDatepickerEffects.prototype.setDisabled = function (value) {
+        this._store.dispatch(this._actions.isDisabled(value));
+        return this;
+    };
+    /* Set rendering options */
+    BsDatepickerEffects.prototype.setOptions = function (_config) {
+        this._store.dispatch(this._actions.setOptions(_config));
+        return this;
+    };
+    /** view to mode bindings */
+    BsDatepickerEffects.prototype.setBindings = function (container) {
+        container.daysCalendar = this._store
+            .select(function (state) { return state.flaggedMonths; })
+            .filter(function (months) { return !!months; });
+        // month calendar
+        container.monthsCalendar = this._store
+            .select(function (state) { return state.flaggedMonthsCalendar; })
+            .filter(function (months) { return !!months; });
+        // year calendar
+        container.yearsCalendar = this._store
+            .select(function (state) { return state.yearsCalendarFlagged; })
+            .filter(function (years) { return !!years; });
+        container.viewMode = this._store
+            .select(function (state) { return state.view.mode; });
+        container.options = this._store.select(function (state) { return state.showWeekNumbers; })
+            .map(function (showWeekNumbers) { return ({ showWeekNumbers: showWeekNumbers }); });
+        return this;
+    };
+    /** event handlers*/
+    BsDatepickerEffects.prototype.setEventHandlers = function (container) {
+        var _this = this;
+        container.setViewMode = function (event) {
+            _this._store.dispatch(_this._actions.changeViewMode(event));
+        };
+        container.navigateTo = function (event) {
+            _this._store.dispatch(_this._actions.navigateStep(event.step));
+        };
+        container.dayHoverHandler = function (event) {
+            var _cell = event.cell;
+            if (_cell.isOtherMonth || _cell.isDisabled) {
+                return;
+            }
+            _this._store.dispatch(_this._actions.hoverDay(event));
+            _cell.isHovered = event.isHovered;
+        };
+        container.monthHoverHandler = function (event) {
+            event.cell.isHovered = event.isHovered;
+        };
+        container.yearHoverHandler = function (event) {
+            event.cell.isHovered = event.isHovered;
+        };
+        /** select handlers */
+        // container.daySelectHandler = (day: DayViewModel): void => {
+        //   if (day.isOtherMonth || day.isDisabled) {
+        //     return;
+        //   }
+        //   this._store.dispatch(this._actions.select(day.date));
+        // };
+        container.monthSelectHandler = function (event) {
+            if (event.isDisabled) {
+                return;
+            }
+            _this._store.dispatch(_this._actions.navigateTo({
+                unit: { month: Object(__WEBPACK_IMPORTED_MODULE_3__bs_moment_utils_date_getters__["g" /* getMonth */])(event.date) },
+                viewMode: 'day'
+            }));
+        };
+        container.yearSelectHandler = function (event) {
+            if (event.isDisabled) {
+                return;
+            }
+            _this._store.dispatch(_this._actions.navigateTo({
+                unit: { year: Object(__WEBPACK_IMPORTED_MODULE_3__bs_moment_utils_date_getters__["d" /* getFullYear */])(event.date) },
+                viewMode: 'month'
+            }));
+        };
+        return this;
+    };
+    BsDatepickerEffects.prototype.registerDatepickerSideEffects = function () {
+        var _this = this;
+        this._subs.push(this._store.select(function (state) { return state.view; })
+            .subscribe(function (view) {
+            _this._store.dispatch(_this._actions.calculate());
+        }));
+        // format calendar values on month model change
+        this._subs.push(this._store
+            .select(function (state) { return state.monthsModel; })
+            .filter(function (monthModel) { return !!monthModel; })
+            .subscribe(function (month) {
+            return _this._store.dispatch(_this._actions.format());
+        }));
+        // flag day values
+        this._subs.push(this._store
+            .select(function (state) { return state.formattedMonths; })
+            .filter(function (month) { return !!month; })
+            .subscribe(function (month) {
+            return _this._store.dispatch(_this._actions.flag());
+        }));
+        // flag day values
+        this._subs.push(this._store.select(function (state) { return state.selectedDate; })
+            .filter(function (selectedDate) { return !!selectedDate; })
+            .subscribe(function (selectedDate) {
+            return _this._store.dispatch(_this._actions.flag());
+        }));
+        // flag for date range picker
+        this._subs.push(this._store.select(function (state) { return state.selectedRange; })
+            .filter(function (selectedRange) { return !!selectedRange; })
+            .subscribe(function (selectedRange) {
+            return _this._store.dispatch(_this._actions.flag());
+        }));
+        // monthsCalendar
+        this._subs.push(this._store
+            .select(function (state) { return state.monthsCalendar; })
+            .subscribe(function () { return _this._store.dispatch(_this._actions.flag()); }));
+        // years calendar
+        this._subs.push(this._store
+            .select(function (state) { return state.yearsCalendarModel; })
+            .filter(function (state) { return !!state; })
+            .subscribe(function () { return _this._store.dispatch(_this._actions.flag()); }));
+        // on hover
+        this._subs.push(this._store.select(function (state) { return state.hoveredDate; })
+            .filter(function (hoveredDate) { return !!hoveredDate; })
+            .subscribe(function (hoveredDate) {
+            return _this._store.dispatch(_this._actions.flag());
+        }));
+        return this;
+    };
+    BsDatepickerEffects.prototype.destroy = function () {
+        for (var _i = 0, _a = this._subs; _i < _a.length; _i++) {
+            var sub = _a[_i];
+            sub.unsubscribe();
+        }
+    };
+    BsDatepickerEffects.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+    ];
+    /** @nocollapse */
+    BsDatepickerEffects.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_4__bs_datepicker_actions__["a" /* BsDatepickerActions */], },
+    ]; };
+    return BsDatepickerEffects;
+}());
+
+//# sourceMappingURL=bs-datepicker.effects.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.reducer.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = bsDatepickerReducer;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bs_datepicker_state__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.state.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.actions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__engine_calc_days_calendar__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/engine/calc-days-calendar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__engine_format_days_calendar__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/engine/format-days-calendar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__engine_flag_days_calendar__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/engine/flag-days-calendar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__bs_moment_utils_date_setters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-setters.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__engine_view_mode__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/engine/view-mode.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__engine_format_months_calendar__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/engine/format-months-calendar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__engine_flag_months_calendar__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/engine/flag-months-calendar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__engine_format_years_calendar__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/engine/format-years-calendar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__engine_flag_years_calendar__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/engine/flag-years-calendar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__bs_moment_utils_type_checks__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/type-checks.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__bs_moment_utils_start_end_of__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/start-end-of.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+function bsDatepickerReducer(state, action) {
+    if (state === void 0) { state = __WEBPACK_IMPORTED_MODULE_0__bs_datepicker_state__["a" /* initialDatepickerState */]; }
+    switch (action.type) {
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].CALCULATE): {
+            return calculateReducer(state);
+        }
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].FORMAT): {
+            return formatReducer(state, action);
+        }
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].FLAG): {
+            return flagReducer(state, action);
+        }
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].NAVIGATE_OFFSET): {
+            var date = Object(__WEBPACK_IMPORTED_MODULE_5__bs_moment_utils_date_setters__["c" /* shiftDate */])(Object(__WEBPACK_IMPORTED_MODULE_12__bs_moment_utils_start_end_of__["b" /* startOf */])(state.view.date, 'month'), action.payload);
+            var newState = {
+                view: {
+                    mode: state.view.mode,
+                    date: date
+                }
+            };
+            return Object.assign({}, state, newState);
+        }
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].NAVIGATE_TO): {
+            var payload = action.payload;
+            var date = Object(__WEBPACK_IMPORTED_MODULE_5__bs_moment_utils_date_setters__["b" /* setDate */])(state.view.date, payload.unit);
+            var mode = payload.viewMode;
+            var newState = { view: { date: date, mode: mode } };
+            return Object.assign({}, state, newState);
+        }
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].CHANGE_VIEWMODE): {
+            if (!Object(__WEBPACK_IMPORTED_MODULE_6__engine_view_mode__["a" /* canSwitchMode */])(action.payload)) {
+                return state;
+            }
+            var date = state.view.date;
+            var mode = action.payload;
+            var newState = { view: { date: date, mode: mode } };
+            return Object.assign({}, state, newState);
+        }
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].HOVER): {
+            return Object.assign({}, state, { hoveredDate: action.payload });
+        }
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].SELECT): {
+            var newState = {
+                selectedDate: action.payload,
+                view: state.view
+            };
+            if (action.payload) {
+                newState.view = {
+                    date: action.payload,
+                    mode: state.view.mode
+                };
+            }
+            return Object.assign({}, state, newState);
+        }
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].SET_OPTIONS): {
+            var newState = action.payload;
+            // looks not really good
+            if (newState.value) {
+                newState.view = state.view;
+                if (Object(__WEBPACK_IMPORTED_MODULE_11__bs_moment_utils_type_checks__["b" /* isArray */])(newState.value)) {
+                    newState.view = {
+                        mode: state.view.mode,
+                        date: newState.value[0]
+                    };
+                    newState.selectedRange = newState.value;
+                }
+                else {
+                    newState.view = {
+                        mode: state.view.mode,
+                        date: newState.value
+                    };
+                    newState.selectedDate = newState.value;
+                }
+            }
+            return Object.assign({}, state, newState);
+        }
+        // date range picker
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].SELECT_RANGE): {
+            return Object.assign({}, state, { selectedRange: action.payload });
+        }
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].SET_MIN_DATE): {
+            return Object.assign({}, state, {
+                minDate: action.payload
+            });
+        }
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].SET_MAX_DATE): {
+            return Object.assign({}, state, {
+                maxDate: action.payload
+            });
+        }
+        case (__WEBPACK_IMPORTED_MODULE_1__bs_datepicker_actions__["a" /* BsDatepickerActions */].SET_IS_DISABLED): {
+            return Object.assign({}, state, {
+                isDisabled: action.payload
+            });
+        }
+        default:
+            return state;
+    }
+}
+function calculateReducer(state) {
+    // how many calendars
+    var displayMonths = state.displayMonths;
+    // use selected date on initial rendering if set
+    var viewDate = state.view.date;
+    if (state.view.mode === 'day') {
+        var monthsModel = new Array(displayMonths);
+        for (var monthIndex = 0; monthIndex < displayMonths; monthIndex++) {
+            // todo: for unlinked calendars it will be harder
+            monthsModel[monthIndex] = Object(__WEBPACK_IMPORTED_MODULE_2__engine_calc_days_calendar__["a" /* calcDaysCalendar */])(viewDate, state.monthViewOptions);
+            viewDate = Object(__WEBPACK_IMPORTED_MODULE_5__bs_moment_utils_date_setters__["c" /* shiftDate */])(viewDate, { month: 1 });
+        }
+        return Object.assign({}, state, { monthsModel: monthsModel });
+    }
+    if (state.view.mode === 'month') {
+        var monthsCalendar = new Array(displayMonths);
+        for (var calendarIndex = 0; calendarIndex < displayMonths; calendarIndex++) {
+            // todo: for unlinked calendars it will be harder
+            monthsCalendar[calendarIndex] = Object(__WEBPACK_IMPORTED_MODULE_7__engine_format_months_calendar__["a" /* formatMonthsCalendar */])(viewDate, getFormatOptions(state));
+            viewDate = Object(__WEBPACK_IMPORTED_MODULE_5__bs_moment_utils_date_setters__["c" /* shiftDate */])(viewDate, { year: 1 });
+        }
+        return Object.assign({}, state, { monthsCalendar: monthsCalendar });
+    }
+    if (state.view.mode === 'year') {
+        var yearsCalendarModel = new Array(displayMonths);
+        for (var calendarIndex = 0; calendarIndex < displayMonths; calendarIndex++) {
+            // todo: for unlinked calendars it will be harder
+            yearsCalendarModel[calendarIndex] = Object(__WEBPACK_IMPORTED_MODULE_9__engine_format_years_calendar__["a" /* formatYearsCalendar */])(viewDate, getFormatOptions(state));
+            viewDate = Object(__WEBPACK_IMPORTED_MODULE_5__bs_moment_utils_date_setters__["c" /* shiftDate */])(viewDate, { year: __WEBPACK_IMPORTED_MODULE_9__engine_format_years_calendar__["b" /* yearsPerCalendar */] });
+        }
+        return Object.assign({}, state, { yearsCalendarModel: yearsCalendarModel });
+    }
+    return state;
+}
+function formatReducer(state, action) {
+    if (state.view.mode === 'day') {
+        var formattedMonths = state.monthsModel
+            .map(function (month, monthIndex) { return Object(__WEBPACK_IMPORTED_MODULE_3__engine_format_days_calendar__["a" /* formatDaysCalendar */])(month, getFormatOptions(state), monthIndex); });
+        return Object.assign({}, state, { formattedMonths: formattedMonths });
+    }
+    // how many calendars
+    var displayMonths = state.displayMonths;
+    // check initial rendering
+    // use selected date on initial rendering if set
+    var viewDate = state.view.date;
+    if (state.view.mode === 'month') {
+        var monthsCalendar = new Array(displayMonths);
+        for (var calendarIndex = 0; calendarIndex < displayMonths; calendarIndex++) {
+            // todo: for unlinked calendars it will be harder
+            monthsCalendar[calendarIndex] = Object(__WEBPACK_IMPORTED_MODULE_7__engine_format_months_calendar__["a" /* formatMonthsCalendar */])(viewDate, getFormatOptions(state));
+            viewDate = Object(__WEBPACK_IMPORTED_MODULE_5__bs_moment_utils_date_setters__["c" /* shiftDate */])(viewDate, { year: 1 });
+        }
+        return Object.assign({}, state, { monthsCalendar: monthsCalendar });
+    }
+    if (state.view.mode === 'year') {
+        var yearsCalendarModel = new Array(displayMonths);
+        for (var calendarIndex = 0; calendarIndex < displayMonths; calendarIndex++) {
+            // todo: for unlinked calendars it will be harder
+            yearsCalendarModel[calendarIndex] = Object(__WEBPACK_IMPORTED_MODULE_9__engine_format_years_calendar__["a" /* formatYearsCalendar */])(viewDate, getFormatOptions(state));
+            viewDate = Object(__WEBPACK_IMPORTED_MODULE_5__bs_moment_utils_date_setters__["c" /* shiftDate */])(viewDate, { year: 16 });
+        }
+        return Object.assign({}, state, { yearsCalendarModel: yearsCalendarModel });
+    }
+    return state;
+}
+function flagReducer(state, action) {
+    if (state.view.mode === 'day') {
+        var flaggedMonths = state.formattedMonths
+            .map(function (formattedMonth, monthIndex) { return Object(__WEBPACK_IMPORTED_MODULE_4__engine_flag_days_calendar__["a" /* flagDaysCalendar */])(formattedMonth, {
+            isDisabled: state.isDisabled,
+            minDate: state.minDate,
+            maxDate: state.maxDate,
+            hoveredDate: state.hoveredDate,
+            selectedDate: state.selectedDate,
+            selectedRange: state.selectedRange,
+            displayMonths: state.displayMonths,
+            monthIndex: monthIndex
+        }); });
+        return Object.assign({}, state, { flaggedMonths: flaggedMonths });
+    }
+    if (state.view.mode === 'month') {
+        var flaggedMonthsCalendar = state.monthsCalendar
+            .map(function (formattedMonth, monthIndex) { return Object(__WEBPACK_IMPORTED_MODULE_8__engine_flag_months_calendar__["a" /* flagMonthsCalendar */])(formattedMonth, {
+            isDisabled: state.isDisabled,
+            minDate: state.minDate,
+            maxDate: state.maxDate,
+            hoveredMonth: state.hoveredMonth,
+            displayMonths: state.displayMonths,
+            monthIndex: monthIndex
+        }); });
+        return Object.assign({}, state, { flaggedMonthsCalendar: flaggedMonthsCalendar });
+    }
+    if (state.view.mode === 'year') {
+        var yearsCalendarFlagged = state.yearsCalendarModel
+            .map(function (formattedMonth, yearIndex) { return Object(__WEBPACK_IMPORTED_MODULE_10__engine_flag_years_calendar__["a" /* flagYearsCalendar */])(formattedMonth, {
+            isDisabled: state.isDisabled,
+            minDate: state.minDate,
+            maxDate: state.maxDate,
+            hoveredYear: state.hoveredYear,
+            displayMonths: state.displayMonths,
+            yearIndex: yearIndex
+        }); });
+        return Object.assign({}, state, { yearsCalendarFlagged: yearsCalendarFlagged });
+    }
+    return state;
+}
+function getFormatOptions(state) {
+    return {
+        locale: state.locale,
+        monthTitle: state.monthTitle,
+        yearTitle: state.yearTitle,
+        dayLabel: state.dayLabel,
+        monthLabel: state.monthLabel,
+        yearLabel: state.yearLabel,
+        weekNumbers: state.weekNumbers
+    };
+}
+//# sourceMappingURL=bs-datepicker.reducer.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.state.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export BsDatepickerState */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return initialDatepickerState; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__defaults__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/_defaults.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bs_datepicker_config__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.config.js");
+
+
+var BsDatepickerState = (function () {
+    function BsDatepickerState() {
+    }
+    return BsDatepickerState;
+}());
+
+var initialDatepickerState = Object.assign(new __WEBPACK_IMPORTED_MODULE_1__bs_datepicker_config__["a" /* BsDatepickerConfig */](), {
+    view: { date: new Date(), mode: 'day' },
+    selectedRange: [],
+    monthViewOptions: __WEBPACK_IMPORTED_MODULE_0__defaults__["a" /* defaultMonthOptions */]
+});
+//# sourceMappingURL=bs-datepicker.state.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.store.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDatepickerStore; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mini_ngrx_store_class__ = __webpack_require__("../../../../ngx-bootstrap/mini-ngrx/store.class.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bs_datepicker_state__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.state.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/BehaviorSubject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mini_ngrx_state_class__ = __webpack_require__("../../../../ngx-bootstrap/mini-ngrx/state.class.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__bs_datepicker_reducer__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.reducer.js");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+
+
+var BsDatepickerStore = (function (_super) {
+    __extends(BsDatepickerStore, _super);
+    function BsDatepickerStore() {
+        var _this = this;
+        var _dispatcher = new __WEBPACK_IMPORTED_MODULE_3_rxjs_BehaviorSubject__["BehaviorSubject"]({ type: '[datepicker] dispatcher init' });
+        var state = new __WEBPACK_IMPORTED_MODULE_4__mini_ngrx_state_class__["a" /* MiniState */](__WEBPACK_IMPORTED_MODULE_2__bs_datepicker_state__["a" /* initialDatepickerState */], _dispatcher, __WEBPACK_IMPORTED_MODULE_5__bs_datepicker_reducer__["a" /* bsDatepickerReducer */]);
+        _this = _super.call(this, _dispatcher, __WEBPACK_IMPORTED_MODULE_5__bs_datepicker_reducer__["a" /* bsDatepickerReducer */], state) || this;
+        return _this;
+    }
+    BsDatepickerStore.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"] },
+    ];
+    /** @nocollapse */
+    BsDatepickerStore.ctorParameters = function () { return []; };
+    return BsDatepickerStore;
+}(__WEBPACK_IMPORTED_MODULE_1__mini_ngrx_store_class__["a" /* MiniStore */]));
+
+//# sourceMappingURL=bs-datepicker.store.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/themes/bs/bs-calendar-layout.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsCalendarLayoutComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+
+var BsCalendarLayoutComponent = (function () {
+    function BsCalendarLayoutComponent() {
+    }
+    BsCalendarLayoutComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-calendar-layout',
+                    template: "\n    <!-- current date, will be added in nearest releases -->\n    <bs-current-date title=\"hey there\" *ngIf=\"false\"></bs-current-date>\n\n    <!--navigation-->\n    <div class=\"bs-datepicker-head\">\n      <ng-content select=\"bs-datepicker-navigation-view\"></ng-content>\n    </div>\n\n    <div class=\"bs-datepicker-body\">\n      <ng-content></ng-content>\n    </div>\n\n    <!--timepicker-->\n    <bs-timepicker *ngIf=\"false\"></bs-timepicker>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    BsCalendarLayoutComponent.ctorParameters = function () { return []; };
+    return BsCalendarLayoutComponent;
+}());
+
+//# sourceMappingURL=bs-calendar-layout.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/themes/bs/bs-current-date-view.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsCurrentDateViewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+
+var BsCurrentDateViewComponent = (function () {
+    function BsCurrentDateViewComponent() {
+    }
+    BsCurrentDateViewComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-current-date',
+                    template: "<div class=\"current-timedate\"><span>{{ title }}</span></div>"
+                },] },
+    ];
+    /** @nocollapse */
+    BsCurrentDateViewComponent.ctorParameters = function () { return []; };
+    BsCurrentDateViewComponent.propDecorators = {
+        'title': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    };
+    return BsCurrentDateViewComponent;
+}());
+
+//# sourceMappingURL=bs-current-date-view.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/themes/bs/bs-custom-dates-view.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsCustomDatesViewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+
+var BsCustomDatesViewComponent = (function () {
+    function BsCustomDatesViewComponent() {
+    }
+    BsCustomDatesViewComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-custom-date-view',
+                    template: "\n    <div class=\"bs-datepicker-predefined-btns\">\n      <button *ngFor=\"let range of ranges\">{{ range.label }}</button>\n      <button *ngIf=\"isCustomRangeShown\">Custom Range</button>\n    </div>\n  ",
+                    changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
+                },] },
+    ];
+    /** @nocollapse */
+    BsCustomDatesViewComponent.ctorParameters = function () { return []; };
+    BsCustomDatesViewComponent.propDecorators = {
+        'isCustomRangeShown': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'ranges': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    };
+    return BsCustomDatesViewComponent;
+}());
+
+//# sourceMappingURL=bs-custom-dates-view.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/themes/bs/bs-datepicker-container.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDatepickerContainerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_bs_datepicker_container__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/base/bs-datepicker-container.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bs_datepicker_config__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.config.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__reducer_bs_datepicker_actions__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.actions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__reducer_bs_datepicker_effects__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.effects.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__reducer_bs_datepicker_store__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.store.js");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+
+
+var BsDatepickerContainerComponent = (function (_super) {
+    __extends(BsDatepickerContainerComponent, _super);
+    function BsDatepickerContainerComponent(_config, _store, _actions, _effects) {
+        var _this = _super.call(this) || this;
+        _this._config = _config;
+        _this._store = _store;
+        _this._actions = _actions;
+        _this.valueChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        _this._subs = [];
+        _this._effects = _effects;
+        return _this;
+    }
+    Object.defineProperty(BsDatepickerContainerComponent.prototype, "value", {
+        set: function (value) {
+            this._effects.setValue(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BsDatepickerContainerComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.containerClass = this._config.containerClass;
+        this._effects
+            .init(this._store)
+            .setOptions(this._config)
+            .setBindings(this)
+            .setEventHandlers(this)
+            .registerDatepickerSideEffects();
+        // todo: move it somewhere else
+        // on selected date change
+        this._subs.push(this._store
+            .select(function (state) { return state.selectedDate; })
+            .subscribe(function (date) { return _this.valueChange.emit(date); }));
+    };
+    BsDatepickerContainerComponent.prototype.daySelectHandler = function (day) {
+        if (day.isOtherMonth || day.isDisabled) {
+            return;
+        }
+        this._store.dispatch(this._actions.select(day.date));
+    };
+    BsDatepickerContainerComponent.prototype.ngOnDestroy = function () {
+        for (var _i = 0, _a = this._subs; _i < _a.length; _i++) {
+            var sub = _a[_i];
+            sub.unsubscribe();
+        }
+        this._effects.destroy();
+    };
+    BsDatepickerContainerComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-datepicker-container',
+                    providers: [__WEBPACK_IMPORTED_MODULE_5__reducer_bs_datepicker_store__["a" /* BsDatepickerStore */], __WEBPACK_IMPORTED_MODULE_4__reducer_bs_datepicker_effects__["a" /* BsDatepickerEffects */]],
+                    template: "<!-- days calendar view mode --> <div class=\"bs-datepicker\" [ngClass]=\"containerClass\" *ngIf=\"viewMode | async\"> <div class=\"bs-datepicker-container\"> <!--calendars--> <div class=\"bs-calendar-container\" [ngSwitch]=\"viewMode | async\"> <!--days calendar--> <div *ngSwitchCase=\"'day'\"> <bs-days-calendar-view *ngFor=\"let calendar of (daysCalendar | async)\" [class.bs-datepicker-multiple]=\"(daysCalendar | async).length > 1\" [calendar]=\"calendar\" [options]=\"options | async\" (onNavigate)=\"navigateTo($event)\" (onViewMode)=\"setViewMode($event)\" (onHover)=\"dayHoverHandler($event)\" (onSelect)=\"daySelectHandler($event)\" ></bs-days-calendar-view> </div> <!--months calendar--> <div *ngSwitchCase=\"'month'\"> <bs-month-calendar-view *ngFor=\"let calendar of (monthsCalendar | async)\" [class.bs-datepicker-multiple]=\"(daysCalendar | async).length > 1\" [calendar]=\"calendar\" (onNavigate)=\"navigateTo($event)\" (onViewMode)=\"setViewMode($event)\" (onHover)=\"monthHoverHandler($event)\" (onSelect)=\"monthSelectHandler($event)\" ></bs-month-calendar-view> </div> <!--years calendar--> <div *ngSwitchCase=\"'year'\"> <bs-years-calendar-view *ngFor=\"let calendar of (yearsCalendar | async)\" [class.bs-datepicker-multiple]=\"(daysCalendar | async).length > 1\" [calendar]=\"calendar\" (onNavigate)=\"navigateTo($event)\" (onViewMode)=\"setViewMode($event)\" (onHover)=\"yearHoverHandler($event)\" (onSelect)=\"yearSelectHandler($event)\" ></bs-years-calendar-view> </div> </div> <!--applycancel buttons--> <div class=\"bs-datepicker-buttons\" *ngIf=\"false\"> <button class=\"btn btn-success\">Apply</button> <button class=\"btn btn-default\">Cancel</button> </div> </div> <!--custom dates or date ranges picker--> <div class=\"bs-datepicker-custom-range\" *ngIf=\"false\"> <bs-custom-date-view [ranges]=\"_customRangesFish\"></bs-custom-date-view> </div> </div> ",
+                    host: {
+                        '(click)': '_stopPropagation($event)',
+                        style: 'position: absolute; display: block;'
+                    }
+                },] },
+    ];
+    /** @nocollapse */
+    BsDatepickerContainerComponent.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_2__bs_datepicker_config__["a" /* BsDatepickerConfig */], },
+        { type: __WEBPACK_IMPORTED_MODULE_5__reducer_bs_datepicker_store__["a" /* BsDatepickerStore */], },
+        { type: __WEBPACK_IMPORTED_MODULE_3__reducer_bs_datepicker_actions__["a" /* BsDatepickerActions */], },
+        { type: __WEBPACK_IMPORTED_MODULE_4__reducer_bs_datepicker_effects__["a" /* BsDatepickerEffects */], },
+    ]; };
+    return BsDatepickerContainerComponent;
+}(__WEBPACK_IMPORTED_MODULE_1__base_bs_datepicker_container__["a" /* BsDatepickerAbstractComponent */]));
+
+//# sourceMappingURL=bs-datepicker-container.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/themes/bs/bs-datepicker-day-decorator.directive.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDatepickerDayDecoratorComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+
+var BsDatepickerDayDecoratorComponent = (function () {
+    function BsDatepickerDayDecoratorComponent() {
+    }
+    BsDatepickerDayDecoratorComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: '[bsDatepickerDayDecorator]',
+                    changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush,
+                    host: {
+                        '[class.disabled]': 'day.isDisabled',
+                        '[class.is-highlighted]': 'day.isHovered',
+                        '[class.is-other-month]': 'day.isOtherMonth',
+                        '[class.in-range]': 'day.isInRange',
+                        '[class.select-start]': 'day.isSelectionStart',
+                        '[class.select-end]': 'day.isSelectionEnd',
+                        '[class.selected]': 'day.isSelected'
+                    },
+                    template: "{{ day.label }}"
+                },] },
+    ];
+    /** @nocollapse */
+    BsDatepickerDayDecoratorComponent.ctorParameters = function () { return []; };
+    BsDatepickerDayDecoratorComponent.propDecorators = {
+        'day': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+    };
+    return BsDatepickerDayDecoratorComponent;
+}());
+
+//# sourceMappingURL=bs-datepicker-day-decorator.directive.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/themes/bs/bs-datepicker-navigation-view.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDatepickerNavigationViewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_index__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/models/index.js");
+
+
+var BsDatepickerNavigationViewComponent = (function () {
+    function BsDatepickerNavigationViewComponent() {
+        this.onNavigate = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onViewMode = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+    }
+    BsDatepickerNavigationViewComponent.prototype.navTo = function (down) {
+        this.onNavigate.emit(down
+            ? __WEBPACK_IMPORTED_MODULE_1__models_index__["a" /* BsNavigationDirection */].DOWN
+            : __WEBPACK_IMPORTED_MODULE_1__models_index__["a" /* BsNavigationDirection */].UP);
+    };
+    BsDatepickerNavigationViewComponent.prototype.view = function (viewMode) {
+        this.onViewMode.emit(viewMode);
+    };
+    BsDatepickerNavigationViewComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-datepicker-navigation-view',
+                    changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush,
+                    template: "\n    <button class=\"previous\"\n            [disabled]=\"calendar.disableLeftArrow\"\n            [style.visibility]=\"calendar.hideLeftArrow ? 'hidden' : 'visible'\"\n            (click)=\"navTo(true)\"><span>&lsaquo;</span>\n    </button>\n\n    <button class=\"current\"\n            *ngIf=\"calendar.monthTitle\"\n            (click)=\"view('month')\"\n    ><span>{{ calendar.monthTitle }}</span>\n    </button>\n\n    <button class=\"current\" (click)=\"view('year')\"\n    ><span>{{ calendar.yearTitle }}</span></button>\n\n    <button class=\"next\"\n            [disabled]=\"calendar.disableRightArrow\"\n            [style.visibility]=\"calendar.hideRightArrow ? 'hidden' : 'visible'\"\n            (click)=\"navTo(false)\"><span>&rsaquo;</span>\n    </button>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    BsDatepickerNavigationViewComponent.ctorParameters = function () { return []; };
+    BsDatepickerNavigationViewComponent.propDecorators = {
+        'calendar': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'onNavigate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'onViewMode': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+    };
+    return BsDatepickerNavigationViewComponent;
+}());
+
+//# sourceMappingURL=bs-datepicker-navigation-view.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/themes/bs/bs-daterangepicker-container.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDaterangepickerContainerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__base_bs_datepicker_container__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/base/bs-datepicker-container.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bs_datepicker_config__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/bs-datepicker.config.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__reducer_bs_datepicker_actions__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.actions.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__reducer_bs_datepicker_effects__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.effects.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__reducer_bs_datepicker_store__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/reducer/bs-datepicker.store.js");
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+
+
+
+
+
+
+var BsDaterangepickerContainerComponent = (function (_super) {
+    __extends(BsDaterangepickerContainerComponent, _super);
+    function BsDaterangepickerContainerComponent(_config, _store, _actions, _effects) {
+        var _this = _super.call(this) || this;
+        _this._config = _config;
+        _this._store = _store;
+        _this._actions = _actions;
+        _this.valueChange = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        _this._rangeStack = [];
+        _this._subs = [];
+        _this._effects = _effects;
+        return _this;
+    }
+    Object.defineProperty(BsDaterangepickerContainerComponent.prototype, "value", {
+        set: function (value) {
+            this._effects.setRangeValue(value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    BsDaterangepickerContainerComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.containerClass = this._config.containerClass;
+        this._effects
+            .init(this._store)
+            .setOptions(this._config)
+            .setBindings(this)
+            .setEventHandlers(this)
+            .registerDatepickerSideEffects();
+        // todo: move it somewhere else
+        // on selected date change
+        this._subs.push(this._store
+            .select(function (state) { return state.selectedRange; })
+            .subscribe(function (date) { return _this.valueChange.emit(date); }));
+    };
+    BsDaterangepickerContainerComponent.prototype.daySelectHandler = function (day) {
+        if (day.isOtherMonth || day.isDisabled) {
+            return;
+        }
+        // if only one date is already selected
+        // and user clicks on previous date
+        // start selection from new date
+        // but if new date is after initial one
+        // than finish selection
+        if (this._rangeStack.length === 1) {
+            this._rangeStack = day.date >= this._rangeStack[0]
+                ? [this._rangeStack[0], day.date]
+                : [day.date];
+        }
+        if (this._rangeStack.length === 0) {
+            this._rangeStack = [day.date];
+        }
+        this._store.dispatch(this._actions.selectRange(this._rangeStack));
+        if (this._rangeStack.length === 2) {
+            this._rangeStack = [];
+        }
+    };
+    BsDaterangepickerContainerComponent.prototype.ngOnDestroy = function () {
+        for (var _i = 0, _a = this._subs; _i < _a.length; _i++) {
+            var sub = _a[_i];
+            sub.unsubscribe();
+        }
+        this._effects.destroy();
+    };
+    BsDaterangepickerContainerComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-daterangepicker-container',
+                    providers: [__WEBPACK_IMPORTED_MODULE_5__reducer_bs_datepicker_store__["a" /* BsDatepickerStore */], __WEBPACK_IMPORTED_MODULE_4__reducer_bs_datepicker_effects__["a" /* BsDatepickerEffects */]],
+                    template: "<!-- days calendar view mode --> <div class=\"bs-datepicker\" [ngClass]=\"containerClass\" *ngIf=\"viewMode | async\"> <div class=\"bs-datepicker-container\"> <!--calendars--> <div class=\"bs-calendar-container\" [ngSwitch]=\"viewMode | async\"> <!--days calendar--> <div *ngSwitchCase=\"'day'\"> <bs-days-calendar-view *ngFor=\"let calendar of (daysCalendar | async)\" [class.bs-datepicker-multiple]=\"(daysCalendar | async).length > 1\" [calendar]=\"calendar\" [options]=\"options | async\" (onNavigate)=\"navigateTo($event)\" (onViewMode)=\"setViewMode($event)\" (onHover)=\"dayHoverHandler($event)\" (onSelect)=\"daySelectHandler($event)\" ></bs-days-calendar-view> </div> <!--months calendar--> <div *ngSwitchCase=\"'month'\"> <bs-month-calendar-view *ngFor=\"let calendar of (monthsCalendar | async)\" [class.bs-datepicker-multiple]=\"(daysCalendar | async).length > 1\" [calendar]=\"calendar\" (onNavigate)=\"navigateTo($event)\" (onViewMode)=\"setViewMode($event)\" (onHover)=\"monthHoverHandler($event)\" (onSelect)=\"monthSelectHandler($event)\" ></bs-month-calendar-view> </div> <!--years calendar--> <div *ngSwitchCase=\"'year'\"> <bs-years-calendar-view *ngFor=\"let calendar of (yearsCalendar | async)\" [class.bs-datepicker-multiple]=\"(daysCalendar | async).length > 1\" [calendar]=\"calendar\" (onNavigate)=\"navigateTo($event)\" (onViewMode)=\"setViewMode($event)\" (onHover)=\"yearHoverHandler($event)\" (onSelect)=\"yearSelectHandler($event)\" ></bs-years-calendar-view> </div> </div> <!--applycancel buttons--> <div class=\"bs-datepicker-buttons\" *ngIf=\"false\"> <button class=\"btn btn-success\">Apply</button> <button class=\"btn btn-default\">Cancel</button> </div> </div> <!--custom dates or date ranges picker--> <div class=\"bs-datepicker-custom-range\" *ngIf=\"false\"> <bs-custom-date-view [ranges]=\"_customRangesFish\"></bs-custom-date-view> </div> </div> ",
+                    host: {
+                        '(click)': '_stopPropagation($event)',
+                        style: 'position: absolute; display: block;'
+                    }
+                },] },
+    ];
+    /** @nocollapse */
+    BsDaterangepickerContainerComponent.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_2__bs_datepicker_config__["a" /* BsDatepickerConfig */], },
+        { type: __WEBPACK_IMPORTED_MODULE_5__reducer_bs_datepicker_store__["a" /* BsDatepickerStore */], },
+        { type: __WEBPACK_IMPORTED_MODULE_3__reducer_bs_datepicker_actions__["a" /* BsDatepickerActions */], },
+        { type: __WEBPACK_IMPORTED_MODULE_4__reducer_bs_datepicker_effects__["a" /* BsDatepickerEffects */], },
+    ]; };
+    return BsDaterangepickerContainerComponent;
+}(__WEBPACK_IMPORTED_MODULE_1__base_bs_datepicker_container__["a" /* BsDatepickerAbstractComponent */]));
+
+//# sourceMappingURL=bs-daterangepicker-container.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/themes/bs/bs-days-calendar-view.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsDaysCalendarViewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_index__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/models/index.js");
+
+
+var BsDaysCalendarViewComponent = (function () {
+    function BsDaysCalendarViewComponent() {
+        this.onNavigate = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onViewMode = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onSelect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onHover = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+    }
+    BsDaysCalendarViewComponent.prototype.navigateTo = function (event) {
+        var step = __WEBPACK_IMPORTED_MODULE_1__models_index__["a" /* BsNavigationDirection */].DOWN === event ? -1 : 1;
+        this.onNavigate.emit({ step: { month: step } });
+    };
+    BsDaysCalendarViewComponent.prototype.changeViewMode = function (event) {
+        this.onViewMode.emit(event);
+    };
+    BsDaysCalendarViewComponent.prototype.selectDay = function (event) {
+        this.onSelect.emit(event);
+    };
+    BsDaysCalendarViewComponent.prototype.hoverDay = function (cell, isHovered) {
+        this.onHover.emit({ cell: cell, isHovered: isHovered });
+    };
+    BsDaysCalendarViewComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-days-calendar-view',
+                    // changeDetection: ChangeDetectionStrategy.OnPush,
+                    template: "\n    <bs-calendar-layout>\n      <bs-datepicker-navigation-view\n        [calendar]=\"calendar\"\n        (onNavigate)=\"navigateTo($event)\"\n        (onViewMode)=\"changeViewMode($event)\"\n      ></bs-datepicker-navigation-view>\n\n      <!--days matrix-->\n      <table role=\"grid\" class=\"days weeks\">\n        <thead>\n        <tr>\n          <!--if show weeks-->\n          <th *ngIf=\"options.showWeekNumbers\"></th>\n          <th *ngFor=\"let weekday of calendar.weekdays; let i = index\"\n              aria-label=\"weekday\">{{ calendar.weekdays[i] }}\n          </th>\n        </tr>\n        </thead>\n        <tbody>\n        <tr *ngFor=\"let week of calendar.weeks; let i = index\">\n          <td class=\"week\" *ngIf=\"options.showWeekNumbers\">\n            <span>{{ calendar.weekNumbers[i] }}</span>\n          </td>\n          <td *ngFor=\"let day of week.days\" role=\"gridcell\">\n          <span bsDatepickerDayDecorator\n                [day]=\"day\"\n                (click)=\"selectDay(day)\"\n                (mouseenter)=\"hoverDay(day, true)\"\n                (mouseleave)=\"hoverDay(day, false)\">{{ day.label }}</span>\n          </td>\n        </tr>\n        </tbody>\n      </table>\n\n    </bs-calendar-layout>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    BsDaysCalendarViewComponent.ctorParameters = function () { return []; };
+    BsDaysCalendarViewComponent.propDecorators = {
+        'calendar': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'options': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'onNavigate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'onViewMode': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'onSelect': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'onHover': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+    };
+    return BsDaysCalendarViewComponent;
+}());
+
+//# sourceMappingURL=bs-days-calendar-view.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/themes/bs/bs-months-calendar-view.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsMonthCalendarViewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_index__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/models/index.js");
+
+
+var BsMonthCalendarViewComponent = (function () {
+    function BsMonthCalendarViewComponent() {
+        this.onNavigate = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onViewMode = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onSelect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onHover = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+    }
+    BsMonthCalendarViewComponent.prototype.navigateTo = function (event) {
+        var step = __WEBPACK_IMPORTED_MODULE_1__models_index__["a" /* BsNavigationDirection */].DOWN === event ? -1 : 1;
+        this.onNavigate.emit({ step: { year: step } });
+    };
+    BsMonthCalendarViewComponent.prototype.viewMonth = function (month) {
+        this.onSelect.emit(month);
+    };
+    BsMonthCalendarViewComponent.prototype.hoverMonth = function (cell, isHovered) {
+        this.onHover.emit({ cell: cell, isHovered: isHovered });
+    };
+    BsMonthCalendarViewComponent.prototype.changeViewMode = function (event) {
+        this.onViewMode.emit(event);
+    };
+    BsMonthCalendarViewComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-month-calendar-view',
+                    template: "\n    <bs-calendar-layout>\n      <bs-datepicker-navigation-view\n        [calendar]=\"calendar\"\n        (onNavigate)=\"navigateTo($event)\"\n        (onViewMode)=\"changeViewMode($event)\"\n      ></bs-datepicker-navigation-view>\n\n      <table role=\"grid\" class=\"months\">\n        <tbody>\n        <tr *ngFor=\"let row of calendar.months\">\n          <td *ngFor=\"let month of row\" role=\"gridcell\"\n              (click)=\"viewMonth(month)\"\n              (mouseenter)=\"hoverMonth(month, true)\"\n              (mouseleave)=\"hoverMonth(month, false)\"\n              [class.disabled]=\"month.isDisabled\"\n              [class.is-highlighted]=\"month.isHovered\">\n            <span>{{ month.label }}</span>\n          </td>\n        </tr>\n        </tbody>\n      </table>\n    </bs-calendar-layout>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    BsMonthCalendarViewComponent.ctorParameters = function () { return []; };
+    BsMonthCalendarViewComponent.propDecorators = {
+        'calendar': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'onNavigate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'onViewMode': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'onSelect': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'onHover': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+    };
+    return BsMonthCalendarViewComponent;
+}());
+
+//# sourceMappingURL=bs-months-calendar-view.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/themes/bs/bs-timepicker-view.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsTimepickerViewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+
+var BsTimepickerViewComponent = (function () {
+    function BsTimepickerViewComponent() {
+        this.ampm = 'ok';
+        this.hours = 0;
+        this.minutes = 0;
+    }
+    BsTimepickerViewComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-timepicker',
+                    template: "\n<div class=\"bs-timepicker-container\">\n  <div class=\"bs-timepicker-controls\">\n    <button class=\"bs-decrease\">-</button>\n    <input type=\"text\" [value]=\"hours\" placeholder=\"00\">\n    <button class=\"bs-increase\">+</button>\n  </div>\n  <div class=\"bs-timepicker-controls\">\n    <button class=\"bs-decrease\">-</button>\n    <input type=\"text\" [value]=\"minutes\" placeholder=\"00\">\n    <button class=\"bs-increase\">+</button>\n  </div>\n  <button class=\"switch-time-format\">{{ ampm }}\n    <img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAKCAYAAABi8KSDAAABSElEQVQYV3XQPUvDUBQG4HNuagtVqc6KgouCv6GIuIntYBLB9hcIQpLStCAIV7DYmpTcRWcXqZio3Vwc/UCc/QEqfgyKGbr0I7nS1EiHeqYzPO/h5SD0jaxUZjmSLCB+OFb+UFINFwASAEAdpu9gaGXVyAHHFQBkHpKHc6a9dzECvADyY9sqlAMsK9W0jzxDXqeytr3mhQckxSji27TJJ5/rPmIpwJJq3HrtduriYOurv1a4i1p5HnhkG9OFymi0ReoO05cGwb+ayv4dysVygjeFmsP05f8wpZQ8fsdvfmuY9zjWSNqUtgYFVnOVReILYoBFzdQI5/GGFzNHhGbeZnopDGU29sZbscgldmC99w35VOATTycIMMcBXIfpSVGzZhA6C8hh00conln6VQ9TGgV32OEAKQC4DrBq7CJwd0ggR7Vq/rPrfgB+C3sGypY5DAAAAABJRU5ErkJggg==\" alt=\"\">\n  </button>\n</div>\n"
+                },] },
+    ];
+    /** @nocollapse */
+    BsTimepickerViewComponent.ctorParameters = function () { return []; };
+    return BsTimepickerViewComponent;
+}());
+
+//# sourceMappingURL=bs-timepicker-view.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/themes/bs/bs-years-calendar-view.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BsYearsCalendarViewComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__engine_format_years_calendar__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/engine/format-years-calendar.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_index__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/models/index.js");
+
+
+
+var BsYearsCalendarViewComponent = (function () {
+    function BsYearsCalendarViewComponent() {
+        this.onNavigate = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onViewMode = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onSelect = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+        this.onHover = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["EventEmitter"]();
+    }
+    BsYearsCalendarViewComponent.prototype.navigateTo = function (event) {
+        var step = __WEBPACK_IMPORTED_MODULE_2__models_index__["a" /* BsNavigationDirection */].DOWN === event ? -1 : 1;
+        this.onNavigate.emit({ step: { year: step * __WEBPACK_IMPORTED_MODULE_1__engine_format_years_calendar__["b" /* yearsPerCalendar */] } });
+    };
+    BsYearsCalendarViewComponent.prototype.viewYear = function (year) {
+        this.onSelect.emit(year);
+    };
+    BsYearsCalendarViewComponent.prototype.hoverYear = function (cell, isHovered) {
+        this.onHover.emit({ cell: cell, isHovered: isHovered });
+    };
+    BsYearsCalendarViewComponent.prototype.changeViewMode = function (event) {
+        this.onViewMode.emit(event);
+    };
+    BsYearsCalendarViewComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'bs-years-calendar-view',
+                    template: "\n    <bs-calendar-layout>\n      <bs-datepicker-navigation-view\n        [calendar]=\"calendar\"\n        (onNavigate)=\"navigateTo($event)\"\n        (onViewMode)=\"changeViewMode($event)\"\n      ></bs-datepicker-navigation-view>\n\n      <table role=\"grid\" class=\"years\">\n        <tbody>\n        <tr *ngFor=\"let row of calendar.years\">\n          <td *ngFor=\"let year of row\" role=\"gridcell\"\n              (click)=\"viewYear(year)\"\n              (mouseenter)=\"hoverYear(year, true)\"\n              (mouseleave)=\"hoverYear(year, false)\"\n              [class.disabled]=\"year.isDisabled\"\n              [class.is-highlighted]=\"year.isHovered\">\n            <span>{{ year.label }}</span>\n          </td>\n        </tr>\n        </tbody>\n      </table>\n    </bs-calendar-layout>\n  "
+                },] },
+    ];
+    /** @nocollapse */
+    BsYearsCalendarViewComponent.ctorParameters = function () { return []; };
+    BsYearsCalendarViewComponent.propDecorators = {
+        'calendar': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"] },],
+        'onNavigate': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'onViewMode': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'onSelect': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+        'onHover': [{ type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Output"] },],
+    };
+    return BsYearsCalendarViewComponent;
+}());
+
+//# sourceMappingURL=bs-years-calendar-view.component.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/utils/bs-calendar-utils.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = getStartingDayOfCalendar;
+/* harmony export (immutable) */ __webpack_exports__["b"] = isMonthDisabled;
+/* harmony export (immutable) */ __webpack_exports__["c"] = isYearDisabled;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-getters.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bs_moment_utils_date_setters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-setters.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bs_moment_utils_date_compare__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-compare.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__bs_moment_utils_start_end_of__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/start-end-of.js");
+
+
+
+
+function getStartingDayOfCalendar(date, options) {
+    if (Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__["i" /* isFirstDayOfWeek */])(date, options.firstDayOfWeek)) {
+        return date;
+    }
+    var weekDay = Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_getters__["b" /* getDayOfWeek */])(date);
+    return Object(__WEBPACK_IMPORTED_MODULE_1__bs_moment_utils_date_setters__["c" /* shiftDate */])(date, { day: -weekDay });
+}
+function isMonthDisabled(date, min, max) {
+    var minBound = min && Object(__WEBPACK_IMPORTED_MODULE_2__bs_moment_utils_date_compare__["d" /* isSameOrBefore */])(Object(__WEBPACK_IMPORTED_MODULE_3__bs_moment_utils_start_end_of__["a" /* endOf */])(date, 'month'), min, 'day');
+    var maxBound = max && Object(__WEBPACK_IMPORTED_MODULE_2__bs_moment_utils_date_compare__["c" /* isSameOrAfter */])(Object(__WEBPACK_IMPORTED_MODULE_3__bs_moment_utils_start_end_of__["b" /* startOf */])(date, 'month'), max, 'day');
+    return minBound || maxBound;
+}
+function isYearDisabled(date, min, max) {
+    var minBound = min && Object(__WEBPACK_IMPORTED_MODULE_2__bs_moment_utils_date_compare__["d" /* isSameOrBefore */])(Object(__WEBPACK_IMPORTED_MODULE_3__bs_moment_utils_start_end_of__["a" /* endOf */])(date, 'year'), min, 'day');
+    var maxBound = max && Object(__WEBPACK_IMPORTED_MODULE_2__bs_moment_utils_date_compare__["c" /* isSameOrAfter */])(Object(__WEBPACK_IMPORTED_MODULE_3__bs_moment_utils_start_end_of__["b" /* startOf */])(date, 'year'), max, 'day');
+    return minBound || maxBound;
+}
+//# sourceMappingURL=bs-calendar-utils.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/utils/matrix-utils.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = createMatrix;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_setters__ = __webpack_require__("../../../../ngx-bootstrap/bs-moment/utils/date-setters.js");
+
+function createMatrix(options, fn) {
+    var prevValue = options.initialDate;
+    var matrix = new Array(options.height);
+    for (var i = 0; i < options.height; i++) {
+        matrix[i] = new Array(options.width);
+        for (var j = 0; j < options.width; j++) {
+            matrix[i][j] = fn(prevValue);
+            prevValue = Object(__WEBPACK_IMPORTED_MODULE_0__bs_moment_utils_date_setters__["c" /* shiftDate */])(prevValue, options.shift);
+        }
+    }
+    return matrix;
+}
+//# sourceMappingURL=matrix-utils.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/datepicker/yearpicker.component.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return YearPickerComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_ng2_bootstrap_config__ = __webpack_require__("../../../../ngx-bootstrap/utils/ng2-bootstrap-config.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__datepicker_inner_component__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/datepicker-inner.component.js");
+
+
+
+var YearPickerComponent = (function () {
+    function YearPickerComponent(datePicker) {
+        this.rows = [];
+        this.datePicker = datePicker;
+    }
+    Object.defineProperty(YearPickerComponent.prototype, "isBs4", {
+        get: function () {
+            return !Object(__WEBPACK_IMPORTED_MODULE_1__utils_ng2_bootstrap_config__["a" /* isBs3 */])();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    YearPickerComponent.prototype.ngOnInit = function () {
+        var self = this;
+        this.datePicker.stepYear = { years: this.datePicker.yearRange };
+        this.datePicker.setRefreshViewHandler(function () {
+            var years = new Array(this.yearRange);
+            var date;
+            var start = self.getStartingYear(this.activeDate.getFullYear());
+            for (var i = 0; i < this.yearRange; i++) {
+                date = new Date(start + i, 0, 1);
+                date = this.fixTimeZone(date);
+                years[i] = this.createDateObject(date, this.formatYear);
+                years[i].uid = this.uniqueId + '-' + i;
+            }
+            self.title = [years[0].label,
+                years[this.yearRange - 1].label].join(' - ');
+            self.rows = this.split(years, self.datePicker.yearColLimit);
+        }, 'year');
+        this.datePicker.setCompareHandler(function (date1, date2) {
+            return date1.getFullYear() - date2.getFullYear();
+        }, 'year');
+        this.datePicker.refreshView();
+    };
+    YearPickerComponent.prototype.getStartingYear = function (year) {
+        // todo: parseInt
+        return ((year - 1) / this.datePicker.yearRange) * this.datePicker.yearRange + 1;
+    };
+    YearPickerComponent.decorators = [
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"], args: [{
+                    selector: 'yearpicker',
+                    template: "\n<table *ngIf=\"datePicker.datepickerMode==='year'\" role=\"grid\">\n  <thead>\n    <tr>\n      <th>\n        <button type=\"button\" class=\"btn btn-default btn-sm pull-left float-left\"\n                (click)=\"datePicker.move(-1)\" tabindex=\"-1\">\n          <i class=\"glyphicon glyphicon-chevron-left\"></i>\n        </button>\n      </th>\n      <th [attr.colspan]=\"((datePicker.yearColLimit - 2) <= 0) ? 1 : datePicker.yearColLimit - 2\">\n        <button [id]=\"datePicker.uniqueId + '-title'\" role=\"heading\"\n                type=\"button\" class=\"btn btn-default btn-sm\"\n                (click)=\"datePicker.toggleMode()\"\n                [disabled]=\"datePicker.datepickerMode === datePicker.maxMode\"\n                [ngClass]=\"{disabled: datePicker.datepickerMode === datePicker.maxMode}\" tabindex=\"-1\" style=\"width:100%;\">\n          <strong>{{title}}</strong>\n        </button>\n      </th>\n      <th>\n        <button type=\"button\" class=\"btn btn-default btn-sm pull-right float-right\"\n                (click)=\"datePicker.move(1)\" tabindex=\"-1\">\n          <i class=\"glyphicon glyphicon-chevron-right\"></i>\n        </button>\n      </th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr *ngFor=\"let rowz of rows\">\n      <td *ngFor=\"let dtz of rowz\" class=\"text-center\" role=\"gridcell\">\n        <button type=\"button\" style=\"min-width:100%;\" class=\"btn btn-default\"\n                [ngClass]=\"{'btn-link': isBs4 && !dtz.selected && !datePicker.isActive(dtz), 'btn-info': dtz.selected || (isBs4 && !dtz.selected && datePicker.isActive(dtz)), disabled: dtz.disabled, active: !isBs4 && datePicker.isActive(dtz)}\"\n                [disabled]=\"dtz.disabled\"\n                (click)=\"datePicker.select(dtz.date)\" tabindex=\"-1\">\n          <span [ngClass]=\"{'text-success': isBs4 && dtz.current, 'text-info': !isBs4 && dtz.current}\">{{dtz.label}}</span>\n        </button>\n      </td>\n    </tr>\n  </tbody>\n</table>\n  ",
+                    styles: ["\n    :host .btn-info .text-success {\n      color: #fff !important;\n    }\n  "]
+                },] },
+    ];
+    /** @nocollapse */
+    YearPickerComponent.ctorParameters = function () { return [
+        { type: __WEBPACK_IMPORTED_MODULE_2__datepicker_inner_component__["a" /* DatePickerInnerComponent */], },
+    ]; };
+    return YearPickerComponent;
+}());
+
+//# sourceMappingURL=yearpicker.component.js.map
+
+/***/ }),
+
 /***/ "../../../../ngx-bootstrap/dropdown/bs-dropdown-container.component.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -30008,13 +35496,26 @@ var ContentRef = (function () {
 
 
 var BsDropdownContainerComponent = (function () {
-    function BsDropdownContainerComponent(_state, cd) {
+    function BsDropdownContainerComponent(_state, cd, _renderer, _element) {
         var _this = this;
         this._state = _state;
         this.cd = cd;
+        this._renderer = _renderer;
         this.isOpen = false;
         this._subscription = _state.isOpenChange.subscribe(function (value) {
             _this.isOpen = value;
+            var dropdown = _element.nativeElement.querySelector('.dropdown-menu');
+            if (dropdown) {
+                _this._renderer.setElementClass(dropdown, 'show', true);
+                if (dropdown.classList.contains('dropdown-menu-right')) {
+                    _this._renderer.setElementStyle(dropdown, 'left', 'auto');
+                    _this._renderer.setElementStyle(dropdown, 'right', '0');
+                }
+                if (_this.direction === 'up') {
+                    _this._renderer.setElementStyle(dropdown, 'top', 'auto');
+                    _this._renderer.setElementStyle(dropdown, 'transform', 'translateY(-101%)');
+                }
+            }
             _this.cd.markForCheck();
             _this.cd.detectChanges();
         });
@@ -30043,9 +35544,12 @@ var BsDropdownContainerComponent = (function () {
     BsDropdownContainerComponent.ctorParameters = function () { return [
         { type: __WEBPACK_IMPORTED_MODULE_1__bs_dropdown_state__["a" /* BsDropdownState */], },
         { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Renderer"], },
+        { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"], },
     ]; };
     return BsDropdownContainerComponent;
 }());
+
 //# sourceMappingURL=bs-dropdown-container.component.js.map
 
 /***/ }),
@@ -30080,6 +35584,7 @@ var BsDropdownMenuDirective = (function () {
     ]; };
     return BsDropdownMenuDirective;
 }());
+
 //# sourceMappingURL=bs-dropdown-menu.directive.js.map
 
 /***/ }),
@@ -30154,6 +35659,7 @@ var BsDropdownToggleDirective = (function () {
     };
     return BsDropdownToggleDirective;
 }());
+
 //# sourceMappingURL=bs-dropdown-toggle.directive.js.map
 
 /***/ }),
@@ -30178,6 +35684,7 @@ var BsDropdownConfig = (function () {
     BsDropdownConfig.ctorParameters = function () { return []; };
     return BsDropdownConfig;
 }());
+
 //# sourceMappingURL=bs-dropdown.config.js.map
 
 /***/ }),
@@ -30328,9 +35835,12 @@ var BsDropdownDirective = (function () {
             if (!this._inlinedMenu) {
                 this._state.dropdownMenu
                     .then(function (dropdownMenu) {
-                    _this._inlinedMenu = dropdownMenu.viewContainer.createEmbeddedView(dropdownMenu.templateRef);
+                    _this._dropdown.attachInline(dropdownMenu.viewContainer, dropdownMenu.templateRef);
+                    _this._inlinedMenu = _this._dropdown._inlineViewRef;
+                    _this.addBs4Polyfills();
                 });
             }
+            this.addBs4Polyfills();
             this._isInlineOpen = true;
             this.onShown.emit(true);
             this._state.isOpenChange.emit(true);
@@ -30365,6 +35875,7 @@ var BsDropdownDirective = (function () {
             return;
         }
         if (this._showInline) {
+            this.removeShowClass();
             this._isInlineOpen = false;
             this.onHidden.emit(true);
         }
@@ -30390,6 +35901,39 @@ var BsDropdownDirective = (function () {
             sub.unsubscribe();
         }
         this._dropdown.dispose();
+    };
+    BsDropdownDirective.prototype.addBs4Polyfills = function () {
+        if (!Object(__WEBPACK_IMPORTED_MODULE_6__utils_ng2_bootstrap_config__["a" /* isBs3 */])()) {
+            this.addShowClass();
+            this.checkRightAlignment();
+            this.checkDropup();
+        }
+    };
+    BsDropdownDirective.prototype.addShowClass = function () {
+        if (this._inlinedMenu && this._inlinedMenu.rootNodes[0]) {
+            this._renderer.setElementClass(this._inlinedMenu.rootNodes[0], 'show', true);
+        }
+    };
+    BsDropdownDirective.prototype.removeShowClass = function () {
+        if (this._inlinedMenu && this._inlinedMenu.rootNodes[0]) {
+            this._renderer.setElementClass(this._inlinedMenu.rootNodes[0], 'show', false);
+        }
+    };
+    BsDropdownDirective.prototype.checkRightAlignment = function () {
+        if (this._inlinedMenu && this._inlinedMenu.rootNodes[0]) {
+            var isRightAligned = this._inlinedMenu.rootNodes[0].classList.contains('dropdown-menu-right');
+            this._renderer.setElementStyle(this._inlinedMenu.rootNodes[0], 'left', isRightAligned ? 'auto' : '0');
+            this._renderer.setElementStyle(this._inlinedMenu.rootNodes[0], 'right', isRightAligned ? '0' : 'auto');
+        }
+    };
+    BsDropdownDirective.prototype.checkDropup = function () {
+        if (this._inlinedMenu && this._inlinedMenu.rootNodes[0]) {
+            // a little hack to not break support of bootstrap 4 beta
+            var top_1 = getComputedStyle(this._inlinedMenu.rootNodes[0])['top'];
+            var topAuto = top_1 === 'auto' || top_1 === '100%';
+            this._renderer.setElementStyle(this._inlinedMenu.rootNodes[0], 'top', this.dropup ? 'auto' : '100%');
+            this._renderer.setElementStyle(this._inlinedMenu.rootNodes[0], 'transform', this.dropup && !topAuto ? 'translateY(-101%)' : 'translateY(0)');
+        }
     };
     BsDropdownDirective.decorators = [
         { type: __WEBPACK_IMPORTED_MODULE_0__angular_core__["Directive"], args: [{
@@ -30426,6 +35970,7 @@ var BsDropdownDirective = (function () {
     };
     return BsDropdownDirective;
 }());
+
 //# sourceMappingURL=bs-dropdown.directive.js.map
 
 /***/ }),
@@ -30487,6 +36032,7 @@ var BsDropdownModule = (function () {
     BsDropdownModule.ctorParameters = function () { return []; };
     return BsDropdownModule;
 }());
+
 //# sourceMappingURL=bs-dropdown.module.js.map
 
 /***/ }),
@@ -30516,6 +36062,7 @@ var BsDropdownState = (function () {
     BsDropdownState.ctorParameters = function () { return []; };
     return BsDropdownState;
 }());
+
 //# sourceMappingURL=bs-dropdown.state.js.map
 
 /***/ }),
@@ -30546,6 +36093,113 @@ var BsDropdownState = (function () {
 
 
 //# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/mini-ngrx/state.class.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MiniState; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/BehaviorSubject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_operator_observeOn__ = __webpack_require__("../../../../rxjs/operator/observeOn.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_operator_observeOn___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_operator_observeOn__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_scheduler_queue__ = __webpack_require__("../../../../rxjs/scheduler/queue.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_scheduler_queue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_scheduler_queue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_scan__ = __webpack_require__("../../../../rxjs/operator/scan.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_scan___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_operator_scan__);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * @copyright ngrx
+ */
+
+
+
+
+var MiniState = (function (_super) {
+    __extends(MiniState, _super);
+    function MiniState(_initialState, actionsDispatcher$, reducer) {
+        var _this = _super.call(this, _initialState) || this;
+        var actionInQueue$ = __WEBPACK_IMPORTED_MODULE_1_rxjs_operator_observeOn__["observeOn"].call(actionsDispatcher$, __WEBPACK_IMPORTED_MODULE_2_rxjs_scheduler_queue__["queue"]);
+        var state$ = __WEBPACK_IMPORTED_MODULE_3_rxjs_operator_scan__["scan"].call(actionInQueue$, function (state, action) {
+            if (!action) {
+                return state;
+            }
+            return reducer(state, action);
+        }, _initialState);
+        state$.subscribe(function (value) { return _this.next(value); });
+        return _this;
+    }
+    return MiniState;
+}(__WEBPACK_IMPORTED_MODULE_0_rxjs_BehaviorSubject__["BehaviorSubject"]));
+
+//# sourceMappingURL=state.class.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/mini-ngrx/store.class.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MiniStore; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__ = __webpack_require__("../../../../rxjs/Observable.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_operator_distinctUntilChanged__ = __webpack_require__("../../../../rxjs/operator/distinctUntilChanged.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_operator_distinctUntilChanged___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_operator_distinctUntilChanged__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operator_map__ = __webpack_require__("../../../../rxjs/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operator_map__);
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+/**
+ * @copyright ngrx
+ */
+
+
+
+var MiniStore = (function (_super) {
+    __extends(MiniStore, _super);
+    function MiniStore(_dispatcher, _reducer, state$) {
+        var _this = _super.call(this) || this;
+        _this._dispatcher = _dispatcher;
+        _this._reducer = _reducer;
+        _this.source = state$;
+        return _this;
+    }
+    MiniStore.prototype.select = function (pathOrMapFn) {
+        var mapped$ = __WEBPACK_IMPORTED_MODULE_2_rxjs_operator_map__["map"].call(this, pathOrMapFn);
+        return __WEBPACK_IMPORTED_MODULE_1_rxjs_operator_distinctUntilChanged__["distinctUntilChanged"].call(mapped$);
+    };
+    MiniStore.prototype.lift = function (operator) {
+        var store = new MiniStore(this._dispatcher, this._reducer, this);
+        store.operator = operator;
+        return store;
+    };
+    MiniStore.prototype.dispatch = function (action) { this._dispatcher.next(action); };
+    MiniStore.prototype.next = function (action) { this._dispatcher.next(action); };
+    MiniStore.prototype.error = function (err) { this._dispatcher.error(err); };
+    MiniStore.prototype.complete = function () { };
+    return MiniStore;
+}(__WEBPACK_IMPORTED_MODULE_0_rxjs_Observable__["Observable"]));
+
+//# sourceMappingURL=store.class.js.map
 
 /***/ }),
 
@@ -30643,6 +36297,7 @@ var Positioning = (function () {
     };
     Positioning.prototype.positionElements = function (hostElement, targetElement, placement, appendToBody) {
         var hostElPosition = appendToBody ? this.offset(hostElement, false) : this.position(hostElement, false);
+        var targetElStyles = this.getAllStyles(targetElement);
         var shiftWidth = {
             left: hostElPosition.left,
             center: hostElPosition.left + hostElPosition.width / 2 - targetElement.offsetWidth / 2,
@@ -30664,9 +36319,17 @@ var Positioning = (function () {
             left: 0,
             right: targetElBCR.width || targetElement.offsetWidth
         };
+        if (placementPrimary === "auto") {
+            var newPlacementPrimary = this.autoPosition(targetElPosition, hostElPosition, targetElement, placementSecondary);
+            if (!newPlacementPrimary)
+                newPlacementPrimary = this.autoPosition(targetElPosition, hostElPosition, targetElement);
+            if (newPlacementPrimary)
+                placementPrimary = newPlacementPrimary;
+            targetElement.classList.add(placementPrimary);
+        }
         switch (placementPrimary) {
             case 'top':
-                targetElPosition.top = hostElPosition.top - targetElement.offsetHeight;
+                targetElPosition.top = hostElPosition.top - (targetElement.offsetHeight + parseFloat(targetElStyles.marginBottom));
                 targetElPosition.bottom += hostElPosition.top - targetElement.offsetHeight;
                 targetElPosition.left = shiftWidth[placementSecondary];
                 targetElPosition.right += shiftWidth[placementSecondary];
@@ -30680,7 +36343,7 @@ var Positioning = (function () {
             case 'left':
                 targetElPosition.top = shiftHeight[placementSecondary];
                 targetElPosition.bottom += shiftHeight[placementSecondary];
-                targetElPosition.left = hostElPosition.left - targetElement.offsetWidth;
+                targetElPosition.left = hostElPosition.left - (targetElement.offsetWidth + parseFloat(targetElStyles.marginRight));
                 targetElPosition.right += hostElPosition.left - targetElement.offsetWidth;
                 break;
             case 'right':
@@ -30696,7 +36359,23 @@ var Positioning = (function () {
         targetElPosition.right = Math.round(targetElPosition.right);
         return targetElPosition;
     };
-    Positioning.prototype.getStyle = function (element, prop) { return window.getComputedStyle(element)[prop]; };
+    Positioning.prototype.autoPosition = function (targetElPosition, hostElPosition, targetElement, preferredPosition) {
+        if ((!preferredPosition || preferredPosition === "right") && targetElPosition.left + hostElPosition.left - targetElement.offsetWidth < 0) {
+            return "right";
+        }
+        else if ((!preferredPosition || preferredPosition === "top") && targetElPosition.bottom + hostElPosition.bottom + targetElement.offsetHeight > window.innerHeight) {
+            return "top";
+        }
+        else if ((!preferredPosition || preferredPosition === "bottom") && targetElPosition.top + hostElPosition.top - targetElement.offsetHeight < 0) {
+            return "bottom";
+        }
+        else if ((!preferredPosition || preferredPosition === "left") && targetElPosition.right + hostElPosition.right + targetElement.offsetWidth > window.innerWidth) {
+            return "left";
+        }
+        return null;
+    };
+    Positioning.prototype.getAllStyles = function (element) { return window.getComputedStyle(element); };
+    Positioning.prototype.getStyle = function (element, prop) { return this.getAllStyles(element)[prop]; };
     Positioning.prototype.isStaticPositioned = function (element) {
         return (this.getStyle(element, 'position') || 'static') === 'static';
     };
@@ -30709,6 +36388,7 @@ var Positioning = (function () {
     };
     return Positioning;
 }());
+
 var positionService = new Positioning();
 function positionElements(hostElement, targetElement, placement, appendToBody) {
     var pos = positionService.positionElements(hostElement, targetElement, placement, appendToBody);
@@ -30752,6 +36432,7 @@ var PositioningService = (function () {
     PositioningService.ctorParameters = function () { return []; };
     return PositioningService;
 }());
+
 //# sourceMappingURL=positioning.service.js.map
 
 /***/ }),
@@ -30820,6 +36501,7 @@ var NgTranscludeDirective = (function () {
     };
     return NgTranscludeDirective;
 }());
+
 //# sourceMappingURL=ng-transclude.directive.js.map
 
 /***/ }),
@@ -30848,6 +36530,7 @@ var TabHeadingDirective = (function () {
     ]; };
     return TabHeadingDirective;
 }());
+
 //# sourceMappingURL=tab-heading.directive.js.map
 
 /***/ }),
@@ -30899,11 +36582,14 @@ var TabDirective = (function () {
         },
         set: function (active) {
             var _this = this;
+            if (this._active === active) {
+                return;
+            }
             if (this.disabled && active || !active) {
-                if (!active) {
+                if (this._active && !active) {
+                    this.deselect.emit(this);
                     this._active = active;
                 }
-                this.deselect.emit(this);
                 return;
             }
             this._active = active;
@@ -30946,6 +36632,7 @@ var TabDirective = (function () {
     };
     return TabDirective;
 }());
+
 //# sourceMappingURL=tab.directive.js.map
 
 /***/ }),
@@ -30989,6 +36676,7 @@ var TabsModule = (function () {
     TabsModule.ctorParameters = function () { return []; };
     return TabsModule;
 }());
+
 //# sourceMappingURL=tabs.module.js.map
 
 /***/ }),
@@ -31105,11 +36793,11 @@ var TabsetComponent = (function () {
     TabsetComponent.prototype.setClassMap = function () {
         this.classMap = (_a = {
                 'nav-stacked': this.vertical,
+                'flex-column': this.vertical,
                 'nav-justified': this.justified
             },
             _a["nav-" + this.type] = true,
-            _a
-        );
+            _a);
         var _a;
     };
     TabsetComponent.decorators = [
@@ -31130,6 +36818,7 @@ var TabsetComponent = (function () {
     };
     return TabsetComponent;
 }());
+
 //# sourceMappingURL=tabset.component.js.map
 
 /***/ }),
@@ -31153,6 +36842,7 @@ var TabsetConfig = (function () {
     TabsetConfig.ctorParameters = function () { return []; };
     return TabsetConfig;
 }());
+
 //# sourceMappingURL=tabset.config.js.map
 
 /***/ }),
@@ -31208,7 +36898,34 @@ var EventListener = win['EventListener'];
 /* harmony export (immutable) */ __webpack_exports__["a"] = isBs3;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__facade_browser__ = __webpack_require__("../../../../ngx-bootstrap/utils/facade/browser.js");
 
+var guessedVersion;
+function _guessBsVersion() {
+    if (typeof document === 'undefined') {
+        return null;
+    }
+    var spanEl = document.createElement('span');
+    spanEl.innerText = 'test bs version';
+    document.body.appendChild(spanEl);
+    spanEl.classList.add('d-none');
+    var rect = spanEl.getBoundingClientRect();
+    document.body.removeChild(spanEl);
+    if (!rect) {
+        return 'bs3';
+    }
+    return rect.top === 0 ? 'bs4' : 'bs3';
+}
+// todo: in ngx-bootstrap, bs4 will became a default one
 function isBs3() {
+    if (typeof __WEBPACK_IMPORTED_MODULE_0__facade_browser__["a" /* window */] === 'undefined') {
+        return true;
+    }
+    if (typeof __WEBPACK_IMPORTED_MODULE_0__facade_browser__["a" /* window */].__theme === 'undefined') {
+        if (guessedVersion) {
+            return guessedVersion === 'bs3';
+        }
+        guessedVersion = _guessBsVersion();
+        return guessedVersion === 'bs3';
+    }
     return __WEBPACK_IMPORTED_MODULE_0__facade_browser__["a" /* window */].__theme !== 'bs4';
 }
 //# sourceMappingURL=ng2-bootstrap-config.js.map
@@ -31232,6 +36949,7 @@ var Trigger = (function () {
     Trigger.prototype.isManual = function () { return this.open === 'manual' || this.close === 'manual'; };
     return Trigger;
 }());
+
 //# sourceMappingURL=trigger.class.js.map
 
 /***/ }),
@@ -31241,7 +36959,9 @@ var Trigger = (function () {
 
 "use strict";
 /* unused harmony export parseTriggers */
-/* harmony export (immutable) */ __webpack_exports__["a"] = listenToTriggers;
+/* unused harmony export listenToTriggers */
+/* harmony export (immutable) */ __webpack_exports__["a"] = listenToTriggersV2;
+/* harmony export (immutable) */ __webpack_exports__["b"] = registerOutsideClick;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__trigger_class__ = __webpack_require__("../../../../ngx-bootstrap/utils/trigger.class.js");
 
 var DEFAULT_ALIASES = {
@@ -31285,7 +37005,72 @@ function listenToTriggers(renderer, target, triggers, showFn, hideFn, toggleFn) 
     });
     return function () { listeners.forEach(function (unsubscribeFn) { return unsubscribeFn(); }); };
 }
+function listenToTriggersV2(renderer, options) {
+    var parsedTriggers = parseTriggers(options.triggers);
+    var target = options.target;
+    // do nothing
+    if (parsedTriggers.length === 1 && parsedTriggers[0].isManual()) {
+        return Function.prototype;
+    }
+    // all listeners
+    var listeners = [];
+    // lazy listeners registration
+    var _registerHide = [];
+    var registerHide = function () {
+        // add hide listeners to unregister array
+        _registerHide.forEach(function (fn) { return listeners.push(fn()); });
+        // register hide events only once
+        _registerHide.length = 0;
+    };
+    // register open\close\toggle listeners
+    parsedTriggers.forEach(function (trigger) {
+        var useToggle = trigger.open === trigger.close;
+        var showFn = useToggle ? options.toggle : options.show;
+        if (!useToggle) {
+            _registerHide.push(function () { return renderer.listen(target, trigger.close, options.hide); });
+        }
+        listeners.push(renderer.listen(target, trigger.open, function () { return showFn(registerHide); }));
+    });
+    return function () {
+        listeners.forEach(function (unsubscribeFn) { return unsubscribeFn(); });
+    };
+}
+function registerOutsideClick(renderer, options) {
+    if (!options.outsideClick) {
+        return Function.prototype;
+    }
+    return renderer.listenGlobal('document', 'click', function (event) {
+        if (options.target && options.target.contains(event.target)) {
+            return;
+        }
+        if (options.targets && options.targets.some(function (target) { return target.contains(event.target); })) {
+            return;
+        }
+        options.hide();
+    });
+}
 //# sourceMappingURL=triggers.js.map
+
+/***/ }),
+
+/***/ "../../../../ngx-bootstrap/utils/warn-once.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = warnOnce;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+
+var _messagesHash = {};
+var _hideMsg = typeof console === 'undefined' || !console.warn;
+function warnOnce(msg) {
+    if (!Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["isDevMode"])() || _hideMsg || msg in _messagesHash) {
+        return;
+    }
+    _messagesHash[msg] = true;
+    /*tslint:disable-next-line*/
+    console.warn(msg);
+}
+//# sourceMappingURL=warn-once.js.map
 
 /***/ }),
 
@@ -31834,6 +37619,62 @@ var OuterSubscriber = (function (_super) {
 }(Subscriber_1.Subscriber));
 exports.OuterSubscriber = OuterSubscriber;
 //# sourceMappingURL=OuterSubscriber.js.map
+
+/***/ }),
+
+/***/ "../../../../rxjs/Scheduler.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+/**
+ * An execution context and a data structure to order tasks and schedule their
+ * execution. Provides a notion of (potentially virtual) time, through the
+ * `now()` getter method.
+ *
+ * Each unit of work in a Scheduler is called an {@link Action}.
+ *
+ * ```ts
+ * class Scheduler {
+ *   now(): number;
+ *   schedule(work, delay?, state?): Subscription;
+ * }
+ * ```
+ *
+ * @class Scheduler
+ */
+var Scheduler = (function () {
+    function Scheduler(SchedulerAction, now) {
+        if (now === void 0) { now = Scheduler.now; }
+        this.SchedulerAction = SchedulerAction;
+        this.now = now;
+    }
+    /**
+     * Schedules a function, `work`, for execution. May happen at some point in
+     * the future, according to the `delay` parameter, if specified. May be passed
+     * some context object, `state`, which will be passed to the `work` function.
+     *
+     * The given arguments will be processed an stored as an Action object in a
+     * queue of actions.
+     *
+     * @param {function(state: ?T): ?Subscription} work A function representing a
+     * task, or some unit of work to be executed by the Scheduler.
+     * @param {number} [delay] Time to wait before executing the work, where the
+     * time unit is implicit and defined by the Scheduler itself.
+     * @param {T} [state] Some contextual data that the `work` function uses when
+     * called by the Scheduler.
+     * @return {Subscription} A subscription in order to be able to unsubscribe
+     * the scheduled work.
+     */
+    Scheduler.prototype.schedule = function (work, delay, state) {
+        if (delay === void 0) { delay = 0; }
+        return new this.SchedulerAction(this, work).schedule(state, delay);
+    };
+    Scheduler.now = Date.now ? Date.now : function () { return +new Date(); };
+    return Scheduler;
+}());
+exports.Scheduler = Scheduler;
+//# sourceMappingURL=Scheduler.js.map
 
 /***/ }),
 
@@ -33024,6 +38865,125 @@ exports.EmptyObservable = EmptyObservable;
 
 /***/ }),
 
+/***/ "../../../../rxjs/observable/ForkJoinObservable.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Observable_1 = __webpack_require__("../../../../rxjs/Observable.js");
+var EmptyObservable_1 = __webpack_require__("../../../../rxjs/observable/EmptyObservable.js");
+var isArray_1 = __webpack_require__("../../../../rxjs/util/isArray.js");
+var subscribeToResult_1 = __webpack_require__("../../../../rxjs/util/subscribeToResult.js");
+var OuterSubscriber_1 = __webpack_require__("../../../../rxjs/OuterSubscriber.js");
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @extends {Ignored}
+ * @hide true
+ */
+var ForkJoinObservable = (function (_super) {
+    __extends(ForkJoinObservable, _super);
+    function ForkJoinObservable(sources, resultSelector) {
+        _super.call(this);
+        this.sources = sources;
+        this.resultSelector = resultSelector;
+    }
+    /* tslint:enable:max-line-length */
+    /**
+     * @param sources
+     * @return {any}
+     * @static true
+     * @name forkJoin
+     * @owner Observable
+     */
+    ForkJoinObservable.create = function () {
+        var sources = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            sources[_i - 0] = arguments[_i];
+        }
+        if (sources === null || arguments.length === 0) {
+            return new EmptyObservable_1.EmptyObservable();
+        }
+        var resultSelector = null;
+        if (typeof sources[sources.length - 1] === 'function') {
+            resultSelector = sources.pop();
+        }
+        // if the first and only other argument besides the resultSelector is an array
+        // assume it's been called with `forkJoin([obs1, obs2, obs3], resultSelector)`
+        if (sources.length === 1 && isArray_1.isArray(sources[0])) {
+            sources = sources[0];
+        }
+        if (sources.length === 0) {
+            return new EmptyObservable_1.EmptyObservable();
+        }
+        return new ForkJoinObservable(sources, resultSelector);
+    };
+    ForkJoinObservable.prototype._subscribe = function (subscriber) {
+        return new ForkJoinSubscriber(subscriber, this.sources, this.resultSelector);
+    };
+    return ForkJoinObservable;
+}(Observable_1.Observable));
+exports.ForkJoinObservable = ForkJoinObservable;
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var ForkJoinSubscriber = (function (_super) {
+    __extends(ForkJoinSubscriber, _super);
+    function ForkJoinSubscriber(destination, sources, resultSelector) {
+        _super.call(this, destination);
+        this.sources = sources;
+        this.resultSelector = resultSelector;
+        this.completed = 0;
+        this.haveValues = 0;
+        var len = sources.length;
+        this.total = len;
+        this.values = new Array(len);
+        for (var i = 0; i < len; i++) {
+            var source = sources[i];
+            var innerSubscription = subscribeToResult_1.subscribeToResult(this, source, null, i);
+            if (innerSubscription) {
+                innerSubscription.outerIndex = i;
+                this.add(innerSubscription);
+            }
+        }
+    }
+    ForkJoinSubscriber.prototype.notifyNext = function (outerValue, innerValue, outerIndex, innerIndex, innerSub) {
+        this.values[outerIndex] = innerValue;
+        if (!innerSub._hasValue) {
+            innerSub._hasValue = true;
+            this.haveValues++;
+        }
+    };
+    ForkJoinSubscriber.prototype.notifyComplete = function (innerSub) {
+        var destination = this.destination;
+        var _a = this, haveValues = _a.haveValues, resultSelector = _a.resultSelector, values = _a.values;
+        var len = values.length;
+        if (!innerSub._hasValue) {
+            destination.complete();
+            return;
+        }
+        this.completed++;
+        if (this.completed !== len) {
+            return;
+        }
+        if (haveValues === len) {
+            var value = resultSelector ? resultSelector.apply(this, values) : values;
+            destination.next(value);
+        }
+        destination.complete();
+    };
+    return ForkJoinSubscriber;
+}(OuterSubscriber_1.OuterSubscriber));
+//# sourceMappingURL=ForkJoinObservable.js.map
+
+/***/ }),
+
 /***/ "../../../../rxjs/observable/FromObservable.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -33516,6 +39476,17 @@ exports.ScalarObservable = ScalarObservable;
 
 /***/ }),
 
+/***/ "../../../../rxjs/observable/forkJoin.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var ForkJoinObservable_1 = __webpack_require__("../../../../rxjs/observable/ForkJoinObservable.js");
+exports.forkJoin = ForkJoinObservable_1.ForkJoinObservable.create;
+//# sourceMappingURL=forkJoin.js.map
+
+/***/ }),
+
 /***/ "../../../../rxjs/observable/from.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -33817,6 +39788,121 @@ function concatMap(project, resultSelector) {
 }
 exports.concatMap = concatMap;
 //# sourceMappingURL=concatMap.js.map
+
+/***/ }),
+
+/***/ "../../../../rxjs/operator/distinctUntilChanged.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Subscriber_1 = __webpack_require__("../../../../rxjs/Subscriber.js");
+var tryCatch_1 = __webpack_require__("../../../../rxjs/util/tryCatch.js");
+var errorObject_1 = __webpack_require__("../../../../rxjs/util/errorObject.js");
+/* tslint:enable:max-line-length */
+/**
+ * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
+ *
+ * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
+ *
+ * If a comparator function is not provided, an equality check is used by default.
+ *
+ * @example <caption>A simple example with numbers</caption>
+ * Observable.of(1, 1, 2, 2, 2, 1, 1, 2, 3, 3, 4)
+ *   .distinctUntilChanged()
+ *   .subscribe(x => console.log(x)); // 1, 2, 1, 2, 3, 4
+ *
+ * @example <caption>An example using a compare function</caption>
+ * interface Person {
+ *    age: number,
+ *    name: string
+ * }
+ *
+ * Observable.of<Person>(
+ *     { age: 4, name: 'Foo'},
+ *     { age: 7, name: 'Bar'},
+ *     { age: 5, name: 'Foo'})
+ *     { age: 6, name: 'Foo'})
+ *     .distinctUntilChanged((p: Person, q: Person) => p.name === q.name)
+ *     .subscribe(x => console.log(x));
+ *
+ * // displays:
+ * // { age: 4, name: 'Foo' }
+ * // { age: 7, name: 'Bar' }
+ * // { age: 5, name: 'Foo' }
+ *
+ * @see {@link distinct}
+ * @see {@link distinctUntilKeyChanged}
+ *
+ * @param {function} [compare] Optional comparison function called to test if an item is distinct from the previous item in the source.
+ * @return {Observable} An Observable that emits items from the source Observable with distinct values.
+ * @method distinctUntilChanged
+ * @owner Observable
+ */
+function distinctUntilChanged(compare, keySelector) {
+    return this.lift(new DistinctUntilChangedOperator(compare, keySelector));
+}
+exports.distinctUntilChanged = distinctUntilChanged;
+var DistinctUntilChangedOperator = (function () {
+    function DistinctUntilChangedOperator(compare, keySelector) {
+        this.compare = compare;
+        this.keySelector = keySelector;
+    }
+    DistinctUntilChangedOperator.prototype.call = function (subscriber, source) {
+        return source.subscribe(new DistinctUntilChangedSubscriber(subscriber, this.compare, this.keySelector));
+    };
+    return DistinctUntilChangedOperator;
+}());
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var DistinctUntilChangedSubscriber = (function (_super) {
+    __extends(DistinctUntilChangedSubscriber, _super);
+    function DistinctUntilChangedSubscriber(destination, compare, keySelector) {
+        _super.call(this, destination);
+        this.keySelector = keySelector;
+        this.hasKey = false;
+        if (typeof compare === 'function') {
+            this.compare = compare;
+        }
+    }
+    DistinctUntilChangedSubscriber.prototype.compare = function (x, y) {
+        return x === y;
+    };
+    DistinctUntilChangedSubscriber.prototype._next = function (value) {
+        var keySelector = this.keySelector;
+        var key = value;
+        if (keySelector) {
+            key = tryCatch_1.tryCatch(this.keySelector)(value);
+            if (key === errorObject_1.errorObject) {
+                return this.destination.error(errorObject_1.errorObject.e);
+            }
+        }
+        var result = false;
+        if (this.hasKey) {
+            result = tryCatch_1.tryCatch(this.compare)(this.key, key);
+            if (result === errorObject_1.errorObject) {
+                return this.destination.error(errorObject_1.errorObject.e);
+            }
+        }
+        else {
+            this.hasKey = true;
+        }
+        if (Boolean(result) === false) {
+            this.key = key;
+            this.destination.next(value);
+        }
+    };
+    return DistinctUntilChangedSubscriber;
+}(Subscriber_1.Subscriber));
+//# sourceMappingURL=distinctUntilChanged.js.map
 
 /***/ }),
 
@@ -35144,6 +41230,132 @@ exports.ReduceSubscriber = ReduceSubscriber;
 
 /***/ }),
 
+/***/ "../../../../rxjs/operator/scan.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Subscriber_1 = __webpack_require__("../../../../rxjs/Subscriber.js");
+/* tslint:enable:max-line-length */
+/**
+ * Applies an accumulator function over the source Observable, and returns each
+ * intermediate result, with an optional seed value.
+ *
+ * <span class="informal">It's like {@link reduce}, but emits the current
+ * accumulation whenever the source emits a value.</span>
+ *
+ * <img src="./img/scan.png" width="100%">
+ *
+ * Combines together all values emitted on the source, using an accumulator
+ * function that knows how to join a new source value into the accumulation from
+ * the past. Is similar to {@link reduce}, but emits the intermediate
+ * accumulations.
+ *
+ * Returns an Observable that applies a specified `accumulator` function to each
+ * item emitted by the source Observable. If a `seed` value is specified, then
+ * that value will be used as the initial value for the accumulator. If no seed
+ * value is specified, the first item of the source is used as the seed.
+ *
+ * @example <caption>Count the number of click events</caption>
+ * var clicks = Rx.Observable.fromEvent(document, 'click');
+ * var ones = clicks.mapTo(1);
+ * var seed = 0;
+ * var count = ones.scan((acc, one) => acc + one, seed);
+ * count.subscribe(x => console.log(x));
+ *
+ * @see {@link expand}
+ * @see {@link mergeScan}
+ * @see {@link reduce}
+ *
+ * @param {function(acc: R, value: T, index: number): R} accumulator
+ * The accumulator function called on each source value.
+ * @param {T|R} [seed] The initial accumulation value.
+ * @return {Observable<R>} An observable of the accumulated values.
+ * @method scan
+ * @owner Observable
+ */
+function scan(accumulator, seed) {
+    var hasSeed = false;
+    // providing a seed of `undefined` *should* be valid and trigger
+    // hasSeed! so don't use `seed !== undefined` checks!
+    // For this reason, we have to check it here at the original call site
+    // otherwise inside Operator/Subscriber we won't know if `undefined`
+    // means they didn't provide anything or if they literally provided `undefined`
+    if (arguments.length >= 2) {
+        hasSeed = true;
+    }
+    return this.lift(new ScanOperator(accumulator, seed, hasSeed));
+}
+exports.scan = scan;
+var ScanOperator = (function () {
+    function ScanOperator(accumulator, seed, hasSeed) {
+        if (hasSeed === void 0) { hasSeed = false; }
+        this.accumulator = accumulator;
+        this.seed = seed;
+        this.hasSeed = hasSeed;
+    }
+    ScanOperator.prototype.call = function (subscriber, source) {
+        return source.subscribe(new ScanSubscriber(subscriber, this.accumulator, this.seed, this.hasSeed));
+    };
+    return ScanOperator;
+}());
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var ScanSubscriber = (function (_super) {
+    __extends(ScanSubscriber, _super);
+    function ScanSubscriber(destination, accumulator, _seed, hasSeed) {
+        _super.call(this, destination);
+        this.accumulator = accumulator;
+        this._seed = _seed;
+        this.hasSeed = hasSeed;
+        this.index = 0;
+    }
+    Object.defineProperty(ScanSubscriber.prototype, "seed", {
+        get: function () {
+            return this._seed;
+        },
+        set: function (value) {
+            this.hasSeed = true;
+            this._seed = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ScanSubscriber.prototype._next = function (value) {
+        if (!this.hasSeed) {
+            this.seed = value;
+            this.destination.next(value);
+        }
+        else {
+            return this._tryNext(value);
+        }
+    };
+    ScanSubscriber.prototype._tryNext = function (value) {
+        var index = this.index++;
+        var result;
+        try {
+            result = this.accumulator(this.seed, value, index);
+        }
+        catch (err) {
+            this.destination.error(err);
+        }
+        this.seed = result;
+        this.destination.next(result);
+    };
+    return ScanSubscriber;
+}(Subscriber_1.Subscriber));
+//# sourceMappingURL=scan.js.map
+
+/***/ }),
+
 /***/ "../../../../rxjs/operator/share.js":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -35172,6 +41384,416 @@ function share() {
 exports.share = share;
 ;
 //# sourceMappingURL=share.js.map
+
+/***/ }),
+
+/***/ "../../../../rxjs/scheduler/Action.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Subscription_1 = __webpack_require__("../../../../rxjs/Subscription.js");
+/**
+ * A unit of work to be executed in a {@link Scheduler}. An action is typically
+ * created from within a Scheduler and an RxJS user does not need to concern
+ * themselves about creating and manipulating an Action.
+ *
+ * ```ts
+ * class Action<T> extends Subscription {
+ *   new (scheduler: Scheduler, work: (state?: T) => void);
+ *   schedule(state?: T, delay: number = 0): Subscription;
+ * }
+ * ```
+ *
+ * @class Action<T>
+ */
+var Action = (function (_super) {
+    __extends(Action, _super);
+    function Action(scheduler, work) {
+        _super.call(this);
+    }
+    /**
+     * Schedules this action on its parent Scheduler for execution. May be passed
+     * some context object, `state`. May happen at some point in the future,
+     * according to the `delay` parameter, if specified.
+     * @param {T} [state] Some contextual data that the `work` function uses when
+     * called by the Scheduler.
+     * @param {number} [delay] Time to wait before executing the work, where the
+     * time unit is implicit and defined by the Scheduler.
+     * @return {void}
+     */
+    Action.prototype.schedule = function (state, delay) {
+        if (delay === void 0) { delay = 0; }
+        return this;
+    };
+    return Action;
+}(Subscription_1.Subscription));
+exports.Action = Action;
+//# sourceMappingURL=Action.js.map
+
+/***/ }),
+
+/***/ "../../../../rxjs/scheduler/AsyncAction.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var root_1 = __webpack_require__("../../../../rxjs/util/root.js");
+var Action_1 = __webpack_require__("../../../../rxjs/scheduler/Action.js");
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var AsyncAction = (function (_super) {
+    __extends(AsyncAction, _super);
+    function AsyncAction(scheduler, work) {
+        _super.call(this, scheduler, work);
+        this.scheduler = scheduler;
+        this.work = work;
+        this.pending = false;
+    }
+    AsyncAction.prototype.schedule = function (state, delay) {
+        if (delay === void 0) { delay = 0; }
+        if (this.closed) {
+            return this;
+        }
+        // Always replace the current state with the new state.
+        this.state = state;
+        // Set the pending flag indicating that this action has been scheduled, or
+        // has recursively rescheduled itself.
+        this.pending = true;
+        var id = this.id;
+        var scheduler = this.scheduler;
+        //
+        // Important implementation note:
+        //
+        // Actions only execute once by default, unless rescheduled from within the
+        // scheduled callback. This allows us to implement single and repeat
+        // actions via the same code path, without adding API surface area, as well
+        // as mimic traditional recursion but across asynchronous boundaries.
+        //
+        // However, JS runtimes and timers distinguish between intervals achieved by
+        // serial `setTimeout` calls vs. a single `setInterval` call. An interval of
+        // serial `setTimeout` calls can be individually delayed, which delays
+        // scheduling the next `setTimeout`, and so on. `setInterval` attempts to
+        // guarantee the interval callback will be invoked more precisely to the
+        // interval period, regardless of load.
+        //
+        // Therefore, we use `setInterval` to schedule single and repeat actions.
+        // If the action reschedules itself with the same delay, the interval is not
+        // canceled. If the action doesn't reschedule, or reschedules with a
+        // different delay, the interval will be canceled after scheduled callback
+        // execution.
+        //
+        if (id != null) {
+            this.id = this.recycleAsyncId(scheduler, id, delay);
+        }
+        this.delay = delay;
+        // If this action has already an async Id, don't request a new one.
+        this.id = this.id || this.requestAsyncId(scheduler, this.id, delay);
+        return this;
+    };
+    AsyncAction.prototype.requestAsyncId = function (scheduler, id, delay) {
+        if (delay === void 0) { delay = 0; }
+        return root_1.root.setInterval(scheduler.flush.bind(scheduler, this), delay);
+    };
+    AsyncAction.prototype.recycleAsyncId = function (scheduler, id, delay) {
+        if (delay === void 0) { delay = 0; }
+        // If this action is rescheduled with the same delay time, don't clear the interval id.
+        if (delay !== null && this.delay === delay && this.pending === false) {
+            return id;
+        }
+        // Otherwise, if the action's delay time is different from the current delay,
+        // or the action has been rescheduled before it's executed, clear the interval id
+        return root_1.root.clearInterval(id) && undefined || undefined;
+    };
+    /**
+     * Immediately executes this action and the `work` it contains.
+     * @return {any}
+     */
+    AsyncAction.prototype.execute = function (state, delay) {
+        if (this.closed) {
+            return new Error('executing a cancelled action');
+        }
+        this.pending = false;
+        var error = this._execute(state, delay);
+        if (error) {
+            return error;
+        }
+        else if (this.pending === false && this.id != null) {
+            // Dequeue if the action didn't reschedule itself. Don't call
+            // unsubscribe(), because the action could reschedule later.
+            // For example:
+            // ```
+            // scheduler.schedule(function doWork(counter) {
+            //   /* ... I'm a busy worker bee ... */
+            //   var originalAction = this;
+            //   /* wait 100ms before rescheduling the action */
+            //   setTimeout(function () {
+            //     originalAction.schedule(counter + 1);
+            //   }, 100);
+            // }, 1000);
+            // ```
+            this.id = this.recycleAsyncId(this.scheduler, this.id, null);
+        }
+    };
+    AsyncAction.prototype._execute = function (state, delay) {
+        var errored = false;
+        var errorValue = undefined;
+        try {
+            this.work(state);
+        }
+        catch (e) {
+            errored = true;
+            errorValue = !!e && e || new Error(e);
+        }
+        if (errored) {
+            this.unsubscribe();
+            return errorValue;
+        }
+    };
+    AsyncAction.prototype._unsubscribe = function () {
+        var id = this.id;
+        var scheduler = this.scheduler;
+        var actions = scheduler.actions;
+        var index = actions.indexOf(this);
+        this.work = null;
+        this.state = null;
+        this.pending = false;
+        this.scheduler = null;
+        if (index !== -1) {
+            actions.splice(index, 1);
+        }
+        if (id != null) {
+            this.id = this.recycleAsyncId(scheduler, id, null);
+        }
+        this.delay = null;
+    };
+    return AsyncAction;
+}(Action_1.Action));
+exports.AsyncAction = AsyncAction;
+//# sourceMappingURL=AsyncAction.js.map
+
+/***/ }),
+
+/***/ "../../../../rxjs/scheduler/AsyncScheduler.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var Scheduler_1 = __webpack_require__("../../../../rxjs/Scheduler.js");
+var AsyncScheduler = (function (_super) {
+    __extends(AsyncScheduler, _super);
+    function AsyncScheduler() {
+        _super.apply(this, arguments);
+        this.actions = [];
+        /**
+         * A flag to indicate whether the Scheduler is currently executing a batch of
+         * queued actions.
+         * @type {boolean}
+         */
+        this.active = false;
+        /**
+         * An internal ID used to track the latest asynchronous task such as those
+         * coming from `setTimeout`, `setInterval`, `requestAnimationFrame`, and
+         * others.
+         * @type {any}
+         */
+        this.scheduled = undefined;
+    }
+    AsyncScheduler.prototype.flush = function (action) {
+        var actions = this.actions;
+        if (this.active) {
+            actions.push(action);
+            return;
+        }
+        var error;
+        this.active = true;
+        do {
+            if (error = action.execute(action.state, action.delay)) {
+                break;
+            }
+        } while (action = actions.shift()); // exhaust the scheduler queue
+        this.active = false;
+        if (error) {
+            while (action = actions.shift()) {
+                action.unsubscribe();
+            }
+            throw error;
+        }
+    };
+    return AsyncScheduler;
+}(Scheduler_1.Scheduler));
+exports.AsyncScheduler = AsyncScheduler;
+//# sourceMappingURL=AsyncScheduler.js.map
+
+/***/ }),
+
+/***/ "../../../../rxjs/scheduler/QueueAction.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var AsyncAction_1 = __webpack_require__("../../../../rxjs/scheduler/AsyncAction.js");
+/**
+ * We need this JSDoc comment for affecting ESDoc.
+ * @ignore
+ * @extends {Ignored}
+ */
+var QueueAction = (function (_super) {
+    __extends(QueueAction, _super);
+    function QueueAction(scheduler, work) {
+        _super.call(this, scheduler, work);
+        this.scheduler = scheduler;
+        this.work = work;
+    }
+    QueueAction.prototype.schedule = function (state, delay) {
+        if (delay === void 0) { delay = 0; }
+        if (delay > 0) {
+            return _super.prototype.schedule.call(this, state, delay);
+        }
+        this.delay = delay;
+        this.state = state;
+        this.scheduler.flush(this);
+        return this;
+    };
+    QueueAction.prototype.execute = function (state, delay) {
+        return (delay > 0 || this.closed) ?
+            _super.prototype.execute.call(this, state, delay) :
+            this._execute(state, delay);
+    };
+    QueueAction.prototype.requestAsyncId = function (scheduler, id, delay) {
+        if (delay === void 0) { delay = 0; }
+        // If delay exists and is greater than 0, or if the delay is null (the
+        // action wasn't rescheduled) but was originally scheduled as an async
+        // action, then recycle as an async action.
+        if ((delay !== null && delay > 0) || (delay === null && this.delay > 0)) {
+            return _super.prototype.requestAsyncId.call(this, scheduler, id, delay);
+        }
+        // Otherwise flush the scheduler starting with this action.
+        return scheduler.flush(this);
+    };
+    return QueueAction;
+}(AsyncAction_1.AsyncAction));
+exports.QueueAction = QueueAction;
+//# sourceMappingURL=QueueAction.js.map
+
+/***/ }),
+
+/***/ "../../../../rxjs/scheduler/QueueScheduler.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+var AsyncScheduler_1 = __webpack_require__("../../../../rxjs/scheduler/AsyncScheduler.js");
+var QueueScheduler = (function (_super) {
+    __extends(QueueScheduler, _super);
+    function QueueScheduler() {
+        _super.apply(this, arguments);
+    }
+    return QueueScheduler;
+}(AsyncScheduler_1.AsyncScheduler));
+exports.QueueScheduler = QueueScheduler;
+//# sourceMappingURL=QueueScheduler.js.map
+
+/***/ }),
+
+/***/ "../../../../rxjs/scheduler/queue.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var QueueAction_1 = __webpack_require__("../../../../rxjs/scheduler/QueueAction.js");
+var QueueScheduler_1 = __webpack_require__("../../../../rxjs/scheduler/QueueScheduler.js");
+/**
+ *
+ * Queue Scheduler
+ *
+ * <span class="informal">Put every next task on a queue, instead of executing it immediately</span>
+ *
+ * `queue` scheduler, when used with delay, behaves the same as {@link async} scheduler.
+ *
+ * When used without delay, it schedules given task synchronously - executes it right when
+ * it is scheduled. However when called recursively, that is when inside the scheduled task,
+ * another task is scheduled with queue scheduler, instead of executing immediately as well,
+ * that task will be put on a queue and wait for current one to finish.
+ *
+ * This means that when you execute task with `queue` scheduler, you are sure it will end
+ * before any other task scheduled with that scheduler will start.
+ *
+ * @examples <caption>Schedule recursively first, then do something</caption>
+ *
+ * Rx.Scheduler.queue.schedule(() => {
+ *   Rx.Scheduler.queue.schedule(() => console.log('second')); // will not happen now, but will be put on a queue
+ *
+ *   console.log('first');
+ * });
+ *
+ * // Logs:
+ * // "first"
+ * // "second"
+ *
+ *
+ * @example <caption>Reschedule itself recursively</caption>
+ *
+ * Rx.Scheduler.queue.schedule(function(state) {
+ *   if (state !== 0) {
+ *     console.log('before', state);
+ *     this.schedule(state - 1); // `this` references currently executing Action,
+ *                               // which we reschedule with new state
+ *     console.log('after', state);
+ *   }
+ * }, 0, 3);
+ *
+ * // In scheduler that runs recursively, you would expect:
+ * // "before", 3
+ * // "before", 2
+ * // "before", 1
+ * // "after", 1
+ * // "after", 2
+ * // "after", 3
+ *
+ * // But with queue it logs:
+ * // "before", 3
+ * // "after", 3
+ * // "before", 2
+ * // "after", 2
+ * // "before", 1
+ * // "after", 1
+ *
+ *
+ * @static true
+ * @name queue
+ * @owner Scheduler
+ */
+exports.queue = new QueueScheduler_1.QueueScheduler(QueueAction_1.QueueAction);
+//# sourceMappingURL=queue.js.map
 
 /***/ }),
 
@@ -82773,6 +89395,6122 @@ function transition$$1(stateChangeExpr, steps) {
 
 /***/ }),
 
+/***/ "../../../forms/@angular/forms.es5.js":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export AbstractControlDirective */
+/* unused harmony export AbstractFormGroupDirective */
+/* unused harmony export CheckboxControlValueAccessor */
+/* unused harmony export ControlContainer */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return NG_VALUE_ACCESSOR; });
+/* unused harmony export COMPOSITION_BUFFER_MODE */
+/* unused harmony export DefaultValueAccessor */
+/* unused harmony export NgControl */
+/* unused harmony export NgControlStatus */
+/* unused harmony export NgControlStatusGroup */
+/* unused harmony export NgForm */
+/* unused harmony export NgModel */
+/* unused harmony export NgModelGroup */
+/* unused harmony export RadioControlValueAccessor */
+/* unused harmony export FormControlDirective */
+/* unused harmony export FormControlName */
+/* unused harmony export FormGroupDirective */
+/* unused harmony export FormArrayName */
+/* unused harmony export FormGroupName */
+/* unused harmony export NgSelectOption */
+/* unused harmony export SelectControlValueAccessor */
+/* unused harmony export SelectMultipleControlValueAccessor */
+/* unused harmony export CheckboxRequiredValidator */
+/* unused harmony export EmailValidator */
+/* unused harmony export MaxLengthValidator */
+/* unused harmony export MinLengthValidator */
+/* unused harmony export PatternValidator */
+/* unused harmony export RequiredValidator */
+/* unused harmony export FormBuilder */
+/* unused harmony export AbstractControl */
+/* unused harmony export FormArray */
+/* unused harmony export FormControl */
+/* unused harmony export FormGroup */
+/* unused harmony export NG_ASYNC_VALIDATORS */
+/* unused harmony export NG_VALIDATORS */
+/* unused harmony export Validators */
+/* unused harmony export VERSION */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FormsModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return ReactiveFormsModule; });
+/* unused harmony export ɵba */
+/* unused harmony export ɵz */
+/* unused harmony export ɵx */
+/* unused harmony export ɵy */
+/* unused harmony export ɵa */
+/* unused harmony export ɵb */
+/* unused harmony export ɵc */
+/* unused harmony export ɵd */
+/* unused harmony export ɵe */
+/* unused harmony export ɵf */
+/* unused harmony export ɵg */
+/* unused harmony export ɵbf */
+/* unused harmony export ɵbb */
+/* unused harmony export ɵbc */
+/* unused harmony export ɵh */
+/* unused harmony export ɵi */
+/* unused harmony export ɵbd */
+/* unused harmony export ɵbe */
+/* unused harmony export ɵj */
+/* unused harmony export ɵk */
+/* unused harmony export ɵl */
+/* unused harmony export ɵn */
+/* unused harmony export ɵm */
+/* unused harmony export ɵo */
+/* unused harmony export ɵq */
+/* unused harmony export ɵp */
+/* unused harmony export ɵs */
+/* unused harmony export ɵt */
+/* unused harmony export ɵv */
+/* unused harmony export ɵu */
+/* unused harmony export ɵw */
+/* unused harmony export ɵr */
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_tslib__ = __webpack_require__("../../../../tslib/tslib.es6.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_forkJoin__ = __webpack_require__("../../../../rxjs/observable/forkJoin.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_observable_forkJoin___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_forkJoin__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_fromPromise__ = __webpack_require__("../../../../rxjs/observable/fromPromise.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_observable_fromPromise___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_fromPromise__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_map__ = __webpack_require__("../../../../rxjs/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__ = __webpack_require__("../../../platform-browser/@angular/platform-browser.es5.js");
+
+/**
+ * @license Angular v4.3.4
+ * (c) 2010-2017 Google, Inc. https://angular.io/
+ * License: MIT
+ */
+
+
+
+
+
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * Base class for control directives.
+ *
+ * Only used internally in the forms module.
+ *
+ * \@stable
+ * @abstract
+ */
+var AbstractControlDirective = (function () {
+    function AbstractControlDirective() {
+    }
+    /**
+     * @abstract
+     * @return {?}
+     */
+    AbstractControlDirective.prototype.control = function () { };
+    Object.defineProperty(AbstractControlDirective.prototype, "value", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.value : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "valid", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.valid : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "invalid", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.invalid : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "pending", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.pending : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "errors", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.errors : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "pristine", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.pristine : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "dirty", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.dirty : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "touched", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.touched : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "untouched", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.untouched : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "disabled", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.disabled : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "enabled", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.control ? this.control.enabled : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "statusChanges", {
+        /**
+         * @return {?}
+         */
+        get: function () {
+            return this.control ? this.control.statusChanges : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "valueChanges", {
+        /**
+         * @return {?}
+         */
+        get: function () {
+            return this.control ? this.control.valueChanges : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlDirective.prototype, "path", {
+        /**
+         * @return {?}
+         */
+        get: function () { return null; },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?=} value
+     * @return {?}
+     */
+    AbstractControlDirective.prototype.reset = function (value) {
+        if (value === void 0) { value = undefined; }
+        if (this.control)
+            this.control.reset(value);
+    };
+    /**
+     * @param {?} errorCode
+     * @param {?=} path
+     * @return {?}
+     */
+    AbstractControlDirective.prototype.hasError = function (errorCode, path) {
+        return this.control ? this.control.hasError(errorCode, path) : false;
+    };
+    /**
+     * @param {?} errorCode
+     * @param {?=} path
+     * @return {?}
+     */
+    AbstractControlDirective.prototype.getError = function (errorCode, path) {
+        return this.control ? this.control.getError(errorCode, path) : null;
+    };
+    return AbstractControlDirective;
+}());
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * A directive that contains multiple {\@link NgControl}s.
+ *
+ * Only used by the forms module.
+ *
+ * \@stable
+ * @abstract
+ */
+var ControlContainer = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](ControlContainer, _super);
+    function ControlContainer() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Object.defineProperty(ControlContainer.prototype, "formDirective", {
+        /**
+         * Get the form to which this container belongs.
+         * @return {?}
+         */
+        get: function () { return null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ControlContainer.prototype, "path", {
+        /**
+         * Get the path to this container.
+         * @return {?}
+         */
+        get: function () { return null; },
+        enumerable: true,
+        configurable: true
+    });
+    return ControlContainer;
+}(AbstractControlDirective));
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @param {?} value
+ * @return {?}
+ */
+function isEmptyInputValue(value) {
+    // we don't check for string here so it also works with arrays
+    return value == null || value.length === 0;
+}
+/**
+ * Providers for validators to be used for {\@link FormControl}s in a form.
+ *
+ * Provide this using `multi: true` to add validators.
+ *
+ * \@stable
+ */
+var NG_VALIDATORS = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["InjectionToken"]('NgValidators');
+/**
+ * Providers for asynchronous validators to be used for {\@link FormControl}s
+ * in a form.
+ *
+ * Provide this using `multi: true` to add validators.
+ *
+ * See {\@link NG_VALIDATORS} for more details.
+ *
+ * \@stable
+ */
+var NG_ASYNC_VALIDATORS = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["InjectionToken"]('NgAsyncValidators');
+var EMAIL_REGEXP = /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$/;
+/**
+ * Provides a set of validators used by form controls.
+ *
+ * A validator is a function that processes a {\@link FormControl} or collection of
+ * controls and returns a map of errors. A null map means that validation has passed.
+ *
+ * ### Example
+ *
+ * ```typescript
+ * var loginControl = new FormControl("", Validators.required)
+ * ```
+ *
+ * \@stable
+ */
+var Validators = (function () {
+    function Validators() {
+    }
+    /**
+     * Validator that requires controls to have a value greater than a number.
+     * @param {?} min
+     * @return {?}
+     */
+    Validators.min = function (min) {
+        return function (control) {
+            if (isEmptyInputValue(control.value) || isEmptyInputValue(min)) {
+                return null; // don't validate empty values to allow optional controls
+            }
+            var /** @type {?} */ value = parseFloat(control.value);
+            // Controls with NaN values after parsing should be treated as not having a
+            // minimum, per the HTML forms spec: https://www.w3.org/TR/html5/forms.html#attr-input-min
+            return !isNaN(value) && value < min ? { 'min': { 'min': min, 'actual': control.value } } : null;
+        };
+    };
+    /**
+     * Validator that requires controls to have a value less than a number.
+     * @param {?} max
+     * @return {?}
+     */
+    Validators.max = function (max) {
+        return function (control) {
+            if (isEmptyInputValue(control.value) || isEmptyInputValue(max)) {
+                return null; // don't validate empty values to allow optional controls
+            }
+            var /** @type {?} */ value = parseFloat(control.value);
+            // Controls with NaN values after parsing should be treated as not having a
+            // maximum, per the HTML forms spec: https://www.w3.org/TR/html5/forms.html#attr-input-max
+            return !isNaN(value) && value > max ? { 'max': { 'max': max, 'actual': control.value } } : null;
+        };
+    };
+    /**
+     * Validator that requires controls to have a non-empty value.
+     * @param {?} control
+     * @return {?}
+     */
+    Validators.required = function (control) {
+        return isEmptyInputValue(control.value) ? { 'required': true } : null;
+    };
+    /**
+     * Validator that requires control value to be true.
+     * @param {?} control
+     * @return {?}
+     */
+    Validators.requiredTrue = function (control) {
+        return control.value === true ? null : { 'required': true };
+    };
+    /**
+     * Validator that performs email validation.
+     * @param {?} control
+     * @return {?}
+     */
+    Validators.email = function (control) {
+        return EMAIL_REGEXP.test(control.value) ? null : { 'email': true };
+    };
+    /**
+     * Validator that requires controls to have a value of a minimum length.
+     * @param {?} minLength
+     * @return {?}
+     */
+    Validators.minLength = function (minLength) {
+        return function (control) {
+            if (isEmptyInputValue(control.value)) {
+                return null; // don't validate empty values to allow optional controls
+            }
+            var /** @type {?} */ length = control.value ? control.value.length : 0;
+            return length < minLength ?
+                { 'minlength': { 'requiredLength': minLength, 'actualLength': length } } :
+                null;
+        };
+    };
+    /**
+     * Validator that requires controls to have a value of a maximum length.
+     * @param {?} maxLength
+     * @return {?}
+     */
+    Validators.maxLength = function (maxLength) {
+        return function (control) {
+            var /** @type {?} */ length = control.value ? control.value.length : 0;
+            return length > maxLength ?
+                { 'maxlength': { 'requiredLength': maxLength, 'actualLength': length } } :
+                null;
+        };
+    };
+    /**
+     * Validator that requires a control to match a regex to its value.
+     * @param {?} pattern
+     * @return {?}
+     */
+    Validators.pattern = function (pattern) {
+        if (!pattern)
+            return Validators.nullValidator;
+        var /** @type {?} */ regex;
+        var /** @type {?} */ regexStr;
+        if (typeof pattern === 'string') {
+            regexStr = "^" + pattern + "$";
+            regex = new RegExp(regexStr);
+        }
+        else {
+            regexStr = pattern.toString();
+            regex = pattern;
+        }
+        return function (control) {
+            if (isEmptyInputValue(control.value)) {
+                return null; // don't validate empty values to allow optional controls
+            }
+            var /** @type {?} */ value = control.value;
+            return regex.test(value) ? null :
+                { 'pattern': { 'requiredPattern': regexStr, 'actualValue': value } };
+        };
+    };
+    /**
+     * No-op validator.
+     * @param {?} c
+     * @return {?}
+     */
+    Validators.nullValidator = function (c) { return null; };
+    /**
+     * @param {?} validators
+     * @return {?}
+     */
+    Validators.compose = function (validators) {
+        if (!validators)
+            return null;
+        var /** @type {?} */ presentValidators = (validators.filter(isPresent));
+        if (presentValidators.length == 0)
+            return null;
+        return function (control) {
+            return _mergeErrors(_executeValidators(control, presentValidators));
+        };
+    };
+    /**
+     * @param {?} validators
+     * @return {?}
+     */
+    Validators.composeAsync = function (validators) {
+        if (!validators)
+            return null;
+        var /** @type {?} */ presentValidators = (validators.filter(isPresent));
+        if (presentValidators.length == 0)
+            return null;
+        return function (control) {
+            var /** @type {?} */ observables = _executeAsyncValidators(control, presentValidators).map(toObservable);
+            return __WEBPACK_IMPORTED_MODULE_4_rxjs_operator_map__["map"].call(Object(__WEBPACK_IMPORTED_MODULE_2_rxjs_observable_forkJoin__["forkJoin"])(observables), _mergeErrors);
+        };
+    };
+    return Validators;
+}());
+/**
+ * @param {?} o
+ * @return {?}
+ */
+function isPresent(o) {
+    return o != null;
+}
+/**
+ * @param {?} r
+ * @return {?}
+ */
+function toObservable(r) {
+    var /** @type {?} */ obs = Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["ɵisPromise"])(r) ? Object(__WEBPACK_IMPORTED_MODULE_3_rxjs_observable_fromPromise__["fromPromise"])(r) : r;
+    if (!(Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["ɵisObservable"])(obs))) {
+        throw new Error("Expected validator to return Promise or Observable.");
+    }
+    return obs;
+}
+/**
+ * @param {?} control
+ * @param {?} validators
+ * @return {?}
+ */
+function _executeValidators(control, validators) {
+    return validators.map(function (v) { return v(control); });
+}
+/**
+ * @param {?} control
+ * @param {?} validators
+ * @return {?}
+ */
+function _executeAsyncValidators(control, validators) {
+    return validators.map(function (v) { return v(control); });
+}
+/**
+ * @param {?} arrayOfErrors
+ * @return {?}
+ */
+function _mergeErrors(arrayOfErrors) {
+    var /** @type {?} */ res = arrayOfErrors.reduce(function (res, errors) {
+        return errors != null ? Object.assign({}, /** @type {?} */ ((res)), errors) : ((res));
+    }, {});
+    return Object.keys(res).length === 0 ? null : res;
+}
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * Used to provide a {\@link ControlValueAccessor} for form controls.
+ *
+ * See {\@link DefaultValueAccessor} for how to implement one.
+ * \@stable
+ */
+var NG_VALUE_ACCESSOR = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["InjectionToken"]('NgValueAccessor');
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var CHECKBOX_VALUE_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return CheckboxControlValueAccessor; }),
+    multi: true,
+};
+/**
+ * The accessor for writing a value and listening to changes on a checkbox input element.
+ *
+ *  ### Example
+ *  ```
+ *  <input type="checkbox" name="rememberLogin" ngModel>
+ *  ```
+ *
+ *  \@stable
+ */
+var CheckboxControlValueAccessor = (function () {
+    /**
+     * @param {?} _renderer
+     * @param {?} _elementRef
+     */
+    function CheckboxControlValueAccessor(_renderer, _elementRef) {
+        this._renderer = _renderer;
+        this._elementRef = _elementRef;
+        this.onChange = function (_) { };
+        this.onTouched = function () { };
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    CheckboxControlValueAccessor.prototype.writeValue = function (value) {
+        this._renderer.setProperty(this._elementRef.nativeElement, 'checked', value);
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    CheckboxControlValueAccessor.prototype.registerOnChange = function (fn) { this.onChange = fn; };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    CheckboxControlValueAccessor.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
+    /**
+     * @param {?} isDisabled
+     * @return {?}
+     */
+    CheckboxControlValueAccessor.prototype.setDisabledState = function (isDisabled) {
+        this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
+    };
+    return CheckboxControlValueAccessor;
+}());
+CheckboxControlValueAccessor.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: 'input[type=checkbox][formControlName],input[type=checkbox][formControl],input[type=checkbox][ngModel]',
+                host: { '(change)': 'onChange($event.target.checked)', '(blur)': 'onTouched()' },
+                providers: [CHECKBOX_VALUE_ACCESSOR]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+CheckboxControlValueAccessor.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Renderer2"], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["ElementRef"], },
+]; };
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var DEFAULT_VALUE_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return DefaultValueAccessor; }),
+    multi: true
+};
+/**
+ * We must check whether the agent is Android because composition events
+ * behave differently between iOS and Android.
+ * @return {?}
+ */
+function _isAndroid() {
+    var /** @type {?} */ userAgent = Object(__WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__["c" /* ɵgetDOM */])() ? Object(__WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__["c" /* ɵgetDOM */])().getUserAgent() : '';
+    return /android (\d+)/.test(userAgent.toLowerCase());
+}
+/**
+ * Turn this mode on if you want form directives to buffer IME input until compositionend
+ * \@experimental
+ */
+var COMPOSITION_BUFFER_MODE = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["InjectionToken"]('CompositionEventMode');
+/**
+ * The default accessor for writing a value and listening to changes that is used by the
+ * {\@link NgModel}, {\@link FormControlDirective}, and {\@link FormControlName} directives.
+ *
+ *  ### Example
+ *  ```
+ *  <input type="text" name="searchQuery" ngModel>
+ *  ```
+ *
+ *  \@stable
+ */
+var DefaultValueAccessor = (function () {
+    /**
+     * @param {?} _renderer
+     * @param {?} _elementRef
+     * @param {?} _compositionMode
+     */
+    function DefaultValueAccessor(_renderer, _elementRef, _compositionMode) {
+        this._renderer = _renderer;
+        this._elementRef = _elementRef;
+        this._compositionMode = _compositionMode;
+        this.onChange = function (_) { };
+        this.onTouched = function () { };
+        /**
+         * Whether the user is creating a composition string (IME events).
+         */
+        this._composing = false;
+        if (this._compositionMode == null) {
+            this._compositionMode = !_isAndroid();
+        }
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    DefaultValueAccessor.prototype.writeValue = function (value) {
+        var /** @type {?} */ normalizedValue = value == null ? '' : value;
+        this._renderer.setProperty(this._elementRef.nativeElement, 'value', normalizedValue);
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    DefaultValueAccessor.prototype.registerOnChange = function (fn) { this.onChange = fn; };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    DefaultValueAccessor.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
+    /**
+     * @param {?} isDisabled
+     * @return {?}
+     */
+    DefaultValueAccessor.prototype.setDisabledState = function (isDisabled) {
+        this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
+    };
+    /**
+     * \@internal
+     * @param {?} value
+     * @return {?}
+     */
+    DefaultValueAccessor.prototype._handleInput = function (value) {
+        if (!this._compositionMode || (this._compositionMode && !this._composing)) {
+            this.onChange(value);
+        }
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    DefaultValueAccessor.prototype._compositionStart = function () { this._composing = true; };
+    /**
+     * \@internal
+     * @param {?} value
+     * @return {?}
+     */
+    DefaultValueAccessor.prototype._compositionEnd = function (value) {
+        this._composing = false;
+        this._compositionMode && this.onChange(value);
+    };
+    return DefaultValueAccessor;
+}());
+DefaultValueAccessor.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: 'input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]',
+                // TODO: vsavkin replace the above selector with the one below it once
+                // https://github.com/angular/angular/issues/3011 is implemented
+                // selector: '[ngModel],[formControl],[formControlName]',
+                host: {
+                    '(input)': '_handleInput($event.target.value)',
+                    '(blur)': 'onTouched()',
+                    '(compositionstart)': '_compositionStart()',
+                    '(compositionend)': '_compositionEnd($event.target.value)'
+                },
+                providers: [DEFAULT_VALUE_ACCESSOR]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+DefaultValueAccessor.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Renderer2"], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["ElementRef"], },
+    { type: undefined, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [COMPOSITION_BUFFER_MODE,] },] },
+]; };
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @param {?} validator
+ * @return {?}
+ */
+function normalizeValidator(validator) {
+    if (((validator)).validate) {
+        return function (c) { return ((validator)).validate(c); };
+    }
+    else {
+        return (validator);
+    }
+}
+/**
+ * @param {?} validator
+ * @return {?}
+ */
+function normalizeAsyncValidator(validator) {
+    if (((validator)).validate) {
+        return function (c) { return ((validator)).validate(c); };
+    }
+    else {
+        return (validator);
+    }
+}
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var NUMBER_VALUE_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return NumberValueAccessor; }),
+    multi: true
+};
+/**
+ * The accessor for writing a number value and listening to changes that is used by the
+ * {\@link NgModel}, {\@link FormControlDirective}, and {\@link FormControlName} directives.
+ *
+ *  ### Example
+ *  ```
+ *  <input type="number" [(ngModel)]="age">
+ *  ```
+ */
+var NumberValueAccessor = (function () {
+    /**
+     * @param {?} _renderer
+     * @param {?} _elementRef
+     */
+    function NumberValueAccessor(_renderer, _elementRef) {
+        this._renderer = _renderer;
+        this._elementRef = _elementRef;
+        this.onChange = function (_) { };
+        this.onTouched = function () { };
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    NumberValueAccessor.prototype.writeValue = function (value) {
+        // The value needs to be normalized for IE9, otherwise it is set to 'null' when null
+        var /** @type {?} */ normalizedValue = value == null ? '' : value;
+        this._renderer.setProperty(this._elementRef.nativeElement, 'value', normalizedValue);
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    NumberValueAccessor.prototype.registerOnChange = function (fn) {
+        this.onChange = function (value) { fn(value == '' ? null : parseFloat(value)); };
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    NumberValueAccessor.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
+    /**
+     * @param {?} isDisabled
+     * @return {?}
+     */
+    NumberValueAccessor.prototype.setDisabledState = function (isDisabled) {
+        this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
+    };
+    return NumberValueAccessor;
+}());
+NumberValueAccessor.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: 'input[type=number][formControlName],input[type=number][formControl],input[type=number][ngModel]',
+                host: {
+                    '(change)': 'onChange($event.target.value)',
+                    '(input)': 'onChange($event.target.value)',
+                    '(blur)': 'onTouched()'
+                },
+                providers: [NUMBER_VALUE_ACCESSOR]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+NumberValueAccessor.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Renderer2"], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["ElementRef"], },
+]; };
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @return {?}
+ */
+function unimplemented() {
+    throw new Error('unimplemented');
+}
+/**
+ * A base class that all control directive extend.
+ * It binds a {\@link FormControl} object to a DOM element.
+ *
+ * Used internally by Angular forms.
+ *
+ * \@stable
+ * @abstract
+ */
+var NgControl = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](NgControl, _super);
+    function NgControl() {
+        var _this = _super.apply(this, arguments) || this;
+        /**
+         * \@internal
+         */
+        _this._parent = null;
+        _this.name = null;
+        _this.valueAccessor = null;
+        /**
+         * \@internal
+         */
+        _this._rawValidators = [];
+        /**
+         * \@internal
+         */
+        _this._rawAsyncValidators = [];
+        return _this;
+    }
+    Object.defineProperty(NgControl.prototype, "validator", {
+        /**
+         * @return {?}
+         */
+        get: function () { return (unimplemented()); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgControl.prototype, "asyncValidator", {
+        /**
+         * @return {?}
+         */
+        get: function () { return (unimplemented()); },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @abstract
+     * @param {?} newValue
+     * @return {?}
+     */
+    NgControl.prototype.viewToModelUpdate = function (newValue) { };
+    return NgControl;
+}(AbstractControlDirective));
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var RADIO_VALUE_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return RadioControlValueAccessor; }),
+    multi: true
+};
+/**
+ * Internal class used by Angular to uncheck radio buttons with the matching name.
+ */
+var RadioControlRegistry = (function () {
+    function RadioControlRegistry() {
+        this._accessors = [];
+    }
+    /**
+     * @param {?} control
+     * @param {?} accessor
+     * @return {?}
+     */
+    RadioControlRegistry.prototype.add = function (control, accessor) {
+        this._accessors.push([control, accessor]);
+    };
+    /**
+     * @param {?} accessor
+     * @return {?}
+     */
+    RadioControlRegistry.prototype.remove = function (accessor) {
+        for (var /** @type {?} */ i = this._accessors.length - 1; i >= 0; --i) {
+            if (this._accessors[i][1] === accessor) {
+                this._accessors.splice(i, 1);
+                return;
+            }
+        }
+    };
+    /**
+     * @param {?} accessor
+     * @return {?}
+     */
+    RadioControlRegistry.prototype.select = function (accessor) {
+        var _this = this;
+        this._accessors.forEach(function (c) {
+            if (_this._isSameGroup(c, accessor) && c[1] !== accessor) {
+                c[1].fireUncheck(accessor.value);
+            }
+        });
+    };
+    /**
+     * @param {?} controlPair
+     * @param {?} accessor
+     * @return {?}
+     */
+    RadioControlRegistry.prototype._isSameGroup = function (controlPair, accessor) {
+        if (!controlPair[0].control)
+            return false;
+        return controlPair[0]._parent === accessor._control._parent &&
+            controlPair[1].name === accessor.name;
+    };
+    return RadioControlRegistry;
+}());
+RadioControlRegistry.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"] },
+];
+/**
+ * @nocollapse
+ */
+RadioControlRegistry.ctorParameters = function () { return []; };
+/**
+ * \@whatItDoes Writes radio control values and listens to radio control changes.
+ *
+ * Used by {\@link NgModel}, {\@link FormControlDirective}, and {\@link FormControlName}
+ * to keep the view synced with the {\@link FormControl} model.
+ *
+ * \@howToUse
+ *
+ * If you have imported the {\@link FormsModule} or the {\@link ReactiveFormsModule}, this
+ * value accessor will be active on any radio control that has a form directive. You do
+ * **not** need to add a special selector to activate it.
+ *
+ * ### How to use radio buttons with form directives
+ *
+ * To use radio buttons in a template-driven form, you'll want to ensure that radio buttons
+ * in the same group have the same `name` attribute.  Radio buttons with different `name`
+ * attributes do not affect each other.
+ *
+ * {\@example forms/ts/radioButtons/radio_button_example.ts region='TemplateDriven'}
+ *
+ * When using radio buttons in a reactive form, radio buttons in the same group should have the
+ * same `formControlName`. You can also add a `name` attribute, but it's optional.
+ *
+ * {\@example forms/ts/reactiveRadioButtons/reactive_radio_button_example.ts region='Reactive'}
+ *
+ *  * **npm package**: `\@angular/forms`
+ *
+ *  \@stable
+ */
+var RadioControlValueAccessor = (function () {
+    /**
+     * @param {?} _renderer
+     * @param {?} _elementRef
+     * @param {?} _registry
+     * @param {?} _injector
+     */
+    function RadioControlValueAccessor(_renderer, _elementRef, _registry, _injector) {
+        this._renderer = _renderer;
+        this._elementRef = _elementRef;
+        this._registry = _registry;
+        this._injector = _injector;
+        this.onChange = function () { };
+        this.onTouched = function () { };
+    }
+    /**
+     * @return {?}
+     */
+    RadioControlValueAccessor.prototype.ngOnInit = function () {
+        this._control = this._injector.get(NgControl);
+        this._checkName();
+        this._registry.add(this._control, this);
+    };
+    /**
+     * @return {?}
+     */
+    RadioControlValueAccessor.prototype.ngOnDestroy = function () { this._registry.remove(this); };
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    RadioControlValueAccessor.prototype.writeValue = function (value) {
+        this._state = value === this.value;
+        this._renderer.setProperty(this._elementRef.nativeElement, 'checked', this._state);
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    RadioControlValueAccessor.prototype.registerOnChange = function (fn) {
+        var _this = this;
+        this._fn = fn;
+        this.onChange = function () {
+            fn(_this.value);
+            _this._registry.select(_this);
+        };
+    };
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    RadioControlValueAccessor.prototype.fireUncheck = function (value) { this.writeValue(value); };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    RadioControlValueAccessor.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
+    /**
+     * @param {?} isDisabled
+     * @return {?}
+     */
+    RadioControlValueAccessor.prototype.setDisabledState = function (isDisabled) {
+        this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
+    };
+    /**
+     * @return {?}
+     */
+    RadioControlValueAccessor.prototype._checkName = function () {
+        if (this.name && this.formControlName && this.name !== this.formControlName) {
+            this._throwNameError();
+        }
+        if (!this.name && this.formControlName)
+            this.name = this.formControlName;
+    };
+    /**
+     * @return {?}
+     */
+    RadioControlValueAccessor.prototype._throwNameError = function () {
+        throw new Error("\n      If you define both a name and a formControlName attribute on your radio button, their values\n      must match. Ex: <input type=\"radio\" formControlName=\"food\" name=\"food\">\n    ");
+    };
+    return RadioControlValueAccessor;
+}());
+RadioControlValueAccessor.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: 'input[type=radio][formControlName],input[type=radio][formControl],input[type=radio][ngModel]',
+                host: { '(change)': 'onChange()', '(blur)': 'onTouched()' },
+                providers: [RADIO_VALUE_ACCESSOR]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+RadioControlValueAccessor.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Renderer2"], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["ElementRef"], },
+    { type: RadioControlRegistry, },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Injector"], },
+]; };
+RadioControlValueAccessor.propDecorators = {
+    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+    'formControlName': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+    'value': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var RANGE_VALUE_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return RangeValueAccessor; }),
+    multi: true
+};
+/**
+ * The accessor for writing a range value and listening to changes that is used by the
+ * {\@link NgModel}, {\@link FormControlDirective}, and {\@link FormControlName} directives.
+ *
+ *  ### Example
+ *  ```
+ *  <input type="range" [(ngModel)]="age" >
+ *  ```
+ */
+var RangeValueAccessor = (function () {
+    /**
+     * @param {?} _renderer
+     * @param {?} _elementRef
+     */
+    function RangeValueAccessor(_renderer, _elementRef) {
+        this._renderer = _renderer;
+        this._elementRef = _elementRef;
+        this.onChange = function (_) { };
+        this.onTouched = function () { };
+    }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    RangeValueAccessor.prototype.writeValue = function (value) {
+        this._renderer.setProperty(this._elementRef.nativeElement, 'value', parseFloat(value));
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    RangeValueAccessor.prototype.registerOnChange = function (fn) {
+        this.onChange = function (value) { fn(value == '' ? null : parseFloat(value)); };
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    RangeValueAccessor.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
+    /**
+     * @param {?} isDisabled
+     * @return {?}
+     */
+    RangeValueAccessor.prototype.setDisabledState = function (isDisabled) {
+        this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
+    };
+    return RangeValueAccessor;
+}());
+RangeValueAccessor.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: 'input[type=range][formControlName],input[type=range][formControl],input[type=range][ngModel]',
+                host: {
+                    '(change)': 'onChange($event.target.value)',
+                    '(input)': 'onChange($event.target.value)',
+                    '(blur)': 'onTouched()'
+                },
+                providers: [RANGE_VALUE_ACCESSOR]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+RangeValueAccessor.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Renderer2"], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["ElementRef"], },
+]; };
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var SELECT_VALUE_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return SelectControlValueAccessor; }),
+    multi: true
+};
+/**
+ * @param {?} id
+ * @param {?} value
+ * @return {?}
+ */
+function _buildValueString(id, value) {
+    if (id == null)
+        return "" + value;
+    if (value && typeof value === 'object')
+        value = 'Object';
+    return (id + ": " + value).slice(0, 50);
+}
+/**
+ * @param {?} valueString
+ * @return {?}
+ */
+function _extractId(valueString) {
+    return valueString.split(':')[0];
+}
+/**
+ * \@whatItDoes Writes values and listens to changes on a select element.
+ *
+ * Used by {\@link NgModel}, {\@link FormControlDirective}, and {\@link FormControlName}
+ * to keep the view synced with the {\@link FormControl} model.
+ *
+ * \@howToUse
+ *
+ * If you have imported the {\@link FormsModule} or the {\@link ReactiveFormsModule}, this
+ * value accessor will be active on any select control that has a form directive. You do
+ * **not** need to add a special selector to activate it.
+ *
+ * ### How to use select controls with form directives
+ *
+ * To use a select in a template-driven form, simply add an `ngModel` and a `name`
+ * attribute to the main `<select>` tag.
+ *
+ * If your option values are simple strings, you can bind to the normal `value` property
+ * on the option.  If your option values happen to be objects (and you'd like to save the
+ * selection in your form as an object), use `ngValue` instead:
+ *
+ * {\@example forms/ts/selectControl/select_control_example.ts region='Component'}
+ *
+ * In reactive forms, you'll also want to add your form directive (`formControlName` or
+ * `formControl`) on the main `<select>` tag. Like in the former example, you have the
+ * choice of binding to the  `value` or `ngValue` property on the select's options.
+ *
+ * {\@example forms/ts/reactiveSelectControl/reactive_select_control_example.ts region='Component'}
+ *
+ * ### Caveat: Option selection
+ *
+ * Angular uses object identity to select option. It's possible for the identities of items
+ * to change while the data does not. This can happen, for example, if the items are produced
+ * from an RPC to the server, and that RPC is re-run. Even if the data hasn't changed, the
+ * second response will produce objects with different identities.
+ *
+ * To customize the default option comparison algorithm, `<select>` supports `compareWith` input.
+ * `compareWith` takes a **function** which has two arguments: `option1` and `option2`.
+ * If `compareWith` is given, Angular selects option by the return value of the function.
+ *
+ * #### Syntax
+ *
+ * ```
+ * <select [compareWith]="compareFn"  [(ngModel)]="selectedCountries">
+ *     <option *ngFor="let country of countries" [ngValue]="country">
+ *         {{country.name}}
+ *     </option>
+ * </select>
+ *
+ * compareFn(c1: Country, c2: Country): boolean {
+ *     return c1 && c2 ? c1.id === c2.id : c1 === c2;
+ * }
+ * ```
+ *
+ * Note: We listen to the 'change' event because 'input' events aren't fired
+ * for selects in Firefox and IE:
+ * https://bugzilla.mozilla.org/show_bug.cgi?id=1024350
+ * https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/4660045/
+ *
+ * * **npm package**: `\@angular/forms`
+ *
+ * \@stable
+ */
+var SelectControlValueAccessor = (function () {
+    /**
+     * @param {?} _renderer
+     * @param {?} _elementRef
+     */
+    function SelectControlValueAccessor(_renderer, _elementRef) {
+        this._renderer = _renderer;
+        this._elementRef = _elementRef;
+        /**
+         * \@internal
+         */
+        this._optionMap = new Map();
+        /**
+         * \@internal
+         */
+        this._idCounter = 0;
+        this.onChange = function (_) { };
+        this.onTouched = function () { };
+        this._compareWith = __WEBPACK_IMPORTED_MODULE_1__angular_core__["ɵlooseIdentical"];
+    }
+    Object.defineProperty(SelectControlValueAccessor.prototype, "compareWith", {
+        /**
+         * @param {?} fn
+         * @return {?}
+         */
+        set: function (fn) {
+            if (typeof fn !== 'function') {
+                throw new Error("compareWith must be a function, but received " + JSON.stringify(fn));
+            }
+            this._compareWith = fn;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    SelectControlValueAccessor.prototype.writeValue = function (value) {
+        this.value = value;
+        var /** @type {?} */ id = this._getOptionId(value);
+        if (id == null) {
+            this._renderer.setProperty(this._elementRef.nativeElement, 'selectedIndex', -1);
+        }
+        var /** @type {?} */ valueString = _buildValueString(id, value);
+        this._renderer.setProperty(this._elementRef.nativeElement, 'value', valueString);
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    SelectControlValueAccessor.prototype.registerOnChange = function (fn) {
+        var _this = this;
+        this.onChange = function (valueString) {
+            _this.value = valueString;
+            fn(_this._getOptionValue(valueString));
+        };
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    SelectControlValueAccessor.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
+    /**
+     * @param {?} isDisabled
+     * @return {?}
+     */
+    SelectControlValueAccessor.prototype.setDisabledState = function (isDisabled) {
+        this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    SelectControlValueAccessor.prototype._registerOption = function () { return (this._idCounter++).toString(); };
+    /**
+     * \@internal
+     * @param {?} value
+     * @return {?}
+     */
+    SelectControlValueAccessor.prototype._getOptionId = function (value) {
+        for (var _i = 0, _a = Array.from(this._optionMap.keys()); _i < _a.length; _i++) {
+            var id = _a[_i];
+            if (this._compareWith(this._optionMap.get(id), value))
+                return id;
+        }
+        return null;
+    };
+    /**
+     * \@internal
+     * @param {?} valueString
+     * @return {?}
+     */
+    SelectControlValueAccessor.prototype._getOptionValue = function (valueString) {
+        var /** @type {?} */ id = _extractId(valueString);
+        return this._optionMap.has(id) ? this._optionMap.get(id) : valueString;
+    };
+    return SelectControlValueAccessor;
+}());
+SelectControlValueAccessor.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: 'select:not([multiple])[formControlName],select:not([multiple])[formControl],select:not([multiple])[ngModel]',
+                host: { '(change)': 'onChange($event.target.value)', '(blur)': 'onTouched()' },
+                providers: [SELECT_VALUE_ACCESSOR]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+SelectControlValueAccessor.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Renderer2"], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["ElementRef"], },
+]; };
+SelectControlValueAccessor.propDecorators = {
+    'compareWith': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+};
+/**
+ * \@whatItDoes Marks `<option>` as dynamic, so Angular can be notified when options change.
+ *
+ * \@howToUse
+ *
+ * See docs for {\@link SelectControlValueAccessor} for usage examples.
+ *
+ * \@stable
+ */
+var NgSelectOption = (function () {
+    /**
+     * @param {?} _element
+     * @param {?} _renderer
+     * @param {?} _select
+     */
+    function NgSelectOption(_element, _renderer, _select) {
+        this._element = _element;
+        this._renderer = _renderer;
+        this._select = _select;
+        if (this._select)
+            this.id = this._select._registerOption();
+    }
+    Object.defineProperty(NgSelectOption.prototype, "ngValue", {
+        /**
+         * @param {?} value
+         * @return {?}
+         */
+        set: function (value) {
+            if (this._select == null)
+                return;
+            this._select._optionMap.set(this.id, value);
+            this._setElementValue(_buildValueString(this.id, value));
+            this._select.writeValue(this._select.value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgSelectOption.prototype, "value", {
+        /**
+         * @param {?} value
+         * @return {?}
+         */
+        set: function (value) {
+            this._setElementValue(value);
+            if (this._select)
+                this._select.writeValue(this._select.value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * \@internal
+     * @param {?} value
+     * @return {?}
+     */
+    NgSelectOption.prototype._setElementValue = function (value) {
+        this._renderer.setProperty(this._element.nativeElement, 'value', value);
+    };
+    /**
+     * @return {?}
+     */
+    NgSelectOption.prototype.ngOnDestroy = function () {
+        if (this._select) {
+            this._select._optionMap.delete(this.id);
+            this._select.writeValue(this._select.value);
+        }
+    };
+    return NgSelectOption;
+}());
+NgSelectOption.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{ selector: 'option' },] },
+];
+/**
+ * @nocollapse
+ */
+NgSelectOption.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["ElementRef"], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Renderer2"], },
+    { type: SelectControlValueAccessor, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Host"] },] },
+]; };
+NgSelectOption.propDecorators = {
+    'ngValue': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['ngValue',] },],
+    'value': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['value',] },],
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var SELECT_MULTIPLE_VALUE_ACCESSOR = {
+    provide: NG_VALUE_ACCESSOR,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return SelectMultipleControlValueAccessor; }),
+    multi: true
+};
+/**
+ * @param {?} id
+ * @param {?} value
+ * @return {?}
+ */
+function _buildValueString$1(id, value) {
+    if (id == null)
+        return "" + value;
+    if (typeof value === 'string')
+        value = "'" + value + "'";
+    if (value && typeof value === 'object')
+        value = 'Object';
+    return (id + ": " + value).slice(0, 50);
+}
+/**
+ * @param {?} valueString
+ * @return {?}
+ */
+function _extractId$1(valueString) {
+    return valueString.split(':')[0];
+}
+/**
+ * The accessor for writing a value and listening to changes on a select element.
+ *
+ *  ### Caveat: Options selection
+ *
+ * Angular uses object identity to select options. It's possible for the identities of items
+ * to change while the data does not. This can happen, for example, if the items are produced
+ * from an RPC to the server, and that RPC is re-run. Even if the data hasn't changed, the
+ * second response will produce objects with different identities.
+ *
+ * To customize the default option comparison algorithm, `<select multiple>` supports `compareWith`
+ * input. `compareWith` takes a **function** which has two arguments: `option1` and `option2`.
+ * If `compareWith` is given, Angular selects options by the return value of the function.
+ *
+ * #### Syntax
+ *
+ * ```
+ * <select multiple [compareWith]="compareFn"  [(ngModel)]="selectedCountries">
+ *     <option *ngFor="let country of countries" [ngValue]="country">
+ *         {{country.name}}
+ *     </option>
+ * </select>
+ *
+ * compareFn(c1: Country, c2: Country): boolean {
+ *     return c1 && c2 ? c1.id === c2.id : c1 === c2;
+ * }
+ * ```
+ *
+ * \@stable
+ */
+var SelectMultipleControlValueAccessor = (function () {
+    /**
+     * @param {?} _renderer
+     * @param {?} _elementRef
+     */
+    function SelectMultipleControlValueAccessor(_renderer, _elementRef) {
+        this._renderer = _renderer;
+        this._elementRef = _elementRef;
+        /**
+         * \@internal
+         */
+        this._optionMap = new Map();
+        /**
+         * \@internal
+         */
+        this._idCounter = 0;
+        this.onChange = function (_) { };
+        this.onTouched = function () { };
+        this._compareWith = __WEBPACK_IMPORTED_MODULE_1__angular_core__["ɵlooseIdentical"];
+    }
+    Object.defineProperty(SelectMultipleControlValueAccessor.prototype, "compareWith", {
+        /**
+         * @param {?} fn
+         * @return {?}
+         */
+        set: function (fn) {
+            if (typeof fn !== 'function') {
+                throw new Error("compareWith must be a function, but received " + JSON.stringify(fn));
+            }
+            this._compareWith = fn;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    SelectMultipleControlValueAccessor.prototype.writeValue = function (value) {
+        var _this = this;
+        this.value = value;
+        var /** @type {?} */ optionSelectedStateSetter;
+        if (Array.isArray(value)) {
+            // convert values to ids
+            var /** @type {?} */ ids_1 = value.map(function (v) { return _this._getOptionId(v); });
+            optionSelectedStateSetter = function (opt, o) { opt._setSelected(ids_1.indexOf(o.toString()) > -1); };
+        }
+        else {
+            optionSelectedStateSetter = function (opt, o) { opt._setSelected(false); };
+        }
+        this._optionMap.forEach(optionSelectedStateSetter);
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    SelectMultipleControlValueAccessor.prototype.registerOnChange = function (fn) {
+        var _this = this;
+        this.onChange = function (_) {
+            var /** @type {?} */ selected = [];
+            if (_.hasOwnProperty('selectedOptions')) {
+                var /** @type {?} */ options = _.selectedOptions;
+                for (var /** @type {?} */ i = 0; i < options.length; i++) {
+                    var /** @type {?} */ opt = options.item(i);
+                    var /** @type {?} */ val = _this._getOptionValue(opt.value);
+                    selected.push(val);
+                }
+            }
+            else {
+                var /** @type {?} */ options = (_.options);
+                for (var /** @type {?} */ i = 0; i < options.length; i++) {
+                    var /** @type {?} */ opt = options.item(i);
+                    if (opt.selected) {
+                        var /** @type {?} */ val = _this._getOptionValue(opt.value);
+                        selected.push(val);
+                    }
+                }
+            }
+            _this.value = selected;
+            fn(selected);
+        };
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    SelectMultipleControlValueAccessor.prototype.registerOnTouched = function (fn) { this.onTouched = fn; };
+    /**
+     * @param {?} isDisabled
+     * @return {?}
+     */
+    SelectMultipleControlValueAccessor.prototype.setDisabledState = function (isDisabled) {
+        this._renderer.setProperty(this._elementRef.nativeElement, 'disabled', isDisabled);
+    };
+    /**
+     * \@internal
+     * @param {?} value
+     * @return {?}
+     */
+    SelectMultipleControlValueAccessor.prototype._registerOption = function (value) {
+        var /** @type {?} */ id = (this._idCounter++).toString();
+        this._optionMap.set(id, value);
+        return id;
+    };
+    /**
+     * \@internal
+     * @param {?} value
+     * @return {?}
+     */
+    SelectMultipleControlValueAccessor.prototype._getOptionId = function (value) {
+        for (var _i = 0, _a = Array.from(this._optionMap.keys()); _i < _a.length; _i++) {
+            var id = _a[_i];
+            if (this._compareWith(/** @type {?} */ ((this._optionMap.get(id)))._value, value))
+                return id;
+        }
+        return null;
+    };
+    /**
+     * \@internal
+     * @param {?} valueString
+     * @return {?}
+     */
+    SelectMultipleControlValueAccessor.prototype._getOptionValue = function (valueString) {
+        var /** @type {?} */ id = _extractId$1(valueString);
+        return this._optionMap.has(id) ? ((this._optionMap.get(id)))._value : valueString;
+    };
+    return SelectMultipleControlValueAccessor;
+}());
+SelectMultipleControlValueAccessor.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: 'select[multiple][formControlName],select[multiple][formControl],select[multiple][ngModel]',
+                host: { '(change)': 'onChange($event.target)', '(blur)': 'onTouched()' },
+                providers: [SELECT_MULTIPLE_VALUE_ACCESSOR]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+SelectMultipleControlValueAccessor.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Renderer2"], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["ElementRef"], },
+]; };
+SelectMultipleControlValueAccessor.propDecorators = {
+    'compareWith': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+};
+/**
+ * Marks `<option>` as dynamic, so Angular can be notified when options change.
+ *
+ * ### Example
+ *
+ * ```
+ * <select multiple name="city" ngModel>
+ *   <option *ngFor="let c of cities" [value]="c"></option>
+ * </select>
+ * ```
+ */
+var NgSelectMultipleOption = (function () {
+    /**
+     * @param {?} _element
+     * @param {?} _renderer
+     * @param {?} _select
+     */
+    function NgSelectMultipleOption(_element, _renderer, _select) {
+        this._element = _element;
+        this._renderer = _renderer;
+        this._select = _select;
+        if (this._select) {
+            this.id = this._select._registerOption(this);
+        }
+    }
+    Object.defineProperty(NgSelectMultipleOption.prototype, "ngValue", {
+        /**
+         * @param {?} value
+         * @return {?}
+         */
+        set: function (value) {
+            if (this._select == null)
+                return;
+            this._value = value;
+            this._setElementValue(_buildValueString$1(this.id, value));
+            this._select.writeValue(this._select.value);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgSelectMultipleOption.prototype, "value", {
+        /**
+         * @param {?} value
+         * @return {?}
+         */
+        set: function (value) {
+            if (this._select) {
+                this._value = value;
+                this._setElementValue(_buildValueString$1(this.id, value));
+                this._select.writeValue(this._select.value);
+            }
+            else {
+                this._setElementValue(value);
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * \@internal
+     * @param {?} value
+     * @return {?}
+     */
+    NgSelectMultipleOption.prototype._setElementValue = function (value) {
+        this._renderer.setProperty(this._element.nativeElement, 'value', value);
+    };
+    /**
+     * \@internal
+     * @param {?} selected
+     * @return {?}
+     */
+    NgSelectMultipleOption.prototype._setSelected = function (selected) {
+        this._renderer.setProperty(this._element.nativeElement, 'selected', selected);
+    };
+    /**
+     * @return {?}
+     */
+    NgSelectMultipleOption.prototype.ngOnDestroy = function () {
+        if (this._select) {
+            this._select._optionMap.delete(this.id);
+            this._select.writeValue(this._select.value);
+        }
+    };
+    return NgSelectMultipleOption;
+}());
+NgSelectMultipleOption.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{ selector: 'option' },] },
+];
+/**
+ * @nocollapse
+ */
+NgSelectMultipleOption.ctorParameters = function () { return [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["ElementRef"], },
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Renderer2"], },
+    { type: SelectMultipleControlValueAccessor, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Host"] },] },
+]; };
+NgSelectMultipleOption.propDecorators = {
+    'ngValue': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['ngValue',] },],
+    'value': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['value',] },],
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @param {?} name
+ * @param {?} parent
+ * @return {?}
+ */
+function controlPath(name, parent) {
+    return ((parent.path)).concat([name]);
+}
+/**
+ * @param {?} control
+ * @param {?} dir
+ * @return {?}
+ */
+function setUpControl(control, dir) {
+    if (!control)
+        _throwError(dir, 'Cannot find control with');
+    if (!dir.valueAccessor)
+        _throwError(dir, 'No value accessor for form control with');
+    control.validator = Validators.compose([/** @type {?} */ ((control.validator)), dir.validator]);
+    control.asyncValidator = Validators.composeAsync([/** @type {?} */ ((control.asyncValidator)), dir.asyncValidator]); /** @type {?} */
+    ((dir.valueAccessor)).writeValue(control.value); /** @type {?} */
+    ((
+    // view -> model
+    dir.valueAccessor)).registerOnChange(function (newValue) {
+        dir.viewToModelUpdate(newValue);
+        control.markAsDirty();
+        control.setValue(newValue, { emitModelToViewChange: false });
+    }); /** @type {?} */
+    ((
+    // touched
+    dir.valueAccessor)).registerOnTouched(function () { return control.markAsTouched(); });
+    control.registerOnChange(function (newValue, emitModelEvent) {
+        ((
+        // control -> view
+        dir.valueAccessor)).writeValue(newValue);
+        // control -> ngModel
+        if (emitModelEvent)
+            dir.viewToModelUpdate(newValue);
+    });
+    if (((dir.valueAccessor)).setDisabledState) {
+        control.registerOnDisabledChange(function (isDisabled) { /** @type {?} */ ((((dir.valueAccessor)).setDisabledState))(isDisabled); });
+    }
+    // re-run validation when validator binding changes, e.g. minlength=3 -> minlength=4
+    dir._rawValidators.forEach(function (validator) {
+        if (((validator)).registerOnValidatorChange)
+            ((((validator)).registerOnValidatorChange))(function () { return control.updateValueAndValidity(); });
+    });
+    dir._rawAsyncValidators.forEach(function (validator) {
+        if (((validator)).registerOnValidatorChange)
+            ((((validator)).registerOnValidatorChange))(function () { return control.updateValueAndValidity(); });
+    });
+}
+/**
+ * @param {?} control
+ * @param {?} dir
+ * @return {?}
+ */
+function cleanUpControl(control, dir) {
+    ((dir.valueAccessor)).registerOnChange(function () { return _noControlError(dir); }); /** @type {?} */
+    ((dir.valueAccessor)).registerOnTouched(function () { return _noControlError(dir); });
+    dir._rawValidators.forEach(function (validator) {
+        if (validator.registerOnValidatorChange) {
+            validator.registerOnValidatorChange(null);
+        }
+    });
+    dir._rawAsyncValidators.forEach(function (validator) {
+        if (validator.registerOnValidatorChange) {
+            validator.registerOnValidatorChange(null);
+        }
+    });
+    if (control)
+        control._clearChangeFns();
+}
+/**
+ * @param {?} control
+ * @param {?} dir
+ * @return {?}
+ */
+function setUpFormContainer(control, dir) {
+    if (control == null)
+        _throwError(dir, 'Cannot find control with');
+    control.validator = Validators.compose([control.validator, dir.validator]);
+    control.asyncValidator = Validators.composeAsync([control.asyncValidator, dir.asyncValidator]);
+}
+/**
+ * @param {?} dir
+ * @return {?}
+ */
+function _noControlError(dir) {
+    return _throwError(dir, 'There is no FormControl instance attached to form control element with');
+}
+/**
+ * @param {?} dir
+ * @param {?} message
+ * @return {?}
+ */
+function _throwError(dir, message) {
+    var /** @type {?} */ messageEnd;
+    if (((dir.path)).length > 1) {
+        messageEnd = "path: '" + ((dir.path)).join(' -> ') + "'";
+    }
+    else if (((dir.path))[0]) {
+        messageEnd = "name: '" + dir.path + "'";
+    }
+    else {
+        messageEnd = 'unspecified name attribute';
+    }
+    throw new Error(message + " " + messageEnd);
+}
+/**
+ * @param {?} validators
+ * @return {?}
+ */
+function composeValidators(validators) {
+    return validators != null ? Validators.compose(validators.map(normalizeValidator)) : null;
+}
+/**
+ * @param {?} validators
+ * @return {?}
+ */
+function composeAsyncValidators(validators) {
+    return validators != null ? Validators.composeAsync(validators.map(normalizeAsyncValidator)) :
+        null;
+}
+/**
+ * @param {?} changes
+ * @param {?} viewModel
+ * @return {?}
+ */
+function isPropertyUpdated(changes, viewModel) {
+    if (!changes.hasOwnProperty('model'))
+        return false;
+    var /** @type {?} */ change = changes['model'];
+    if (change.isFirstChange())
+        return true;
+    return !Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["ɵlooseIdentical"])(viewModel, change.currentValue);
+}
+var BUILTIN_ACCESSORS = [
+    CheckboxControlValueAccessor,
+    RangeValueAccessor,
+    NumberValueAccessor,
+    SelectControlValueAccessor,
+    SelectMultipleControlValueAccessor,
+    RadioControlValueAccessor,
+];
+/**
+ * @param {?} valueAccessor
+ * @return {?}
+ */
+function isBuiltInAccessor(valueAccessor) {
+    return BUILTIN_ACCESSORS.some(function (a) { return valueAccessor.constructor === a; });
+}
+/**
+ * @param {?} dir
+ * @param {?} valueAccessors
+ * @return {?}
+ */
+function selectValueAccessor(dir, valueAccessors) {
+    if (!valueAccessors)
+        return null;
+    var /** @type {?} */ defaultAccessor = undefined;
+    var /** @type {?} */ builtinAccessor = undefined;
+    var /** @type {?} */ customAccessor = undefined;
+    valueAccessors.forEach(function (v) {
+        if (v.constructor === DefaultValueAccessor) {
+            defaultAccessor = v;
+        }
+        else if (isBuiltInAccessor(v)) {
+            if (builtinAccessor)
+                _throwError(dir, 'More than one built-in value accessor matches form control with');
+            builtinAccessor = v;
+        }
+        else {
+            if (customAccessor)
+                _throwError(dir, 'More than one custom value accessor matches form control with');
+            customAccessor = v;
+        }
+    });
+    if (customAccessor)
+        return customAccessor;
+    if (builtinAccessor)
+        return builtinAccessor;
+    if (defaultAccessor)
+        return defaultAccessor;
+    _throwError(dir, 'No valid value accessor for form control with');
+    return null;
+}
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * This is a base class for code shared between {\@link NgModelGroup} and {\@link FormGroupName}.
+ *
+ * \@stable
+ */
+var AbstractFormGroupDirective = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](AbstractFormGroupDirective, _super);
+    function AbstractFormGroupDirective() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * @return {?}
+     */
+    AbstractFormGroupDirective.prototype.ngOnInit = function () {
+        this._checkParentType(); /** @type {?} */
+        ((this.formDirective)).addFormGroup(this);
+    };
+    /**
+     * @return {?}
+     */
+    AbstractFormGroupDirective.prototype.ngOnDestroy = function () {
+        if (this.formDirective) {
+            this.formDirective.removeFormGroup(this);
+        }
+    };
+    Object.defineProperty(AbstractFormGroupDirective.prototype, "control", {
+        /**
+         * Get the {\@link FormGroup} backing this binding.
+         * @return {?}
+         */
+        get: function () { return ((this.formDirective)).getFormGroup(this); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractFormGroupDirective.prototype, "path", {
+        /**
+         * Get the path to this control group.
+         * @return {?}
+         */
+        get: function () { return controlPath(this.name, this._parent); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractFormGroupDirective.prototype, "formDirective", {
+        /**
+         * Get the {\@link Form} to which this group belongs.
+         * @return {?}
+         */
+        get: function () { return this._parent ? this._parent.formDirective : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractFormGroupDirective.prototype, "validator", {
+        /**
+         * @return {?}
+         */
+        get: function () { return composeValidators(this._validators); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractFormGroupDirective.prototype, "asyncValidator", {
+        /**
+         * @return {?}
+         */
+        get: function () {
+            return composeAsyncValidators(this._asyncValidators);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * \@internal
+     * @return {?}
+     */
+    AbstractFormGroupDirective.prototype._checkParentType = function () { };
+    return AbstractFormGroupDirective;
+}(ControlContainer));
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var AbstractControlStatus = (function () {
+    /**
+     * @param {?} cd
+     */
+    function AbstractControlStatus(cd) {
+        this._cd = cd;
+    }
+    Object.defineProperty(AbstractControlStatus.prototype, "ngClassUntouched", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._cd.control ? this._cd.control.untouched : false; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlStatus.prototype, "ngClassTouched", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._cd.control ? this._cd.control.touched : false; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlStatus.prototype, "ngClassPristine", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._cd.control ? this._cd.control.pristine : false; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlStatus.prototype, "ngClassDirty", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._cd.control ? this._cd.control.dirty : false; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlStatus.prototype, "ngClassValid", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._cd.control ? this._cd.control.valid : false; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlStatus.prototype, "ngClassInvalid", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._cd.control ? this._cd.control.invalid : false; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControlStatus.prototype, "ngClassPending", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._cd.control ? this._cd.control.pending : false; },
+        enumerable: true,
+        configurable: true
+    });
+    return AbstractControlStatus;
+}());
+var ngControlStatusHost = {
+    '[class.ng-untouched]': 'ngClassUntouched',
+    '[class.ng-touched]': 'ngClassTouched',
+    '[class.ng-pristine]': 'ngClassPristine',
+    '[class.ng-dirty]': 'ngClassDirty',
+    '[class.ng-valid]': 'ngClassValid',
+    '[class.ng-invalid]': 'ngClassInvalid',
+    '[class.ng-pending]': 'ngClassPending',
+};
+/**
+ * Directive automatically applied to Angular form controls that sets CSS classes
+ * based on control status. The following classes are applied as the properties
+ * become true:
+ *
+ * * ng-valid
+ * * ng-invalid
+ * * ng-pending
+ * * ng-pristine
+ * * ng-dirty
+ * * ng-untouched
+ * * ng-touched
+ *
+ * \@stable
+ */
+var NgControlStatus = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](NgControlStatus, _super);
+    /**
+     * @param {?} cd
+     */
+    function NgControlStatus(cd) {
+        return _super.call(this, cd) || this;
+    }
+    return NgControlStatus;
+}(AbstractControlStatus));
+NgControlStatus.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{ selector: '[formControlName],[ngModel],[formControl]', host: ngControlStatusHost },] },
+];
+/**
+ * @nocollapse
+ */
+NgControlStatus.ctorParameters = function () { return [
+    { type: NgControl, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] },] },
+]; };
+/**
+ * Directive automatically applied to Angular form groups that sets CSS classes
+ * based on control status (valid/invalid/dirty/etc).
+ *
+ * \@stable
+ */
+var NgControlStatusGroup = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](NgControlStatusGroup, _super);
+    /**
+     * @param {?} cd
+     */
+    function NgControlStatusGroup(cd) {
+        return _super.call(this, cd) || this;
+    }
+    return NgControlStatusGroup;
+}(AbstractControlStatus));
+NgControlStatusGroup.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: '[formGroupName],[formArrayName],[ngModelGroup],[formGroup],form:not([ngNoForm]),[ngForm]',
+                host: ngControlStatusHost
+            },] },
+];
+/**
+ * @nocollapse
+ */
+NgControlStatusGroup.ctorParameters = function () { return [
+    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] },] },
+]; };
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * Indicates that a FormControl is valid, i.e. that no errors exist in the input value.
+ */
+var VALID = 'VALID';
+/**
+ * Indicates that a FormControl is invalid, i.e. that an error exists in the input value.
+ */
+var INVALID = 'INVALID';
+/**
+ * Indicates that a FormControl is pending, i.e. that async validation is occurring and
+ * errors are not yet available for the input value.
+ */
+var PENDING = 'PENDING';
+/**
+ * Indicates that a FormControl is disabled, i.e. that the control is exempt from ancestor
+ * calculations of validity or value.
+ */
+var DISABLED = 'DISABLED';
+/**
+ * @param {?} control
+ * @param {?} path
+ * @param {?} delimiter
+ * @return {?}
+ */
+function _find(control, path, delimiter) {
+    if (path == null)
+        return null;
+    if (!(path instanceof Array)) {
+        path = ((path)).split(delimiter);
+    }
+    if (path instanceof Array && (path.length === 0))
+        return null;
+    return ((path)).reduce(function (v, name) {
+        if (v instanceof FormGroup) {
+            return v.controls[name] || null;
+        }
+        if (v instanceof FormArray) {
+            return v.at(/** @type {?} */ (name)) || null;
+        }
+        return null;
+    }, control);
+}
+/**
+ * @param {?=} validator
+ * @return {?}
+ */
+function coerceToValidator(validator) {
+    return Array.isArray(validator) ? composeValidators(validator) : validator || null;
+}
+/**
+ * @param {?=} asyncValidator
+ * @return {?}
+ */
+function coerceToAsyncValidator(asyncValidator) {
+    return Array.isArray(asyncValidator) ? composeAsyncValidators(asyncValidator) :
+        asyncValidator || null;
+}
+/**
+ * \@whatItDoes This is the base class for {\@link FormControl}, {\@link FormGroup}, and
+ * {\@link FormArray}.
+ *
+ * It provides some of the shared behavior that all controls and groups of controls have, like
+ * running validators, calculating status, and resetting state. It also defines the properties
+ * that are shared between all sub-classes, like `value`, `valid`, and `dirty`. It shouldn't be
+ * instantiated directly.
+ *
+ * \@stable
+ * @abstract
+ */
+var AbstractControl = (function () {
+    /**
+     * @param {?} validator
+     * @param {?} asyncValidator
+     */
+    function AbstractControl(validator, asyncValidator) {
+        this.validator = validator;
+        this.asyncValidator = asyncValidator;
+        /**
+         * \@internal
+         */
+        this._onCollectionChange = function () { };
+        this._pristine = true;
+        this._touched = false;
+        /**
+         * \@internal
+         */
+        this._onDisabledChange = [];
+    }
+    Object.defineProperty(AbstractControl.prototype, "value", {
+        /**
+         * The value of the control.
+         * @return {?}
+         */
+        get: function () { return this._value; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "parent", {
+        /**
+         * The parent control.
+         * @return {?}
+         */
+        get: function () { return this._parent; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "status", {
+        /**
+         * The validation status of the control. There are four possible
+         * validation statuses:
+         *
+         * * **VALID**:  control has passed all validation checks
+         * * **INVALID**: control has failed at least one validation check
+         * * **PENDING**: control is in the midst of conducting a validation check
+         * * **DISABLED**: control is exempt from validation checks
+         *
+         * These statuses are mutually exclusive, so a control cannot be
+         * both valid AND invalid or invalid AND disabled.
+         * @return {?}
+         */
+        get: function () { return this._status; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "valid", {
+        /**
+         * A control is `valid` when its `status === VALID`.
+         *
+         * In order to have this status, the control must have passed all its
+         * validation checks.
+         * @return {?}
+         */
+        get: function () { return this._status === VALID; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "invalid", {
+        /**
+         * A control is `invalid` when its `status === INVALID`.
+         *
+         * In order to have this status, the control must have failed
+         * at least one of its validation checks.
+         * @return {?}
+         */
+        get: function () { return this._status === INVALID; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "pending", {
+        /**
+         * A control is `pending` when its `status === PENDING`.
+         *
+         * In order to have this status, the control must be in the
+         * middle of conducting a validation check.
+         * @return {?}
+         */
+        get: function () { return this._status == PENDING; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "disabled", {
+        /**
+         * A control is `disabled` when its `status === DISABLED`.
+         *
+         * Disabled controls are exempt from validation checks and
+         * are not included in the aggregate value of their ancestor
+         * controls.
+         * @return {?}
+         */
+        get: function () { return this._status === DISABLED; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "enabled", {
+        /**
+         * A control is `enabled` as long as its `status !== DISABLED`.
+         *
+         * In other words, it has a status of `VALID`, `INVALID`, or
+         * `PENDING`.
+         * @return {?}
+         */
+        get: function () { return this._status !== DISABLED; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "errors", {
+        /**
+         * Returns any errors generated by failing validation. If there
+         * are no errors, it will return null.
+         * @return {?}
+         */
+        get: function () { return this._errors; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "pristine", {
+        /**
+         * A control is `pristine` if the user has not yet changed
+         * the value in the UI.
+         *
+         * Note that programmatic changes to a control's value will
+         * *not* mark it dirty.
+         * @return {?}
+         */
+        get: function () { return this._pristine; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "dirty", {
+        /**
+         * A control is `dirty` if the user has changed the value
+         * in the UI.
+         *
+         * Note that programmatic changes to a control's value will
+         * *not* mark it dirty.
+         * @return {?}
+         */
+        get: function () { return !this.pristine; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "touched", {
+        /**
+         * A control is marked `touched` once the user has triggered
+         * a `blur` event on it.
+         * @return {?}
+         */
+        get: function () { return this._touched; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "untouched", {
+        /**
+         * A control is `untouched` if the user has not yet triggered
+         * a `blur` event on it.
+         * @return {?}
+         */
+        get: function () { return !this._touched; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "valueChanges", {
+        /**
+         * Emits an event every time the value of the control changes, in
+         * the UI or programmatically.
+         * @return {?}
+         */
+        get: function () { return this._valueChanges; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(AbstractControl.prototype, "statusChanges", {
+        /**
+         * Emits an event every time the validation status of the control
+         * is re-calculated.
+         * @return {?}
+         */
+        get: function () { return this._statusChanges; },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * Sets the synchronous validators that are active on this control.  Calling
+     * this will overwrite any existing sync validators.
+     * @param {?} newValidator
+     * @return {?}
+     */
+    AbstractControl.prototype.setValidators = function (newValidator) {
+        this.validator = coerceToValidator(newValidator);
+    };
+    /**
+     * Sets the async validators that are active on this control. Calling this
+     * will overwrite any existing async validators.
+     * @param {?} newValidator
+     * @return {?}
+     */
+    AbstractControl.prototype.setAsyncValidators = function (newValidator) {
+        this.asyncValidator = coerceToAsyncValidator(newValidator);
+    };
+    /**
+     * Empties out the sync validator list.
+     * @return {?}
+     */
+    AbstractControl.prototype.clearValidators = function () { this.validator = null; };
+    /**
+     * Empties out the async validator list.
+     * @return {?}
+     */
+    AbstractControl.prototype.clearAsyncValidators = function () { this.asyncValidator = null; };
+    /**
+     * Marks the control as `touched`.
+     *
+     * This will also mark all direct ancestors as `touched` to maintain
+     * the model.
+     * @param {?=} opts
+     * @return {?}
+     */
+    AbstractControl.prototype.markAsTouched = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        this._touched = true;
+        if (this._parent && !opts.onlySelf) {
+            this._parent.markAsTouched(opts);
+        }
+    };
+    /**
+     * Marks the control as `untouched`.
+     *
+     * If the control has any children, it will also mark all children as `untouched`
+     * to maintain the model, and re-calculate the `touched` status of all parent
+     * controls.
+     * @param {?=} opts
+     * @return {?}
+     */
+    AbstractControl.prototype.markAsUntouched = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        this._touched = false;
+        this._forEachChild(function (control) { control.markAsUntouched({ onlySelf: true }); });
+        if (this._parent && !opts.onlySelf) {
+            this._parent._updateTouched(opts);
+        }
+    };
+    /**
+     * Marks the control as `dirty`.
+     *
+     * This will also mark all direct ancestors as `dirty` to maintain
+     * the model.
+     * @param {?=} opts
+     * @return {?}
+     */
+    AbstractControl.prototype.markAsDirty = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        this._pristine = false;
+        if (this._parent && !opts.onlySelf) {
+            this._parent.markAsDirty(opts);
+        }
+    };
+    /**
+     * Marks the control as `pristine`.
+     *
+     * If the control has any children, it will also mark all children as `pristine`
+     * to maintain the model, and re-calculate the `pristine` status of all parent
+     * controls.
+     * @param {?=} opts
+     * @return {?}
+     */
+    AbstractControl.prototype.markAsPristine = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        this._pristine = true;
+        this._forEachChild(function (control) { control.markAsPristine({ onlySelf: true }); });
+        if (this._parent && !opts.onlySelf) {
+            this._parent._updatePristine(opts);
+        }
+    };
+    /**
+     * Marks the control as `pending`.
+     * @param {?=} opts
+     * @return {?}
+     */
+    AbstractControl.prototype.markAsPending = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        this._status = PENDING;
+        if (this._parent && !opts.onlySelf) {
+            this._parent.markAsPending(opts);
+        }
+    };
+    /**
+     * Disables the control. This means the control will be exempt from validation checks and
+     * excluded from the aggregate value of any parent. Its status is `DISABLED`.
+     *
+     * If the control has children, all children will be disabled to maintain the model.
+     * @param {?=} opts
+     * @return {?}
+     */
+    AbstractControl.prototype.disable = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        this._status = DISABLED;
+        this._errors = null;
+        this._forEachChild(function (control) { control.disable({ onlySelf: true }); });
+        this._updateValue();
+        if (opts.emitEvent !== false) {
+            this._valueChanges.emit(this._value);
+            this._statusChanges.emit(this._status);
+        }
+        this._updateAncestors(!!opts.onlySelf);
+        this._onDisabledChange.forEach(function (changeFn) { return changeFn(true); });
+    };
+    /**
+     * Enables the control. This means the control will be included in validation checks and
+     * the aggregate value of its parent. Its status is re-calculated based on its value and
+     * its validators.
+     *
+     * If the control has children, all children will be enabled.
+     * @param {?=} opts
+     * @return {?}
+     */
+    AbstractControl.prototype.enable = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        this._status = VALID;
+        this._forEachChild(function (control) { control.enable({ onlySelf: true }); });
+        this.updateValueAndValidity({ onlySelf: true, emitEvent: opts.emitEvent });
+        this._updateAncestors(!!opts.onlySelf);
+        this._onDisabledChange.forEach(function (changeFn) { return changeFn(false); });
+    };
+    /**
+     * @param {?} onlySelf
+     * @return {?}
+     */
+    AbstractControl.prototype._updateAncestors = function (onlySelf) {
+        if (this._parent && !onlySelf) {
+            this._parent.updateValueAndValidity();
+            this._parent._updatePristine();
+            this._parent._updateTouched();
+        }
+    };
+    /**
+     * @param {?} parent
+     * @return {?}
+     */
+    AbstractControl.prototype.setParent = function (parent) { this._parent = parent; };
+    /**
+     * Sets the value of the control. Abstract method (implemented in sub-classes).
+     * @abstract
+     * @param {?} value
+     * @param {?=} options
+     * @return {?}
+     */
+    AbstractControl.prototype.setValue = function (value, options) { };
+    /**
+     * Patches the value of the control. Abstract method (implemented in sub-classes).
+     * @abstract
+     * @param {?} value
+     * @param {?=} options
+     * @return {?}
+     */
+    AbstractControl.prototype.patchValue = function (value, options) { };
+    /**
+     * Resets the control. Abstract method (implemented in sub-classes).
+     * @abstract
+     * @param {?=} value
+     * @param {?=} options
+     * @return {?}
+     */
+    AbstractControl.prototype.reset = function (value, options) { };
+    /**
+     * Re-calculates the value and validation status of the control.
+     *
+     * By default, it will also update the value and validity of its ancestors.
+     * @param {?=} opts
+     * @return {?}
+     */
+    AbstractControl.prototype.updateValueAndValidity = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        this._setInitialStatus();
+        this._updateValue();
+        if (this.enabled) {
+            this._cancelExistingSubscription();
+            this._errors = this._runValidator();
+            this._status = this._calculateStatus();
+            if (this._status === VALID || this._status === PENDING) {
+                this._runAsyncValidator(opts.emitEvent);
+            }
+        }
+        if (opts.emitEvent !== false) {
+            this._valueChanges.emit(this._value);
+            this._statusChanges.emit(this._status);
+        }
+        if (this._parent && !opts.onlySelf) {
+            this._parent.updateValueAndValidity(opts);
+        }
+    };
+    /**
+     * \@internal
+     * @param {?=} opts
+     * @return {?}
+     */
+    AbstractControl.prototype._updateTreeValidity = function (opts) {
+        if (opts === void 0) { opts = { emitEvent: true }; }
+        this._forEachChild(function (ctrl) { return ctrl._updateTreeValidity(opts); });
+        this.updateValueAndValidity({ onlySelf: true, emitEvent: opts.emitEvent });
+    };
+    /**
+     * @return {?}
+     */
+    AbstractControl.prototype._setInitialStatus = function () { this._status = this._allControlsDisabled() ? DISABLED : VALID; };
+    /**
+     * @return {?}
+     */
+    AbstractControl.prototype._runValidator = function () {
+        return this.validator ? this.validator(this) : null;
+    };
+    /**
+     * @param {?=} emitEvent
+     * @return {?}
+     */
+    AbstractControl.prototype._runAsyncValidator = function (emitEvent) {
+        var _this = this;
+        if (this.asyncValidator) {
+            this._status = PENDING;
+            var /** @type {?} */ obs = toObservable(this.asyncValidator(this));
+            this._asyncValidationSubscription =
+                obs.subscribe(function (errors) { return _this.setErrors(errors, { emitEvent: emitEvent }); });
+        }
+    };
+    /**
+     * @return {?}
+     */
+    AbstractControl.prototype._cancelExistingSubscription = function () {
+        if (this._asyncValidationSubscription) {
+            this._asyncValidationSubscription.unsubscribe();
+        }
+    };
+    /**
+     * Sets errors on a form control.
+     *
+     * This is used when validations are run manually by the user, rather than automatically.
+     *
+     * Calling `setErrors` will also update the validity of the parent control.
+     *
+     * ### Example
+     *
+     * ```
+     * const login = new FormControl("someLogin");
+     * login.setErrors({
+     *   "notUnique": true
+     * });
+     *
+     * expect(login.valid).toEqual(false);
+     * expect(login.errors).toEqual({"notUnique": true});
+     *
+     * login.setValue("someOtherLogin");
+     *
+     * expect(login.valid).toEqual(true);
+     * ```
+     * @param {?} errors
+     * @param {?=} opts
+     * @return {?}
+     */
+    AbstractControl.prototype.setErrors = function (errors, opts) {
+        if (opts === void 0) { opts = {}; }
+        this._errors = errors;
+        this._updateControlsErrors(opts.emitEvent !== false);
+    };
+    /**
+     * Retrieves a child control given the control's name or path.
+     *
+     * Paths can be passed in as an array or a string delimited by a dot.
+     *
+     * To get a control nested within a `person` sub-group:
+     *
+     * * `this.form.get('person.name');`
+     *
+     * -OR-
+     *
+     * * `this.form.get(['person', 'name']);`
+     * @param {?} path
+     * @return {?}
+     */
+    AbstractControl.prototype.get = function (path) { return _find(this, path, '.'); };
+    /**
+     * Returns true if the control with the given path has the error specified. Otherwise
+     * returns null or undefined.
+     *
+     * If no path is given, it checks for the error on the present control.
+     * @param {?} errorCode
+     * @param {?=} path
+     * @return {?}
+     */
+    AbstractControl.prototype.getError = function (errorCode, path) {
+        var /** @type {?} */ control = path ? this.get(path) : this;
+        return control && control._errors ? control._errors[errorCode] : null;
+    };
+    /**
+     * Returns true if the control with the given path has the error specified. Otherwise
+     * returns false.
+     *
+     * If no path is given, it checks for the error on the present control.
+     * @param {?} errorCode
+     * @param {?=} path
+     * @return {?}
+     */
+    AbstractControl.prototype.hasError = function (errorCode, path) { return !!this.getError(errorCode, path); };
+    Object.defineProperty(AbstractControl.prototype, "root", {
+        /**
+         * Retrieves the top-level ancestor of this control.
+         * @return {?}
+         */
+        get: function () {
+            var /** @type {?} */ x = this;
+            while (x._parent) {
+                x = x._parent;
+            }
+            return x;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * \@internal
+     * @param {?} emitEvent
+     * @return {?}
+     */
+    AbstractControl.prototype._updateControlsErrors = function (emitEvent) {
+        this._status = this._calculateStatus();
+        if (emitEvent) {
+            this._statusChanges.emit(this._status);
+        }
+        if (this._parent) {
+            this._parent._updateControlsErrors(emitEvent);
+        }
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    AbstractControl.prototype._initObservables = function () {
+        this._valueChanges = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["EventEmitter"]();
+        this._statusChanges = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["EventEmitter"]();
+    };
+    /**
+     * @return {?}
+     */
+    AbstractControl.prototype._calculateStatus = function () {
+        if (this._allControlsDisabled())
+            return DISABLED;
+        if (this._errors)
+            return INVALID;
+        if (this._anyControlsHaveStatus(PENDING))
+            return PENDING;
+        if (this._anyControlsHaveStatus(INVALID))
+            return INVALID;
+        return VALID;
+    };
+    /**
+     * \@internal
+     * @abstract
+     * @return {?}
+     */
+    AbstractControl.prototype._updateValue = function () { };
+    /**
+     * \@internal
+     * @abstract
+     * @param {?} cb
+     * @return {?}
+     */
+    AbstractControl.prototype._forEachChild = function (cb) { };
+    /**
+     * \@internal
+     * @abstract
+     * @param {?} condition
+     * @return {?}
+     */
+    AbstractControl.prototype._anyControls = function (condition) { };
+    /**
+     * \@internal
+     * @abstract
+     * @return {?}
+     */
+    AbstractControl.prototype._allControlsDisabled = function () { };
+    /**
+     * \@internal
+     * @param {?} status
+     * @return {?}
+     */
+    AbstractControl.prototype._anyControlsHaveStatus = function (status) {
+        return this._anyControls(function (control) { return control.status === status; });
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    AbstractControl.prototype._anyControlsDirty = function () {
+        return this._anyControls(function (control) { return control.dirty; });
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    AbstractControl.prototype._anyControlsTouched = function () {
+        return this._anyControls(function (control) { return control.touched; });
+    };
+    /**
+     * \@internal
+     * @param {?=} opts
+     * @return {?}
+     */
+    AbstractControl.prototype._updatePristine = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        this._pristine = !this._anyControlsDirty();
+        if (this._parent && !opts.onlySelf) {
+            this._parent._updatePristine(opts);
+        }
+    };
+    /**
+     * \@internal
+     * @param {?=} opts
+     * @return {?}
+     */
+    AbstractControl.prototype._updateTouched = function (opts) {
+        if (opts === void 0) { opts = {}; }
+        this._touched = this._anyControlsTouched();
+        if (this._parent && !opts.onlySelf) {
+            this._parent._updateTouched(opts);
+        }
+    };
+    /**
+     * \@internal
+     * @param {?} formState
+     * @return {?}
+     */
+    AbstractControl.prototype._isBoxedValue = function (formState) {
+        return typeof formState === 'object' && formState !== null &&
+            Object.keys(formState).length === 2 && 'value' in formState && 'disabled' in formState;
+    };
+    /**
+     * \@internal
+     * @param {?} fn
+     * @return {?}
+     */
+    AbstractControl.prototype._registerOnCollectionChange = function (fn) { this._onCollectionChange = fn; };
+    return AbstractControl;
+}());
+/**
+ * \@whatItDoes Tracks the value and validation status of an individual form control.
+ *
+ * It is one of the three fundamental building blocks of Angular forms, along with
+ * {\@link FormGroup} and {\@link FormArray}.
+ *
+ * \@howToUse
+ *
+ * When instantiating a {\@link FormControl}, you can pass in an initial value as the
+ * first argument. Example:
+ *
+ * ```ts
+ * const ctrl = new FormControl('some value');
+ * console.log(ctrl.value);     // 'some value'
+ * ```
+ *
+ * You can also initialize the control with a form state object on instantiation,
+ * which includes both the value and whether or not the control is disabled.
+ * You can't use the value key without the disabled key; both are required
+ * to use this way of initialization.
+ *
+ * ```ts
+ * const ctrl = new FormControl({value: 'n/a', disabled: true});
+ * console.log(ctrl.value);     // 'n/a'
+ * console.log(ctrl.status);   // 'DISABLED'
+ * ```
+ *
+ * To include a sync validator (or an array of sync validators) with the control,
+ * pass it in as the second argument. Async validators are also supported, but
+ * have to be passed in separately as the third arg.
+ *
+ * ```ts
+ * const ctrl = new FormControl('', Validators.required);
+ * console.log(ctrl.value);     // ''
+ * console.log(ctrl.status);   // 'INVALID'
+ * ```
+ *
+ * See its superclass, {\@link AbstractControl}, for more properties and methods.
+ *
+ * * **npm package**: `\@angular/forms`
+ *
+ * \@stable
+ */
+var FormControl = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](FormControl, _super);
+    /**
+     * @param {?=} formState
+     * @param {?=} validator
+     * @param {?=} asyncValidator
+     */
+    function FormControl(formState, validator, asyncValidator) {
+        if (formState === void 0) { formState = null; }
+        var _this = _super.call(this, coerceToValidator(validator), coerceToAsyncValidator(asyncValidator)) || this;
+        /**
+         * \@internal
+         */
+        _this._onChange = [];
+        _this._applyFormState(formState);
+        _this.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+        _this._initObservables();
+        return _this;
+    }
+    /**
+     * Set the value of the form control to `value`.
+     *
+     * If `onlySelf` is `true`, this change will only affect the validation of this `FormControl`
+     * and not its parent component. This defaults to false.
+     *
+     * If `emitEvent` is `true`, this
+     * change will cause a `valueChanges` event on the `FormControl` to be emitted. This defaults
+     * to true (as it falls through to `updateValueAndValidity`).
+     *
+     * If `emitModelToViewChange` is `true`, the view will be notified about the new value
+     * via an `onChange` event. This is the default behavior if `emitModelToViewChange` is not
+     * specified.
+     *
+     * If `emitViewToModelChange` is `true`, an ngModelChange event will be fired to update the
+     * model.  This is the default behavior if `emitViewToModelChange` is not specified.
+     * @param {?} value
+     * @param {?=} options
+     * @return {?}
+     */
+    FormControl.prototype.setValue = function (value, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        this._value = value;
+        if (this._onChange.length && options.emitModelToViewChange !== false) {
+            this._onChange.forEach(function (changeFn) { return changeFn(_this._value, options.emitViewToModelChange !== false); });
+        }
+        this.updateValueAndValidity(options);
+    };
+    /**
+     * Patches the value of a control.
+     *
+     * This function is functionally the same as {\@link FormControl#setValue} at this level.
+     * It exists for symmetry with {\@link FormGroup#patchValue} on `FormGroups` and `FormArrays`,
+     * where it does behave differently.
+     * @param {?} value
+     * @param {?=} options
+     * @return {?}
+     */
+    FormControl.prototype.patchValue = function (value, options) {
+        if (options === void 0) { options = {}; }
+        this.setValue(value, options);
+    };
+    /**
+     * Resets the form control. This means by default:
+     *
+     * * it is marked as `pristine`
+     * * it is marked as `untouched`
+     * * value is set to null
+     *
+     * You can also reset to a specific form state by passing through a standalone
+     * value or a form state object that contains both a value and a disabled state
+     * (these are the only two properties that cannot be calculated).
+     *
+     * Ex:
+     *
+     * ```ts
+     * this.control.reset('Nancy');
+     *
+     * console.log(this.control.value);  // 'Nancy'
+     * ```
+     *
+     * OR
+     *
+     * ```
+     * this.control.reset({value: 'Nancy', disabled: true});
+     *
+     * console.log(this.control.value);  // 'Nancy'
+     * console.log(this.control.status);  // 'DISABLED'
+     * ```
+     * @param {?=} formState
+     * @param {?=} options
+     * @return {?}
+     */
+    FormControl.prototype.reset = function (formState, options) {
+        if (formState === void 0) { formState = null; }
+        if (options === void 0) { options = {}; }
+        this._applyFormState(formState);
+        this.markAsPristine(options);
+        this.markAsUntouched(options);
+        this.setValue(this._value, options);
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    FormControl.prototype._updateValue = function () { };
+    /**
+     * \@internal
+     * @param {?} condition
+     * @return {?}
+     */
+    FormControl.prototype._anyControls = function (condition) { return false; };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    FormControl.prototype._allControlsDisabled = function () { return this.disabled; };
+    /**
+     * Register a listener for change events.
+     * @param {?} fn
+     * @return {?}
+     */
+    FormControl.prototype.registerOnChange = function (fn) { this._onChange.push(fn); };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    FormControl.prototype._clearChangeFns = function () {
+        this._onChange = [];
+        this._onDisabledChange = [];
+        this._onCollectionChange = function () { };
+    };
+    /**
+     * Register a listener for disabled events.
+     * @param {?} fn
+     * @return {?}
+     */
+    FormControl.prototype.registerOnDisabledChange = function (fn) {
+        this._onDisabledChange.push(fn);
+    };
+    /**
+     * \@internal
+     * @param {?} cb
+     * @return {?}
+     */
+    FormControl.prototype._forEachChild = function (cb) { };
+    /**
+     * @param {?} formState
+     * @return {?}
+     */
+    FormControl.prototype._applyFormState = function (formState) {
+        if (this._isBoxedValue(formState)) {
+            this._value = formState.value;
+            formState.disabled ? this.disable({ onlySelf: true, emitEvent: false }) :
+                this.enable({ onlySelf: true, emitEvent: false });
+        }
+        else {
+            this._value = formState;
+        }
+    };
+    return FormControl;
+}(AbstractControl));
+/**
+ * \@whatItDoes Tracks the value and validity state of a group of {\@link FormControl}
+ * instances.
+ *
+ * A `FormGroup` aggregates the values of each child {\@link FormControl} into one object,
+ * with each control name as the key.  It calculates its status by reducing the statuses
+ * of its children. For example, if one of the controls in a group is invalid, the entire
+ * group becomes invalid.
+ *
+ * `FormGroup` is one of the three fundamental building blocks used to define forms in Angular,
+ * along with {\@link FormControl} and {\@link FormArray}.
+ *
+ * \@howToUse
+ *
+ * When instantiating a {\@link FormGroup}, pass in a collection of child controls as the first
+ * argument. The key for each child will be the name under which it is registered.
+ *
+ * ### Example
+ *
+ * ```
+ * const form = new FormGroup({
+ *   first: new FormControl('Nancy', Validators.minLength(2)),
+ *   last: new FormControl('Drew'),
+ * });
+ *
+ * console.log(form.value);   // {first: 'Nancy', last; 'Drew'}
+ * console.log(form.status);  // 'VALID'
+ * ```
+ *
+ * You can also include group-level validators as the second arg, or group-level async
+ * validators as the third arg. These come in handy when you want to perform validation
+ * that considers the value of more than one child control.
+ *
+ * ### Example
+ *
+ * ```
+ * const form = new FormGroup({
+ *   password: new FormControl('', Validators.minLength(2)),
+ *   passwordConfirm: new FormControl('', Validators.minLength(2)),
+ * }, passwordMatchValidator);
+ *
+ *
+ * function passwordMatchValidator(g: FormGroup) {
+ *    return g.get('password').value === g.get('passwordConfirm').value
+ *       ? null : {'mismatch': true};
+ * }
+ * ```
+ *
+ * * **npm package**: `\@angular/forms`
+ *
+ * \@stable
+ */
+var FormGroup = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](FormGroup, _super);
+    /**
+     * @param {?} controls
+     * @param {?=} validator
+     * @param {?=} asyncValidator
+     */
+    function FormGroup(controls, validator, asyncValidator) {
+        var _this = _super.call(this, validator || null, asyncValidator || null) || this;
+        _this.controls = controls;
+        _this._initObservables();
+        _this._setUpControls();
+        _this.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+        return _this;
+    }
+    /**
+     * Registers a control with the group's list of controls.
+     *
+     * This method does not update value or validity of the control, so for
+     * most cases you'll want to use {\@link FormGroup#addControl} instead.
+     * @param {?} name
+     * @param {?} control
+     * @return {?}
+     */
+    FormGroup.prototype.registerControl = function (name, control) {
+        if (this.controls[name])
+            return this.controls[name];
+        this.controls[name] = control;
+        control.setParent(this);
+        control._registerOnCollectionChange(this._onCollectionChange);
+        return control;
+    };
+    /**
+     * Add a control to this group.
+     * @param {?} name
+     * @param {?} control
+     * @return {?}
+     */
+    FormGroup.prototype.addControl = function (name, control) {
+        this.registerControl(name, control);
+        this.updateValueAndValidity();
+        this._onCollectionChange();
+    };
+    /**
+     * Remove a control from this group.
+     * @param {?} name
+     * @return {?}
+     */
+    FormGroup.prototype.removeControl = function (name) {
+        if (this.controls[name])
+            this.controls[name]._registerOnCollectionChange(function () { });
+        delete (this.controls[name]);
+        this.updateValueAndValidity();
+        this._onCollectionChange();
+    };
+    /**
+     * Replace an existing control.
+     * @param {?} name
+     * @param {?} control
+     * @return {?}
+     */
+    FormGroup.prototype.setControl = function (name, control) {
+        if (this.controls[name])
+            this.controls[name]._registerOnCollectionChange(function () { });
+        delete (this.controls[name]);
+        if (control)
+            this.registerControl(name, control);
+        this.updateValueAndValidity();
+        this._onCollectionChange();
+    };
+    /**
+     * Check whether there is an enabled control with the given name in the group.
+     *
+     * It will return false for disabled controls. If you'd like to check for
+     * existence in the group only, use {\@link AbstractControl#get} instead.
+     * @param {?} controlName
+     * @return {?}
+     */
+    FormGroup.prototype.contains = function (controlName) {
+        return this.controls.hasOwnProperty(controlName) && this.controls[controlName].enabled;
+    };
+    /**
+     *  Sets the value of the {\@link FormGroup}. It accepts an object that matches
+     *  the structure of the group, with control names as keys.
+     *
+     * This method performs strict checks, so it will throw an error if you try
+     * to set the value of a control that doesn't exist or if you exclude the
+     * value of a control.
+     *
+     *  ### Example
+     *
+     *  ```
+     *  const form = new FormGroup({
+     *     first: new FormControl(),
+     *     last: new FormControl()
+     *  });
+     *  console.log(form.value);   // {first: null, last: null}
+     *
+     *  form.setValue({first: 'Nancy', last: 'Drew'});
+     *  console.log(form.value);   // {first: 'Nancy', last: 'Drew'}
+     *
+     *  ```
+     * @param {?} value
+     * @param {?=} options
+     * @return {?}
+     */
+    FormGroup.prototype.setValue = function (value, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        this._checkAllValuesPresent(value);
+        Object.keys(value).forEach(function (name) {
+            _this._throwIfControlMissing(name);
+            _this.controls[name].setValue(value[name], { onlySelf: true, emitEvent: options.emitEvent });
+        });
+        this.updateValueAndValidity(options);
+    };
+    /**
+     *  Patches the value of the {\@link FormGroup}. It accepts an object with control
+     *  names as keys, and will do its best to match the values to the correct controls
+     *  in the group.
+     *
+     *  It accepts both super-sets and sub-sets of the group without throwing an error.
+     *
+     *  ### Example
+     *
+     *  ```
+     *  const form = new FormGroup({
+     *     first: new FormControl(),
+     *     last: new FormControl()
+     *  });
+     *  console.log(form.value);   // {first: null, last: null}
+     *
+     *  form.patchValue({first: 'Nancy'});
+     *  console.log(form.value);   // {first: 'Nancy', last: null}
+     *
+     *  ```
+     * @param {?} value
+     * @param {?=} options
+     * @return {?}
+     */
+    FormGroup.prototype.patchValue = function (value, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        Object.keys(value).forEach(function (name) {
+            if (_this.controls[name]) {
+                _this.controls[name].patchValue(value[name], { onlySelf: true, emitEvent: options.emitEvent });
+            }
+        });
+        this.updateValueAndValidity(options);
+    };
+    /**
+     * Resets the {\@link FormGroup}. This means by default:
+     *
+     * * The group and all descendants are marked `pristine`
+     * * The group and all descendants are marked `untouched`
+     * * The value of all descendants will be null or null maps
+     *
+     * You can also reset to a specific form state by passing in a map of states
+     * that matches the structure of your form, with control names as keys. The state
+     * can be a standalone value or a form state object with both a value and a disabled
+     * status.
+     *
+     * ### Example
+     *
+     * ```ts
+     * this.form.reset({first: 'name', last: 'last name'});
+     *
+     * console.log(this.form.value);  // {first: 'name', last: 'last name'}
+     * ```
+     *
+     * - OR -
+     *
+     * ```
+     * this.form.reset({
+     *   first: {value: 'name', disabled: true},
+     *   last: 'last'
+     * });
+     *
+     * console.log(this.form.value);  // {first: 'name', last: 'last name'}
+     * console.log(this.form.get('first').status);  // 'DISABLED'
+     * ```
+     * @param {?=} value
+     * @param {?=} options
+     * @return {?}
+     */
+    FormGroup.prototype.reset = function (value, options) {
+        if (value === void 0) { value = {}; }
+        if (options === void 0) { options = {}; }
+        this._forEachChild(function (control, name) {
+            control.reset(value[name], { onlySelf: true, emitEvent: options.emitEvent });
+        });
+        this.updateValueAndValidity(options);
+        this._updatePristine(options);
+        this._updateTouched(options);
+    };
+    /**
+     * The aggregate value of the {\@link FormGroup}, including any disabled controls.
+     *
+     * If you'd like to include all values regardless of disabled status, use this method.
+     * Otherwise, the `value` property is the best way to get the value of the group.
+     * @return {?}
+     */
+    FormGroup.prototype.getRawValue = function () {
+        return this._reduceChildren({}, function (acc, control, name) {
+            acc[name] = control instanceof FormControl ? control.value : ((control)).getRawValue();
+            return acc;
+        });
+    };
+    /**
+     * \@internal
+     * @param {?} name
+     * @return {?}
+     */
+    FormGroup.prototype._throwIfControlMissing = function (name) {
+        if (!Object.keys(this.controls).length) {
+            throw new Error("\n        There are no form controls registered with this group yet.  If you're using ngModel,\n        you may want to check next tick (e.g. use setTimeout).\n      ");
+        }
+        if (!this.controls[name]) {
+            throw new Error("Cannot find form control with name: " + name + ".");
+        }
+    };
+    /**
+     * \@internal
+     * @param {?} cb
+     * @return {?}
+     */
+    FormGroup.prototype._forEachChild = function (cb) {
+        var _this = this;
+        Object.keys(this.controls).forEach(function (k) { return cb(_this.controls[k], k); });
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    FormGroup.prototype._setUpControls = function () {
+        var _this = this;
+        this._forEachChild(function (control) {
+            control.setParent(_this);
+            control._registerOnCollectionChange(_this._onCollectionChange);
+        });
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    FormGroup.prototype._updateValue = function () { this._value = this._reduceValue(); };
+    /**
+     * \@internal
+     * @param {?} condition
+     * @return {?}
+     */
+    FormGroup.prototype._anyControls = function (condition) {
+        var _this = this;
+        var /** @type {?} */ res = false;
+        this._forEachChild(function (control, name) {
+            res = res || (_this.contains(name) && condition(control));
+        });
+        return res;
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    FormGroup.prototype._reduceValue = function () {
+        var _this = this;
+        return this._reduceChildren({}, function (acc, control, name) {
+            if (control.enabled || _this.disabled) {
+                acc[name] = control.value;
+            }
+            return acc;
+        });
+    };
+    /**
+     * \@internal
+     * @param {?} initValue
+     * @param {?} fn
+     * @return {?}
+     */
+    FormGroup.prototype._reduceChildren = function (initValue, fn) {
+        var /** @type {?} */ res = initValue;
+        this._forEachChild(function (control, name) { res = fn(res, control, name); });
+        return res;
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    FormGroup.prototype._allControlsDisabled = function () {
+        for (var _i = 0, _a = Object.keys(this.controls); _i < _a.length; _i++) {
+            var controlName = _a[_i];
+            if (this.controls[controlName].enabled) {
+                return false;
+            }
+        }
+        return Object.keys(this.controls).length > 0 || this.disabled;
+    };
+    /**
+     * \@internal
+     * @param {?} value
+     * @return {?}
+     */
+    FormGroup.prototype._checkAllValuesPresent = function (value) {
+        this._forEachChild(function (control, name) {
+            if (value[name] === undefined) {
+                throw new Error("Must supply a value for form control with name: '" + name + "'.");
+            }
+        });
+    };
+    return FormGroup;
+}(AbstractControl));
+/**
+ * \@whatItDoes Tracks the value and validity state of an array of {\@link FormControl},
+ * {\@link FormGroup} or {\@link FormArray} instances.
+ *
+ * A `FormArray` aggregates the values of each child {\@link FormControl} into an array.
+ * It calculates its status by reducing the statuses of its children. For example, if one of
+ * the controls in a `FormArray` is invalid, the entire array becomes invalid.
+ *
+ * `FormArray` is one of the three fundamental building blocks used to define forms in Angular,
+ * along with {\@link FormControl} and {\@link FormGroup}.
+ *
+ * \@howToUse
+ *
+ * When instantiating a {\@link FormArray}, pass in an array of child controls as the first
+ * argument.
+ *
+ * ### Example
+ *
+ * ```
+ * const arr = new FormArray([
+ *   new FormControl('Nancy', Validators.minLength(2)),
+ *   new FormControl('Drew'),
+ * ]);
+ *
+ * console.log(arr.value);   // ['Nancy', 'Drew']
+ * console.log(arr.status);  // 'VALID'
+ * ```
+ *
+ * You can also include array-level validators as the second arg, or array-level async
+ * validators as the third arg. These come in handy when you want to perform validation
+ * that considers the value of more than one child control.
+ *
+ * ### Adding or removing controls
+ *
+ * To change the controls in the array, use the `push`, `insert`, or `removeAt` methods
+ * in `FormArray` itself. These methods ensure the controls are properly tracked in the
+ * form's hierarchy. Do not modify the array of `AbstractControl`s used to instantiate
+ * the `FormArray` directly, as that will result in strange and unexpected behavior such
+ * as broken change detection.
+ *
+ * * **npm package**: `\@angular/forms`
+ *
+ * \@stable
+ */
+var FormArray = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](FormArray, _super);
+    /**
+     * @param {?} controls
+     * @param {?=} validator
+     * @param {?=} asyncValidator
+     */
+    function FormArray(controls, validator, asyncValidator) {
+        var _this = _super.call(this, validator || null, asyncValidator || null) || this;
+        _this.controls = controls;
+        _this._initObservables();
+        _this._setUpControls();
+        _this.updateValueAndValidity({ onlySelf: true, emitEvent: false });
+        return _this;
+    }
+    /**
+     * Get the {\@link AbstractControl} at the given `index` in the array.
+     * @param {?} index
+     * @return {?}
+     */
+    FormArray.prototype.at = function (index) { return this.controls[index]; };
+    /**
+     * Insert a new {\@link AbstractControl} at the end of the array.
+     * @param {?} control
+     * @return {?}
+     */
+    FormArray.prototype.push = function (control) {
+        this.controls.push(control);
+        this._registerControl(control);
+        this.updateValueAndValidity();
+        this._onCollectionChange();
+    };
+    /**
+     * Insert a new {\@link AbstractControl} at the given `index` in the array.
+     * @param {?} index
+     * @param {?} control
+     * @return {?}
+     */
+    FormArray.prototype.insert = function (index, control) {
+        this.controls.splice(index, 0, control);
+        this._registerControl(control);
+        this.updateValueAndValidity();
+        this._onCollectionChange();
+    };
+    /**
+     * Remove the control at the given `index` in the array.
+     * @param {?} index
+     * @return {?}
+     */
+    FormArray.prototype.removeAt = function (index) {
+        if (this.controls[index])
+            this.controls[index]._registerOnCollectionChange(function () { });
+        this.controls.splice(index, 1);
+        this.updateValueAndValidity();
+        this._onCollectionChange();
+    };
+    /**
+     * Replace an existing control.
+     * @param {?} index
+     * @param {?} control
+     * @return {?}
+     */
+    FormArray.prototype.setControl = function (index, control) {
+        if (this.controls[index])
+            this.controls[index]._registerOnCollectionChange(function () { });
+        this.controls.splice(index, 1);
+        if (control) {
+            this.controls.splice(index, 0, control);
+            this._registerControl(control);
+        }
+        this.updateValueAndValidity();
+        this._onCollectionChange();
+    };
+    Object.defineProperty(FormArray.prototype, "length", {
+        /**
+         * Length of the control array.
+         * @return {?}
+         */
+        get: function () { return this.controls.length; },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     *  Sets the value of the {\@link FormArray}. It accepts an array that matches
+     *  the structure of the control.
+     *
+     * This method performs strict checks, so it will throw an error if you try
+     * to set the value of a control that doesn't exist or if you exclude the
+     * value of a control.
+     *
+     *  ### Example
+     *
+     *  ```
+     *  const arr = new FormArray([
+     *     new FormControl(),
+     *     new FormControl()
+     *  ]);
+     *  console.log(arr.value);   // [null, null]
+     *
+     *  arr.setValue(['Nancy', 'Drew']);
+     *  console.log(arr.value);   // ['Nancy', 'Drew']
+     *  ```
+     * @param {?} value
+     * @param {?=} options
+     * @return {?}
+     */
+    FormArray.prototype.setValue = function (value, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        this._checkAllValuesPresent(value);
+        value.forEach(function (newValue, index) {
+            _this._throwIfControlMissing(index);
+            _this.at(index).setValue(newValue, { onlySelf: true, emitEvent: options.emitEvent });
+        });
+        this.updateValueAndValidity(options);
+    };
+    /**
+     *  Patches the value of the {\@link FormArray}. It accepts an array that matches the
+     *  structure of the control, and will do its best to match the values to the correct
+     *  controls in the group.
+     *
+     *  It accepts both super-sets and sub-sets of the array without throwing an error.
+     *
+     *  ### Example
+     *
+     *  ```
+     *  const arr = new FormArray([
+     *     new FormControl(),
+     *     new FormControl()
+     *  ]);
+     *  console.log(arr.value);   // [null, null]
+     *
+     *  arr.patchValue(['Nancy']);
+     *  console.log(arr.value);   // ['Nancy', null]
+     *  ```
+     * @param {?} value
+     * @param {?=} options
+     * @return {?}
+     */
+    FormArray.prototype.patchValue = function (value, options) {
+        var _this = this;
+        if (options === void 0) { options = {}; }
+        value.forEach(function (newValue, index) {
+            if (_this.at(index)) {
+                _this.at(index).patchValue(newValue, { onlySelf: true, emitEvent: options.emitEvent });
+            }
+        });
+        this.updateValueAndValidity(options);
+    };
+    /**
+     * Resets the {\@link FormArray}. This means by default:
+     *
+     * * The array and all descendants are marked `pristine`
+     * * The array and all descendants are marked `untouched`
+     * * The value of all descendants will be null or null maps
+     *
+     * You can also reset to a specific form state by passing in an array of states
+     * that matches the structure of the control. The state can be a standalone value
+     * or a form state object with both a value and a disabled status.
+     *
+     * ### Example
+     *
+     * ```ts
+     * this.arr.reset(['name', 'last name']);
+     *
+     * console.log(this.arr.value);  // ['name', 'last name']
+     * ```
+     *
+     * - OR -
+     *
+     * ```
+     * this.arr.reset([
+     *   {value: 'name', disabled: true},
+     *   'last'
+     * ]);
+     *
+     * console.log(this.arr.value);  // ['name', 'last name']
+     * console.log(this.arr.get(0).status);  // 'DISABLED'
+     * ```
+     * @param {?=} value
+     * @param {?=} options
+     * @return {?}
+     */
+    FormArray.prototype.reset = function (value, options) {
+        if (value === void 0) { value = []; }
+        if (options === void 0) { options = {}; }
+        this._forEachChild(function (control, index) {
+            control.reset(value[index], { onlySelf: true, emitEvent: options.emitEvent });
+        });
+        this.updateValueAndValidity(options);
+        this._updatePristine(options);
+        this._updateTouched(options);
+    };
+    /**
+     * The aggregate value of the array, including any disabled controls.
+     *
+     * If you'd like to include all values regardless of disabled status, use this method.
+     * Otherwise, the `value` property is the best way to get the value of the array.
+     * @return {?}
+     */
+    FormArray.prototype.getRawValue = function () {
+        return this.controls.map(function (control) {
+            return control instanceof FormControl ? control.value : ((control)).getRawValue();
+        });
+    };
+    /**
+     * \@internal
+     * @param {?} index
+     * @return {?}
+     */
+    FormArray.prototype._throwIfControlMissing = function (index) {
+        if (!this.controls.length) {
+            throw new Error("\n        There are no form controls registered with this array yet.  If you're using ngModel,\n        you may want to check next tick (e.g. use setTimeout).\n      ");
+        }
+        if (!this.at(index)) {
+            throw new Error("Cannot find form control at index " + index);
+        }
+    };
+    /**
+     * \@internal
+     * @param {?} cb
+     * @return {?}
+     */
+    FormArray.prototype._forEachChild = function (cb) {
+        this.controls.forEach(function (control, index) { cb(control, index); });
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    FormArray.prototype._updateValue = function () {
+        var _this = this;
+        this._value = this.controls.filter(function (control) { return control.enabled || _this.disabled; })
+            .map(function (control) { return control.value; });
+    };
+    /**
+     * \@internal
+     * @param {?} condition
+     * @return {?}
+     */
+    FormArray.prototype._anyControls = function (condition) {
+        return this.controls.some(function (control) { return control.enabled && condition(control); });
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    FormArray.prototype._setUpControls = function () {
+        var _this = this;
+        this._forEachChild(function (control) { return _this._registerControl(control); });
+    };
+    /**
+     * \@internal
+     * @param {?} value
+     * @return {?}
+     */
+    FormArray.prototype._checkAllValuesPresent = function (value) {
+        this._forEachChild(function (control, i) {
+            if (value[i] === undefined) {
+                throw new Error("Must supply a value for form control at index: " + i + ".");
+            }
+        });
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    FormArray.prototype._allControlsDisabled = function () {
+        for (var _i = 0, _a = this.controls; _i < _a.length; _i++) {
+            var control = _a[_i];
+            if (control.enabled)
+                return false;
+        }
+        return this.controls.length > 0 || this.disabled;
+    };
+    /**
+     * @param {?} control
+     * @return {?}
+     */
+    FormArray.prototype._registerControl = function (control) {
+        control.setParent(this);
+        control._registerOnCollectionChange(this._onCollectionChange);
+    };
+    return FormArray;
+}(AbstractControl));
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var formDirectiveProvider = {
+    provide: ControlContainer,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return NgForm; })
+};
+var resolvedPromise = Promise.resolve(null);
+/**
+ * \@whatItDoes Creates a top-level {\@link FormGroup} instance and binds it to a form
+ * to track aggregate form value and validation status.
+ *
+ * \@howToUse
+ *
+ * As soon as you import the `FormsModule`, this directive becomes active by default on
+ * all `<form>` tags.  You don't need to add a special selector.
+ *
+ * You can export the directive into a local template variable using `ngForm` as the key
+ * (ex: `#myForm="ngForm"`). This is optional, but useful.  Many properties from the underlying
+ * {\@link FormGroup} instance are duplicated on the directive itself, so a reference to it
+ * will give you access to the aggregate value and validity status of the form, as well as
+ * user interaction properties like `dirty` and `touched`.
+ *
+ * To register child controls with the form, you'll want to use {\@link NgModel} with a
+ * `name` attribute.  You can also use {\@link NgModelGroup} if you'd like to create
+ * sub-groups within the form.
+ *
+ * You can listen to the directive's `ngSubmit` event to be notified when the user has
+ * triggered a form submission. The `ngSubmit` event will be emitted with the original form
+ * submission event.
+ *
+ * {\@example forms/ts/simpleForm/simple_form_example.ts region='Component'}
+ *
+ * * **npm package**: `\@angular/forms`
+ *
+ * * **NgModule**: `FormsModule`
+ *
+ *  \@stable
+ */
+var NgForm = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](NgForm, _super);
+    /**
+     * @param {?} validators
+     * @param {?} asyncValidators
+     */
+    function NgForm(validators, asyncValidators) {
+        var _this = _super.call(this) || this;
+        _this._submitted = false;
+        _this.ngSubmit = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["EventEmitter"]();
+        _this.form =
+            new FormGroup({}, composeValidators(validators), composeAsyncValidators(asyncValidators));
+        return _this;
+    }
+    Object.defineProperty(NgForm.prototype, "submitted", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._submitted; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgForm.prototype, "formDirective", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgForm.prototype, "control", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.form; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgForm.prototype, "path", {
+        /**
+         * @return {?}
+         */
+        get: function () { return []; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgForm.prototype, "controls", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.form.controls; },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    NgForm.prototype.addControl = function (dir) {
+        var _this = this;
+        resolvedPromise.then(function () {
+            var /** @type {?} */ container = _this._findContainer(dir.path);
+            dir._control = (container.registerControl(dir.name, dir.control));
+            setUpControl(dir.control, dir);
+            dir.control.updateValueAndValidity({ emitEvent: false });
+        });
+    };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    NgForm.prototype.getControl = function (dir) { return (this.form.get(dir.path)); };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    NgForm.prototype.removeControl = function (dir) {
+        var _this = this;
+        resolvedPromise.then(function () {
+            var /** @type {?} */ container = _this._findContainer(dir.path);
+            if (container) {
+                container.removeControl(dir.name);
+            }
+        });
+    };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    NgForm.prototype.addFormGroup = function (dir) {
+        var _this = this;
+        resolvedPromise.then(function () {
+            var /** @type {?} */ container = _this._findContainer(dir.path);
+            var /** @type {?} */ group = new FormGroup({});
+            setUpFormContainer(group, dir);
+            container.registerControl(dir.name, group);
+            group.updateValueAndValidity({ emitEvent: false });
+        });
+    };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    NgForm.prototype.removeFormGroup = function (dir) {
+        var _this = this;
+        resolvedPromise.then(function () {
+            var /** @type {?} */ container = _this._findContainer(dir.path);
+            if (container) {
+                container.removeControl(dir.name);
+            }
+        });
+    };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    NgForm.prototype.getFormGroup = function (dir) { return (this.form.get(dir.path)); };
+    /**
+     * @param {?} dir
+     * @param {?} value
+     * @return {?}
+     */
+    NgForm.prototype.updateModel = function (dir, value) {
+        var _this = this;
+        resolvedPromise.then(function () {
+            var /** @type {?} */ ctrl = (_this.form.get(/** @type {?} */ ((dir.path))));
+            ctrl.setValue(value);
+        });
+    };
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    NgForm.prototype.setValue = function (value) { this.control.setValue(value); };
+    /**
+     * @param {?} $event
+     * @return {?}
+     */
+    NgForm.prototype.onSubmit = function ($event) {
+        this._submitted = true;
+        this.ngSubmit.emit($event);
+        return false;
+    };
+    /**
+     * @return {?}
+     */
+    NgForm.prototype.onReset = function () { this.resetForm(); };
+    /**
+     * @param {?=} value
+     * @return {?}
+     */
+    NgForm.prototype.resetForm = function (value) {
+        if (value === void 0) { value = undefined; }
+        this.form.reset(value);
+        this._submitted = false;
+    };
+    /**
+     * \@internal
+     * @param {?} path
+     * @return {?}
+     */
+    NgForm.prototype._findContainer = function (path) {
+        path.pop();
+        return path.length ? (this.form.get(path)) : this.form;
+    };
+    return NgForm;
+}(ControlContainer));
+NgForm.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: 'form:not([ngNoForm]):not([formGroup]),ngForm,[ngForm]',
+                providers: [formDirectiveProvider],
+                host: { '(submit)': 'onSubmit($event)', '(reset)': 'onReset()' },
+                outputs: ['ngSubmit'],
+                exportAs: 'ngForm'
+            },] },
+];
+/**
+ * @nocollapse
+ */
+NgForm.ctorParameters = function () { return [
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_ASYNC_VALIDATORS,] },] },
+]; };
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var FormErrorExamples = {
+    formControlName: "\n    <div [formGroup]=\"myGroup\">\n      <input formControlName=\"firstName\">\n    </div>\n\n    In your class:\n\n    this.myGroup = new FormGroup({\n       firstName: new FormControl()\n    });",
+    formGroupName: "\n    <div [formGroup]=\"myGroup\">\n       <div formGroupName=\"person\">\n          <input formControlName=\"firstName\">\n       </div>\n    </div>\n\n    In your class:\n\n    this.myGroup = new FormGroup({\n       person: new FormGroup({ firstName: new FormControl() })\n    });",
+    formArrayName: "\n    <div [formGroup]=\"myGroup\">\n      <div formArrayName=\"cities\">\n        <div *ngFor=\"let city of cityArray.controls; index as i\">\n          <input [formControlName]=\"i\">\n        </div>\n      </div>\n    </div>\n\n    In your class:\n\n    this.cityArray = new FormArray([new FormControl('SF')]);\n    this.myGroup = new FormGroup({\n      cities: this.cityArray\n    });",
+    ngModelGroup: "\n    <form>\n       <div ngModelGroup=\"person\">\n          <input [(ngModel)]=\"person.name\" name=\"firstName\">\n       </div>\n    </form>",
+    ngModelWithFormGroup: "\n    <div [formGroup]=\"myGroup\">\n       <input formControlName=\"firstName\">\n       <input [(ngModel)]=\"showMoreControls\" [ngModelOptions]=\"{standalone: true}\">\n    </div>\n  "
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var TemplateDrivenErrors = (function () {
+    function TemplateDrivenErrors() {
+    }
+    /**
+     * @return {?}
+     */
+    TemplateDrivenErrors.modelParentException = function () {
+        throw new Error("\n      ngModel cannot be used to register form controls with a parent formGroup directive.  Try using\n      formGroup's partner directive \"formControlName\" instead.  Example:\n\n      " + FormErrorExamples.formControlName + "\n\n      Or, if you'd like to avoid registering this form control, indicate that it's standalone in ngModelOptions:\n\n      Example:\n\n      " + FormErrorExamples.ngModelWithFormGroup);
+    };
+    /**
+     * @return {?}
+     */
+    TemplateDrivenErrors.formGroupNameException = function () {
+        throw new Error("\n      ngModel cannot be used to register form controls with a parent formGroupName or formArrayName directive.\n\n      Option 1: Use formControlName instead of ngModel (reactive strategy):\n\n      " + FormErrorExamples.formGroupName + "\n\n      Option 2:  Update ngModel's parent be ngModelGroup (template-driven strategy):\n\n      " + FormErrorExamples.ngModelGroup);
+    };
+    /**
+     * @return {?}
+     */
+    TemplateDrivenErrors.missingNameException = function () {
+        throw new Error("If ngModel is used within a form tag, either the name attribute must be set or the form\n      control must be defined as 'standalone' in ngModelOptions.\n\n      Example 1: <input [(ngModel)]=\"person.firstName\" name=\"first\">\n      Example 2: <input [(ngModel)]=\"person.firstName\" [ngModelOptions]=\"{standalone: true}\">");
+    };
+    /**
+     * @return {?}
+     */
+    TemplateDrivenErrors.modelGroupParentException = function () {
+        throw new Error("\n      ngModelGroup cannot be used with a parent formGroup directive.\n\n      Option 1: Use formGroupName instead of ngModelGroup (reactive strategy):\n\n      " + FormErrorExamples.formGroupName + "\n\n      Option 2:  Use a regular form tag instead of the formGroup directive (template-driven strategy):\n\n      " + FormErrorExamples.ngModelGroup);
+    };
+    return TemplateDrivenErrors;
+}());
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var modelGroupProvider = {
+    provide: ControlContainer,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return NgModelGroup; })
+};
+/**
+ * \@whatItDoes Creates and binds a {\@link FormGroup} instance to a DOM element.
+ *
+ * \@howToUse
+ *
+ * This directive can only be used as a child of {\@link NgForm} (or in other words,
+ * within `<form>` tags).
+ *
+ * Use this directive if you'd like to create a sub-group within a form. This can
+ * come in handy if you want to validate a sub-group of your form separately from
+ * the rest of your form, or if some values in your domain model make more sense to
+ * consume together in a nested object.
+ *
+ * Pass in the name you'd like this sub-group to have and it will become the key
+ * for the sub-group in the form's full value. You can also export the directive into
+ * a local template variable using `ngModelGroup` (ex: `#myGroup="ngModelGroup"`).
+ *
+ * {\@example forms/ts/ngModelGroup/ng_model_group_example.ts region='Component'}
+ *
+ * * **npm package**: `\@angular/forms`
+ *
+ * * **NgModule**: `FormsModule`
+ *
+ * \@stable
+ */
+var NgModelGroup = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](NgModelGroup, _super);
+    /**
+     * @param {?} parent
+     * @param {?} validators
+     * @param {?} asyncValidators
+     */
+    function NgModelGroup(parent, validators, asyncValidators) {
+        var _this = _super.call(this) || this;
+        _this._parent = parent;
+        _this._validators = validators;
+        _this._asyncValidators = asyncValidators;
+        return _this;
+    }
+    /**
+     * \@internal
+     * @return {?}
+     */
+    NgModelGroup.prototype._checkParentType = function () {
+        if (!(this._parent instanceof NgModelGroup) && !(this._parent instanceof NgForm)) {
+            TemplateDrivenErrors.modelGroupParentException();
+        }
+    };
+    return NgModelGroup;
+}(AbstractFormGroupDirective));
+NgModelGroup.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{ selector: '[ngModelGroup]', providers: [modelGroupProvider], exportAs: 'ngModelGroup' },] },
+];
+/**
+ * @nocollapse
+ */
+NgModelGroup.ctorParameters = function () { return [
+    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Host"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["SkipSelf"] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_ASYNC_VALIDATORS,] },] },
+]; };
+NgModelGroup.propDecorators = {
+    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['ngModelGroup',] },],
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var formControlBinding = {
+    provide: NgControl,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return NgModel; })
+};
+/**
+ * `ngModel` forces an additional change detection run when its inputs change:
+ * E.g.:
+ * ```
+ * <div>{{myModel.valid}}</div>
+ * <input [(ngModel)]="myValue" #myModel="ngModel">
+ * ```
+ * I.e. `ngModel` can export itself on the element and then be used in the template.
+ * Normally, this would result in expressions before the `input` that use the exported directive
+ * to have and old value as they have been
+ * dirty checked before. As this is a very common case for `ngModel`, we added this second change
+ * detection run.
+ *
+ * Notes:
+ * - this is just one extra run no matter how many `ngModel` have been changed.
+ * - this is a general problem when using `exportAs` for directives!
+ */
+var resolvedPromise$1 = Promise.resolve(null);
+/**
+ * \@whatItDoes Creates a {\@link FormControl} instance from a domain model and binds it
+ * to a form control element.
+ *
+ * The {\@link FormControl} instance will track the value, user interaction, and
+ * validation status of the control and keep the view synced with the model. If used
+ * within a parent form, the directive will also register itself with the form as a child
+ * control.
+ *
+ * \@howToUse
+ *
+ * This directive can be used by itself or as part of a larger form. All you need is the
+ * `ngModel` selector to activate it.
+ *
+ * It accepts a domain model as an optional {\@link Input}. If you have a one-way binding
+ * to `ngModel` with `[]` syntax, changing the value of the domain model in the component
+ * class will set the value in the view. If you have a two-way binding with `[()]` syntax
+ * (also known as 'banana-box syntax'), the value in the UI will always be synced back to
+ * the domain model in your class as well.
+ *
+ * If you wish to inspect the properties of the associated {\@link FormControl} (like
+ * validity state), you can also export the directive into a local template variable using
+ * `ngModel` as the key (ex: `#myVar="ngModel"`). You can then access the control using the
+ * directive's `control` property, but most properties you'll need (like `valid` and `dirty`)
+ * will fall through to the control anyway, so you can access them directly. You can see a
+ * full list of properties directly available in {\@link AbstractControlDirective}.
+ *
+ * The following is an example of a simple standalone control using `ngModel`:
+ *
+ * {\@example forms/ts/simpleNgModel/simple_ng_model_example.ts region='Component'}
+ *
+ * When using the `ngModel` within `<form>` tags, you'll also need to supply a `name` attribute
+ * so that the control can be registered with the parent form under that name.
+ *
+ * It's worth noting that in the context of a parent form, you often can skip one-way or
+ * two-way binding because the parent form will sync the value for you. You can access
+ * its properties by exporting it into a local template variable using `ngForm` (ex:
+ * `#f="ngForm"`). Then you can pass it where it needs to go on submit.
+ *
+ * If you do need to populate initial values into your form, using a one-way binding for
+ * `ngModel` tends to be sufficient as long as you use the exported form's value rather
+ * than the domain model's value on submit.
+ *
+ * Take a look at an example of using `ngModel` within a form:
+ *
+ * {\@example forms/ts/simpleForm/simple_form_example.ts region='Component'}
+ *
+ * To see `ngModel` examples with different form control types, see:
+ *
+ * * Radio buttons: {\@link RadioControlValueAccessor}
+ * * Selects: {\@link SelectControlValueAccessor}
+ *
+ * **npm package**: `\@angular/forms`
+ *
+ * **NgModule**: `FormsModule`
+ *
+ *  \@stable
+ */
+var NgModel = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](NgModel, _super);
+    /**
+     * @param {?} parent
+     * @param {?} validators
+     * @param {?} asyncValidators
+     * @param {?} valueAccessors
+     */
+    function NgModel(parent, validators, asyncValidators, valueAccessors) {
+        var _this = _super.call(this) || this;
+        /**
+         * \@internal
+         */
+        _this._control = new FormControl();
+        /**
+         * \@internal
+         */
+        _this._registered = false;
+        _this.update = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["EventEmitter"]();
+        _this._parent = parent;
+        _this._rawValidators = validators || [];
+        _this._rawAsyncValidators = asyncValidators || [];
+        _this.valueAccessor = selectValueAccessor(_this, valueAccessors);
+        return _this;
+    }
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    NgModel.prototype.ngOnChanges = function (changes) {
+        this._checkForErrors();
+        if (!this._registered)
+            this._setUpControl();
+        if ('isDisabled' in changes) {
+            this._updateDisabled(changes);
+        }
+        if (isPropertyUpdated(changes, this.viewModel)) {
+            this._updateValue(this.model);
+            this.viewModel = this.model;
+        }
+    };
+    /**
+     * @return {?}
+     */
+    NgModel.prototype.ngOnDestroy = function () { this.formDirective && this.formDirective.removeControl(this); };
+    Object.defineProperty(NgModel.prototype, "control", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._control; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgModel.prototype, "path", {
+        /**
+         * @return {?}
+         */
+        get: function () {
+            return this._parent ? controlPath(this.name, this._parent) : [this.name];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgModel.prototype, "formDirective", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._parent ? this._parent.formDirective : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgModel.prototype, "validator", {
+        /**
+         * @return {?}
+         */
+        get: function () { return composeValidators(this._rawValidators); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(NgModel.prototype, "asyncValidator", {
+        /**
+         * @return {?}
+         */
+        get: function () {
+            return composeAsyncValidators(this._rawAsyncValidators);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} newValue
+     * @return {?}
+     */
+    NgModel.prototype.viewToModelUpdate = function (newValue) {
+        this.viewModel = newValue;
+        this.update.emit(newValue);
+    };
+    /**
+     * @return {?}
+     */
+    NgModel.prototype._setUpControl = function () {
+        this._isStandalone() ? this._setUpStandalone() :
+            this.formDirective.addControl(this);
+        this._registered = true;
+    };
+    /**
+     * @return {?}
+     */
+    NgModel.prototype._isStandalone = function () {
+        return !this._parent || !!(this.options && this.options.standalone);
+    };
+    /**
+     * @return {?}
+     */
+    NgModel.prototype._setUpStandalone = function () {
+        setUpControl(this._control, this);
+        this._control.updateValueAndValidity({ emitEvent: false });
+    };
+    /**
+     * @return {?}
+     */
+    NgModel.prototype._checkForErrors = function () {
+        if (!this._isStandalone()) {
+            this._checkParentType();
+        }
+        this._checkName();
+    };
+    /**
+     * @return {?}
+     */
+    NgModel.prototype._checkParentType = function () {
+        if (!(this._parent instanceof NgModelGroup) &&
+            this._parent instanceof AbstractFormGroupDirective) {
+            TemplateDrivenErrors.formGroupNameException();
+        }
+        else if (!(this._parent instanceof NgModelGroup) && !(this._parent instanceof NgForm)) {
+            TemplateDrivenErrors.modelParentException();
+        }
+    };
+    /**
+     * @return {?}
+     */
+    NgModel.prototype._checkName = function () {
+        if (this.options && this.options.name)
+            this.name = this.options.name;
+        if (!this._isStandalone() && !this.name) {
+            TemplateDrivenErrors.missingNameException();
+        }
+    };
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    NgModel.prototype._updateValue = function (value) {
+        var _this = this;
+        resolvedPromise$1.then(function () { _this.control.setValue(value, { emitViewToModelChange: false }); });
+    };
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    NgModel.prototype._updateDisabled = function (changes) {
+        var _this = this;
+        var /** @type {?} */ disabledValue = changes['isDisabled'].currentValue;
+        var /** @type {?} */ isDisabled = disabledValue === '' || (disabledValue && disabledValue !== 'false');
+        resolvedPromise$1.then(function () {
+            if (isDisabled && !_this.control.disabled) {
+                _this.control.disable();
+            }
+            else if (!isDisabled && _this.control.disabled) {
+                _this.control.enable();
+            }
+        });
+    };
+    return NgModel;
+}(NgControl));
+NgModel.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: '[ngModel]:not([formControlName]):not([formControl])',
+                providers: [formControlBinding],
+                exportAs: 'ngModel'
+            },] },
+];
+/**
+ * @nocollapse
+ */
+NgModel.ctorParameters = function () { return [
+    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Host"] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_ASYNC_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_VALUE_ACCESSOR,] },] },
+]; };
+NgModel.propDecorators = {
+    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+    'isDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['disabled',] },],
+    'model': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['ngModel',] },],
+    'options': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['ngModelOptions',] },],
+    'update': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Output"], args: ['ngModelChange',] },],
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var ReactiveErrors = (function () {
+    function ReactiveErrors() {
+    }
+    /**
+     * @return {?}
+     */
+    ReactiveErrors.controlParentException = function () {
+        throw new Error("formControlName must be used with a parent formGroup directive.  You'll want to add a formGroup\n       directive and pass it an existing FormGroup instance (you can create one in your class).\n\n      Example:\n\n      " + FormErrorExamples.formControlName);
+    };
+    /**
+     * @return {?}
+     */
+    ReactiveErrors.ngModelGroupException = function () {
+        throw new Error("formControlName cannot be used with an ngModelGroup parent. It is only compatible with parents\n       that also have a \"form\" prefix: formGroupName, formArrayName, or formGroup.\n\n       Option 1:  Update the parent to be formGroupName (reactive form strategy)\n\n        " + FormErrorExamples.formGroupName + "\n\n        Option 2: Use ngModel instead of formControlName (template-driven strategy)\n\n        " + FormErrorExamples.ngModelGroup);
+    };
+    /**
+     * @return {?}
+     */
+    ReactiveErrors.missingFormException = function () {
+        throw new Error("formGroup expects a FormGroup instance. Please pass one in.\n\n       Example:\n\n       " + FormErrorExamples.formControlName);
+    };
+    /**
+     * @return {?}
+     */
+    ReactiveErrors.groupParentException = function () {
+        throw new Error("formGroupName must be used with a parent formGroup directive.  You'll want to add a formGroup\n      directive and pass it an existing FormGroup instance (you can create one in your class).\n\n      Example:\n\n      " + FormErrorExamples.formGroupName);
+    };
+    /**
+     * @return {?}
+     */
+    ReactiveErrors.arrayParentException = function () {
+        throw new Error("formArrayName must be used with a parent formGroup directive.  You'll want to add a formGroup\n       directive and pass it an existing FormGroup instance (you can create one in your class).\n\n        Example:\n\n        " + FormErrorExamples.formArrayName);
+    };
+    /**
+     * @return {?}
+     */
+    ReactiveErrors.disabledAttrWarning = function () {
+        console.warn("\n      It looks like you're using the disabled attribute with a reactive form directive. If you set disabled to true\n      when you set up this control in your component class, the disabled attribute will actually be set in the DOM for\n      you. We recommend using this approach to avoid 'changed after checked' errors.\n       \n      Example: \n      form = new FormGroup({\n        first: new FormControl({value: 'Nancy', disabled: true}, Validators.required),\n        last: new FormControl('Drew', Validators.required)\n      });\n    ");
+    };
+    return ReactiveErrors;
+}());
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var formControlBinding$1 = {
+    provide: NgControl,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return FormControlDirective; })
+};
+/**
+ * \@whatItDoes Syncs a standalone {\@link FormControl} instance to a form control element.
+ *
+ * In other words, this directive ensures that any values written to the {\@link FormControl}
+ * instance programmatically will be written to the DOM element (model -> view). Conversely,
+ * any values written to the DOM element through user input will be reflected in the
+ * {\@link FormControl} instance (view -> model).
+ *
+ * \@howToUse
+ *
+ * Use this directive if you'd like to create and manage a {\@link FormControl} instance directly.
+ * Simply create a {\@link FormControl}, save it to your component class, and pass it into the
+ * {\@link FormControlDirective}.
+ *
+ * This directive is designed to be used as a standalone control.  Unlike {\@link FormControlName},
+ * it does not require that your {\@link FormControl} instance be part of any parent
+ * {\@link FormGroup}, and it won't be registered to any {\@link FormGroupDirective} that
+ * exists above it.
+ *
+ * **Get the value**: the `value` property is always synced and available on the
+ * {\@link FormControl} instance. See a full list of available properties in
+ * {\@link AbstractControl}.
+ *
+ * **Set the value**: You can pass in an initial value when instantiating the {\@link FormControl},
+ * or you can set it programmatically later using {\@link AbstractControl#setValue} or
+ * {\@link AbstractControl#patchValue}.
+ *
+ * **Listen to value**: If you want to listen to changes in the value of the control, you can
+ * subscribe to the {\@link AbstractControl#valueChanges} event.  You can also listen to
+ * {\@link AbstractControl#statusChanges} to be notified when the validation status is
+ * re-calculated.
+ *
+ * ### Example
+ *
+ * {\@example forms/ts/simpleFormControl/simple_form_control_example.ts region='Component'}
+ *
+ * * **npm package**: `\@angular/forms`
+ *
+ * * **NgModule**: `ReactiveFormsModule`
+ *
+ *  \@stable
+ */
+var FormControlDirective = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](FormControlDirective, _super);
+    /**
+     * @param {?} validators
+     * @param {?} asyncValidators
+     * @param {?} valueAccessors
+     */
+    function FormControlDirective(validators, asyncValidators, valueAccessors) {
+        var _this = _super.call(this) || this;
+        _this.update = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["EventEmitter"]();
+        _this._rawValidators = validators || [];
+        _this._rawAsyncValidators = asyncValidators || [];
+        _this.valueAccessor = selectValueAccessor(_this, valueAccessors);
+        return _this;
+    }
+    Object.defineProperty(FormControlDirective.prototype, "isDisabled", {
+        /**
+         * @param {?} isDisabled
+         * @return {?}
+         */
+        set: function (isDisabled) { ReactiveErrors.disabledAttrWarning(); },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    FormControlDirective.prototype.ngOnChanges = function (changes) {
+        if (this._isControlChanged(changes)) {
+            setUpControl(this.form, this);
+            if (this.control.disabled && ((this.valueAccessor)).setDisabledState) {
+                ((((this.valueAccessor)).setDisabledState))(true);
+            }
+            this.form.updateValueAndValidity({ emitEvent: false });
+        }
+        if (isPropertyUpdated(changes, this.viewModel)) {
+            this.form.setValue(this.model);
+            this.viewModel = this.model;
+        }
+    };
+    Object.defineProperty(FormControlDirective.prototype, "path", {
+        /**
+         * @return {?}
+         */
+        get: function () { return []; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormControlDirective.prototype, "validator", {
+        /**
+         * @return {?}
+         */
+        get: function () { return composeValidators(this._rawValidators); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormControlDirective.prototype, "asyncValidator", {
+        /**
+         * @return {?}
+         */
+        get: function () {
+            return composeAsyncValidators(this._rawAsyncValidators);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormControlDirective.prototype, "control", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.form; },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} newValue
+     * @return {?}
+     */
+    FormControlDirective.prototype.viewToModelUpdate = function (newValue) {
+        this.viewModel = newValue;
+        this.update.emit(newValue);
+    };
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    FormControlDirective.prototype._isControlChanged = function (changes) {
+        return changes.hasOwnProperty('form');
+    };
+    return FormControlDirective;
+}(NgControl));
+FormControlDirective.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{ selector: '[formControl]', providers: [formControlBinding$1], exportAs: 'ngForm' },] },
+];
+/**
+ * @nocollapse
+ */
+FormControlDirective.ctorParameters = function () { return [
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_ASYNC_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_VALUE_ACCESSOR,] },] },
+]; };
+FormControlDirective.propDecorators = {
+    'form': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['formControl',] },],
+    'model': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['ngModel',] },],
+    'update': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Output"], args: ['ngModelChange',] },],
+    'isDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['disabled',] },],
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var formDirectiveProvider$1 = {
+    provide: ControlContainer,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return FormGroupDirective; })
+};
+/**
+ * \@whatItDoes Binds an existing {\@link FormGroup} to a DOM element.
+ *
+ * \@howToUse
+ *
+ * This directive accepts an existing {\@link FormGroup} instance. It will then use this
+ * {\@link FormGroup} instance to match any child {\@link FormControl}, {\@link FormGroup},
+ * and {\@link FormArray} instances to child {\@link FormControlName}, {\@link FormGroupName},
+ * and {\@link FormArrayName} directives.
+ *
+ * **Set value**: You can set the form's initial value when instantiating the
+ * {\@link FormGroup}, or you can set it programmatically later using the {\@link FormGroup}'s
+ * {\@link AbstractControl#setValue} or {\@link AbstractControl#patchValue} methods.
+ *
+ * **Listen to value**: If you want to listen to changes in the value of the form, you can subscribe
+ * to the {\@link FormGroup}'s {\@link AbstractControl#valueChanges} event.  You can also listen to
+ * its {\@link AbstractControl#statusChanges} event to be notified when the validation status is
+ * re-calculated.
+ *
+ * Furthermore, you can listen to the directive's `ngSubmit` event to be notified when the user has
+ * triggered a form submission. The `ngSubmit` event will be emitted with the original form
+ * submission event.
+ *
+ * ### Example
+ *
+ * In this example, we create form controls for first name and last name.
+ *
+ * {\@example forms/ts/simpleFormGroup/simple_form_group_example.ts region='Component'}
+ *
+ * **npm package**: `\@angular/forms`
+ *
+ * **NgModule**: {\@link ReactiveFormsModule}
+ *
+ *  \@stable
+ */
+var FormGroupDirective = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](FormGroupDirective, _super);
+    /**
+     * @param {?} _validators
+     * @param {?} _asyncValidators
+     */
+    function FormGroupDirective(_validators, _asyncValidators) {
+        var _this = _super.call(this) || this;
+        _this._validators = _validators;
+        _this._asyncValidators = _asyncValidators;
+        _this._submitted = false;
+        _this.directives = [];
+        _this.form = ((null));
+        _this.ngSubmit = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["EventEmitter"]();
+        return _this;
+    }
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    FormGroupDirective.prototype.ngOnChanges = function (changes) {
+        this._checkFormPresent();
+        if (changes.hasOwnProperty('form')) {
+            this._updateValidators();
+            this._updateDomValue();
+            this._updateRegistrations();
+        }
+    };
+    Object.defineProperty(FormGroupDirective.prototype, "submitted", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._submitted; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormGroupDirective.prototype, "formDirective", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormGroupDirective.prototype, "control", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this.form; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormGroupDirective.prototype, "path", {
+        /**
+         * @return {?}
+         */
+        get: function () { return []; },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    FormGroupDirective.prototype.addControl = function (dir) {
+        var /** @type {?} */ ctrl = this.form.get(dir.path);
+        setUpControl(ctrl, dir);
+        ctrl.updateValueAndValidity({ emitEvent: false });
+        this.directives.push(dir);
+        return ctrl;
+    };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    FormGroupDirective.prototype.getControl = function (dir) { return (this.form.get(dir.path)); };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    FormGroupDirective.prototype.removeControl = function (dir) { remove(this.directives, dir); };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    FormGroupDirective.prototype.addFormGroup = function (dir) {
+        var /** @type {?} */ ctrl = this.form.get(dir.path);
+        setUpFormContainer(ctrl, dir);
+        ctrl.updateValueAndValidity({ emitEvent: false });
+    };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    FormGroupDirective.prototype.removeFormGroup = function (dir) { };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    FormGroupDirective.prototype.getFormGroup = function (dir) { return (this.form.get(dir.path)); };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    FormGroupDirective.prototype.addFormArray = function (dir) {
+        var /** @type {?} */ ctrl = this.form.get(dir.path);
+        setUpFormContainer(ctrl, dir);
+        ctrl.updateValueAndValidity({ emitEvent: false });
+    };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    FormGroupDirective.prototype.removeFormArray = function (dir) { };
+    /**
+     * @param {?} dir
+     * @return {?}
+     */
+    FormGroupDirective.prototype.getFormArray = function (dir) { return (this.form.get(dir.path)); };
+    /**
+     * @param {?} dir
+     * @param {?} value
+     * @return {?}
+     */
+    FormGroupDirective.prototype.updateModel = function (dir, value) {
+        var /** @type {?} */ ctrl = (this.form.get(dir.path));
+        ctrl.setValue(value);
+    };
+    /**
+     * @param {?} $event
+     * @return {?}
+     */
+    FormGroupDirective.prototype.onSubmit = function ($event) {
+        this._submitted = true;
+        this.ngSubmit.emit($event);
+        return false;
+    };
+    /**
+     * @return {?}
+     */
+    FormGroupDirective.prototype.onReset = function () { this.resetForm(); };
+    /**
+     * @param {?=} value
+     * @return {?}
+     */
+    FormGroupDirective.prototype.resetForm = function (value) {
+        if (value === void 0) { value = undefined; }
+        this.form.reset(value);
+        this._submitted = false;
+    };
+    /**
+     * \@internal
+     * @return {?}
+     */
+    FormGroupDirective.prototype._updateDomValue = function () {
+        var _this = this;
+        this.directives.forEach(function (dir) {
+            var /** @type {?} */ newCtrl = _this.form.get(dir.path);
+            if (dir._control !== newCtrl) {
+                cleanUpControl(dir._control, dir);
+                if (newCtrl)
+                    setUpControl(newCtrl, dir);
+                dir._control = newCtrl;
+            }
+        });
+        this.form._updateTreeValidity({ emitEvent: false });
+    };
+    /**
+     * @return {?}
+     */
+    FormGroupDirective.prototype._updateRegistrations = function () {
+        var _this = this;
+        this.form._registerOnCollectionChange(function () { return _this._updateDomValue(); });
+        if (this._oldForm)
+            this._oldForm._registerOnCollectionChange(function () { });
+        this._oldForm = this.form;
+    };
+    /**
+     * @return {?}
+     */
+    FormGroupDirective.prototype._updateValidators = function () {
+        var /** @type {?} */ sync = composeValidators(this._validators);
+        this.form.validator = Validators.compose([/** @type {?} */ ((this.form.validator)), /** @type {?} */ ((sync))]);
+        var /** @type {?} */ async = composeAsyncValidators(this._asyncValidators);
+        this.form.asyncValidator = Validators.composeAsync([/** @type {?} */ ((this.form.asyncValidator)), /** @type {?} */ ((async))]);
+    };
+    /**
+     * @return {?}
+     */
+    FormGroupDirective.prototype._checkFormPresent = function () {
+        if (!this.form) {
+            ReactiveErrors.missingFormException();
+        }
+    };
+    return FormGroupDirective;
+}(ControlContainer));
+FormGroupDirective.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: '[formGroup]',
+                providers: [formDirectiveProvider$1],
+                host: { '(submit)': 'onSubmit($event)', '(reset)': 'onReset()' },
+                exportAs: 'ngForm'
+            },] },
+];
+/**
+ * @nocollapse
+ */
+FormGroupDirective.ctorParameters = function () { return [
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_ASYNC_VALIDATORS,] },] },
+]; };
+FormGroupDirective.propDecorators = {
+    'form': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['formGroup',] },],
+    'ngSubmit': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Output"] },],
+};
+/**
+ * @template T
+ * @param {?} list
+ * @param {?} el
+ * @return {?}
+ */
+function remove(list, el) {
+    var /** @type {?} */ index = list.indexOf(el);
+    if (index > -1) {
+        list.splice(index, 1);
+    }
+}
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var formGroupNameProvider = {
+    provide: ControlContainer,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return FormGroupName; })
+};
+/**
+ * \@whatItDoes Syncs a nested {\@link FormGroup} to a DOM element.
+ *
+ * \@howToUse
+ *
+ * This directive can only be used with a parent {\@link FormGroupDirective} (selector:
+ * `[formGroup]`).
+ *
+ * It accepts the string name of the nested {\@link FormGroup} you want to link, and
+ * will look for a {\@link FormGroup} registered with that name in the parent
+ * {\@link FormGroup} instance you passed into {\@link FormGroupDirective}.
+ *
+ * Nested form groups can come in handy when you want to validate a sub-group of a
+ * form separately from the rest or when you'd like to group the values of certain
+ * controls into their own nested object.
+ *
+ * **Access the group**: You can access the associated {\@link FormGroup} using the
+ * {\@link AbstractControl#get} method. Ex: `this.form.get('name')`.
+ *
+ * You can also access individual controls within the group using dot syntax.
+ * Ex: `this.form.get('name.first')`
+ *
+ * **Get the value**: the `value` property is always synced and available on the
+ * {\@link FormGroup}. See a full list of available properties in {\@link AbstractControl}.
+ *
+ * **Set the value**: You can set an initial value for each child control when instantiating
+ * the {\@link FormGroup}, or you can set it programmatically later using
+ * {\@link AbstractControl#setValue} or {\@link AbstractControl#patchValue}.
+ *
+ * **Listen to value**: If you want to listen to changes in the value of the group, you can
+ * subscribe to the {\@link AbstractControl#valueChanges} event.  You can also listen to
+ * {\@link AbstractControl#statusChanges} to be notified when the validation status is
+ * re-calculated.
+ *
+ * ### Example
+ *
+ * {\@example forms/ts/nestedFormGroup/nested_form_group_example.ts region='Component'}
+ *
+ * * **npm package**: `\@angular/forms`
+ *
+ * * **NgModule**: `ReactiveFormsModule`
+ *
+ * \@stable
+ */
+var FormGroupName = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](FormGroupName, _super);
+    /**
+     * @param {?} parent
+     * @param {?} validators
+     * @param {?} asyncValidators
+     */
+    function FormGroupName(parent, validators, asyncValidators) {
+        var _this = _super.call(this) || this;
+        _this._parent = parent;
+        _this._validators = validators;
+        _this._asyncValidators = asyncValidators;
+        return _this;
+    }
+    /**
+     * \@internal
+     * @return {?}
+     */
+    FormGroupName.prototype._checkParentType = function () {
+        if (_hasInvalidParent(this._parent)) {
+            ReactiveErrors.groupParentException();
+        }
+    };
+    return FormGroupName;
+}(AbstractFormGroupDirective));
+FormGroupName.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{ selector: '[formGroupName]', providers: [formGroupNameProvider] },] },
+];
+/**
+ * @nocollapse
+ */
+FormGroupName.ctorParameters = function () { return [
+    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Host"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["SkipSelf"] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_ASYNC_VALIDATORS,] },] },
+]; };
+FormGroupName.propDecorators = {
+    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['formGroupName',] },],
+};
+var formArrayNameProvider = {
+    provide: ControlContainer,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return FormArrayName; })
+};
+/**
+ * \@whatItDoes Syncs a nested {\@link FormArray} to a DOM element.
+ *
+ * \@howToUse
+ *
+ * This directive is designed to be used with a parent {\@link FormGroupDirective} (selector:
+ * `[formGroup]`).
+ *
+ * It accepts the string name of the nested {\@link FormArray} you want to link, and
+ * will look for a {\@link FormArray} registered with that name in the parent
+ * {\@link FormGroup} instance you passed into {\@link FormGroupDirective}.
+ *
+ * Nested form arrays can come in handy when you have a group of form controls but
+ * you're not sure how many there will be. Form arrays allow you to create new
+ * form controls dynamically.
+ *
+ * **Access the array**: You can access the associated {\@link FormArray} using the
+ * {\@link AbstractControl#get} method on the parent {\@link FormGroup}.
+ * Ex: `this.form.get('cities')`.
+ *
+ * **Get the value**: the `value` property is always synced and available on the
+ * {\@link FormArray}. See a full list of available properties in {\@link AbstractControl}.
+ *
+ * **Set the value**: You can set an initial value for each child control when instantiating
+ * the {\@link FormArray}, or you can set the value programmatically later using the
+ * {\@link FormArray}'s {\@link AbstractControl#setValue} or {\@link AbstractControl#patchValue}
+ * methods.
+ *
+ * **Listen to value**: If you want to listen to changes in the value of the array, you can
+ * subscribe to the {\@link FormArray}'s {\@link AbstractControl#valueChanges} event.  You can also
+ * listen to its {\@link AbstractControl#statusChanges} event to be notified when the validation
+ * status is re-calculated.
+ *
+ * **Add new controls**: You can add new controls to the {\@link FormArray} dynamically by
+ * calling its {\@link FormArray#push} method.
+ *  Ex: `this.form.get('cities').push(new FormControl());`
+ *
+ * ### Example
+ *
+ * {\@example forms/ts/nestedFormArray/nested_form_array_example.ts region='Component'}
+ *
+ * * **npm package**: `\@angular/forms`
+ *
+ * * **NgModule**: `ReactiveFormsModule`
+ *
+ * \@stable
+ */
+var FormArrayName = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](FormArrayName, _super);
+    /**
+     * @param {?} parent
+     * @param {?} validators
+     * @param {?} asyncValidators
+     */
+    function FormArrayName(parent, validators, asyncValidators) {
+        var _this = _super.call(this) || this;
+        _this._parent = parent;
+        _this._validators = validators;
+        _this._asyncValidators = asyncValidators;
+        return _this;
+    }
+    /**
+     * @return {?}
+     */
+    FormArrayName.prototype.ngOnInit = function () {
+        this._checkParentType(); /** @type {?} */
+        ((this.formDirective)).addFormArray(this);
+    };
+    /**
+     * @return {?}
+     */
+    FormArrayName.prototype.ngOnDestroy = function () {
+        if (this.formDirective) {
+            this.formDirective.removeFormArray(this);
+        }
+    };
+    Object.defineProperty(FormArrayName.prototype, "control", {
+        /**
+         * @return {?}
+         */
+        get: function () { return ((this.formDirective)).getFormArray(this); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormArrayName.prototype, "formDirective", {
+        /**
+         * @return {?}
+         */
+        get: function () {
+            return this._parent ? (this._parent.formDirective) : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormArrayName.prototype, "path", {
+        /**
+         * @return {?}
+         */
+        get: function () { return controlPath(this.name, this._parent); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormArrayName.prototype, "validator", {
+        /**
+         * @return {?}
+         */
+        get: function () { return composeValidators(this._validators); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormArrayName.prototype, "asyncValidator", {
+        /**
+         * @return {?}
+         */
+        get: function () {
+            return composeAsyncValidators(this._asyncValidators);
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    FormArrayName.prototype._checkParentType = function () {
+        if (_hasInvalidParent(this._parent)) {
+            ReactiveErrors.arrayParentException();
+        }
+    };
+    return FormArrayName;
+}(ControlContainer));
+FormArrayName.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{ selector: '[formArrayName]', providers: [formArrayNameProvider] },] },
+];
+/**
+ * @nocollapse
+ */
+FormArrayName.ctorParameters = function () { return [
+    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Host"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["SkipSelf"] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_ASYNC_VALIDATORS,] },] },
+]; };
+FormArrayName.propDecorators = {
+    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['formArrayName',] },],
+};
+/**
+ * @param {?} parent
+ * @return {?}
+ */
+function _hasInvalidParent(parent) {
+    return !(parent instanceof FormGroupName) && !(parent instanceof FormGroupDirective) &&
+        !(parent instanceof FormArrayName);
+}
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var controlNameBinding = {
+    provide: NgControl,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return FormControlName; })
+};
+/**
+ * \@whatItDoes Syncs a {\@link FormControl} in an existing {\@link FormGroup} to a form control
+ * element by name.
+ *
+ * In other words, this directive ensures that any values written to the {\@link FormControl}
+ * instance programmatically will be written to the DOM element (model -> view). Conversely,
+ * any values written to the DOM element through user input will be reflected in the
+ * {\@link FormControl} instance (view -> model).
+ *
+ * \@howToUse
+ *
+ * This directive is designed to be used with a parent {\@link FormGroupDirective} (selector:
+ * `[formGroup]`).
+ *
+ * It accepts the string name of the {\@link FormControl} instance you want to
+ * link, and will look for a {\@link FormControl} registered with that name in the
+ * closest {\@link FormGroup} or {\@link FormArray} above it.
+ *
+ * **Access the control**: You can access the {\@link FormControl} associated with
+ * this directive by using the {\@link AbstractControl#get} method.
+ * Ex: `this.form.get('first');`
+ *
+ * **Get value**: the `value` property is always synced and available on the {\@link FormControl}.
+ * See a full list of available properties in {\@link AbstractControl}.
+ *
+ *  **Set value**: You can set an initial value for the control when instantiating the
+ *  {\@link FormControl}, or you can set it programmatically later using
+ *  {\@link AbstractControl#setValue} or {\@link AbstractControl#patchValue}.
+ *
+ * **Listen to value**: If you want to listen to changes in the value of the control, you can
+ * subscribe to the {\@link AbstractControl#valueChanges} event.  You can also listen to
+ * {\@link AbstractControl#statusChanges} to be notified when the validation status is
+ * re-calculated.
+ *
+ * ### Example
+ *
+ * In this example, we create form controls for first name and last name.
+ *
+ * {\@example forms/ts/simpleFormGroup/simple_form_group_example.ts region='Component'}
+ *
+ * To see `formControlName` examples with different form control types, see:
+ *
+ * * Radio buttons: {\@link RadioControlValueAccessor}
+ * * Selects: {\@link SelectControlValueAccessor}
+ *
+ * **npm package**: `\@angular/forms`
+ *
+ * **NgModule**: {\@link ReactiveFormsModule}
+ *
+ *  \@stable
+ */
+var FormControlName = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](FormControlName, _super);
+    /**
+     * @param {?} parent
+     * @param {?} validators
+     * @param {?} asyncValidators
+     * @param {?} valueAccessors
+     */
+    function FormControlName(parent, validators, asyncValidators, valueAccessors) {
+        var _this = _super.call(this) || this;
+        _this._added = false;
+        _this.update = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["EventEmitter"]();
+        _this._parent = parent;
+        _this._rawValidators = validators || [];
+        _this._rawAsyncValidators = asyncValidators || [];
+        _this.valueAccessor = selectValueAccessor(_this, valueAccessors);
+        return _this;
+    }
+    Object.defineProperty(FormControlName.prototype, "isDisabled", {
+        /**
+         * @param {?} isDisabled
+         * @return {?}
+         */
+        set: function (isDisabled) { ReactiveErrors.disabledAttrWarning(); },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    FormControlName.prototype.ngOnChanges = function (changes) {
+        if (!this._added)
+            this._setUpControl();
+        if (isPropertyUpdated(changes, this.viewModel)) {
+            this.viewModel = this.model;
+            this.formDirective.updateModel(this, this.model);
+        }
+    };
+    /**
+     * @return {?}
+     */
+    FormControlName.prototype.ngOnDestroy = function () {
+        if (this.formDirective) {
+            this.formDirective.removeControl(this);
+        }
+    };
+    /**
+     * @param {?} newValue
+     * @return {?}
+     */
+    FormControlName.prototype.viewToModelUpdate = function (newValue) {
+        this.viewModel = newValue;
+        this.update.emit(newValue);
+    };
+    Object.defineProperty(FormControlName.prototype, "path", {
+        /**
+         * @return {?}
+         */
+        get: function () { return controlPath(this.name, /** @type {?} */ ((this._parent))); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormControlName.prototype, "formDirective", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._parent ? this._parent.formDirective : null; },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormControlName.prototype, "validator", {
+        /**
+         * @return {?}
+         */
+        get: function () { return composeValidators(this._rawValidators); },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormControlName.prototype, "asyncValidator", {
+        /**
+         * @return {?}
+         */
+        get: function () {
+            return ((composeAsyncValidators(this._rawAsyncValidators)));
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(FormControlName.prototype, "control", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._control; },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @return {?}
+     */
+    FormControlName.prototype._checkParentType = function () {
+        if (!(this._parent instanceof FormGroupName) &&
+            this._parent instanceof AbstractFormGroupDirective) {
+            ReactiveErrors.ngModelGroupException();
+        }
+        else if (!(this._parent instanceof FormGroupName) && !(this._parent instanceof FormGroupDirective) &&
+            !(this._parent instanceof FormArrayName)) {
+            ReactiveErrors.controlParentException();
+        }
+    };
+    /**
+     * @return {?}
+     */
+    FormControlName.prototype._setUpControl = function () {
+        this._checkParentType();
+        this._control = this.formDirective.addControl(this);
+        if (this.control.disabled && ((this.valueAccessor)).setDisabledState) {
+            ((((this.valueAccessor)).setDisabledState))(true);
+        }
+        this._added = true;
+    };
+    return FormControlName;
+}(NgControl));
+FormControlName.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{ selector: '[formControlName]', providers: [controlNameBinding] },] },
+];
+/**
+ * @nocollapse
+ */
+FormControlName.ctorParameters = function () { return [
+    { type: ControlContainer, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Host"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["SkipSelf"] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_ASYNC_VALIDATORS,] },] },
+    { type: Array, decorators: [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Optional"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Self"] }, { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Inject"], args: [NG_VALUE_ACCESSOR,] },] },
+]; };
+FormControlName.propDecorators = {
+    'name': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['formControlName',] },],
+    'model': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['ngModel',] },],
+    'update': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Output"], args: ['ngModelChange',] },],
+    'isDisabled': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"], args: ['disabled',] },],
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var REQUIRED_VALIDATOR = {
+    provide: NG_VALIDATORS,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return RequiredValidator; }),
+    multi: true
+};
+var CHECKBOX_REQUIRED_VALIDATOR = {
+    provide: NG_VALIDATORS,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return CheckboxRequiredValidator; }),
+    multi: true
+};
+/**
+ * A Directive that adds the `required` validator to any controls marked with the
+ * `required` attribute, via the {\@link NG_VALIDATORS} binding.
+ *
+ * ### Example
+ *
+ * ```
+ * <input name="fullName" ngModel required>
+ * ```
+ *
+ * \@stable
+ */
+var RequiredValidator = (function () {
+    function RequiredValidator() {
+    }
+    Object.defineProperty(RequiredValidator.prototype, "required", {
+        /**
+         * @return {?}
+         */
+        get: function () { return this._required; },
+        /**
+         * @param {?} value
+         * @return {?}
+         */
+        set: function (value) {
+            this._required = value != null && value !== false && "" + value !== 'false';
+            if (this._onChange)
+                this._onChange();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} c
+     * @return {?}
+     */
+    RequiredValidator.prototype.validate = function (c) {
+        return this.required ? Validators.required(c) : null;
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    RequiredValidator.prototype.registerOnValidatorChange = function (fn) { this._onChange = fn; };
+    return RequiredValidator;
+}());
+RequiredValidator.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: ':not([type=checkbox])[required][formControlName],:not([type=checkbox])[required][formControl],:not([type=checkbox])[required][ngModel]',
+                providers: [REQUIRED_VALIDATOR],
+                host: { '[attr.required]': 'required ? "" : null' }
+            },] },
+];
+/**
+ * @nocollapse
+ */
+RequiredValidator.ctorParameters = function () { return []; };
+RequiredValidator.propDecorators = {
+    'required': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+};
+/**
+ * A Directive that adds the `required` validator to checkbox controls marked with the
+ * `required` attribute, via the {\@link NG_VALIDATORS} binding.
+ *
+ * ### Example
+ *
+ * ```
+ * <input type="checkbox" name="active" ngModel required>
+ * ```
+ *
+ * \@experimental
+ */
+var CheckboxRequiredValidator = (function (_super) {
+    __WEBPACK_IMPORTED_MODULE_0_tslib__["a" /* __extends */](CheckboxRequiredValidator, _super);
+    function CheckboxRequiredValidator() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    /**
+     * @param {?} c
+     * @return {?}
+     */
+    CheckboxRequiredValidator.prototype.validate = function (c) {
+        return this.required ? Validators.requiredTrue(c) : null;
+    };
+    return CheckboxRequiredValidator;
+}(RequiredValidator));
+CheckboxRequiredValidator.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: 'input[type=checkbox][required][formControlName],input[type=checkbox][required][formControl],input[type=checkbox][required][ngModel]',
+                providers: [CHECKBOX_REQUIRED_VALIDATOR],
+                host: { '[attr.required]': 'required ? "" : null' }
+            },] },
+];
+/**
+ * @nocollapse
+ */
+CheckboxRequiredValidator.ctorParameters = function () { return []; };
+/**
+ * Provider which adds {\@link EmailValidator} to {\@link NG_VALIDATORS}.
+ */
+var EMAIL_VALIDATOR = {
+    provide: NG_VALIDATORS,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return EmailValidator; }),
+    multi: true
+};
+/**
+ * A Directive that adds the `email` validator to controls marked with the
+ * `email` attribute, via the {\@link NG_VALIDATORS} binding.
+ *
+ * ### Example
+ *
+ * ```
+ * <input type="email" name="email" ngModel email>
+ * <input type="email" name="email" ngModel email="true">
+ * <input type="email" name="email" ngModel [email]="true">
+ * ```
+ *
+ * \@experimental
+ */
+var EmailValidator = (function () {
+    function EmailValidator() {
+    }
+    Object.defineProperty(EmailValidator.prototype, "email", {
+        /**
+         * @param {?} value
+         * @return {?}
+         */
+        set: function (value) {
+            this._enabled = value === '' || value === true || value === 'true';
+            if (this._onChange)
+                this._onChange();
+        },
+        enumerable: true,
+        configurable: true
+    });
+    /**
+     * @param {?} c
+     * @return {?}
+     */
+    EmailValidator.prototype.validate = function (c) {
+        return this._enabled ? Validators.email(c) : null;
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    EmailValidator.prototype.registerOnValidatorChange = function (fn) { this._onChange = fn; };
+    return EmailValidator;
+}());
+EmailValidator.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: '[email][formControlName],[email][formControl],[email][ngModel]',
+                providers: [EMAIL_VALIDATOR]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+EmailValidator.ctorParameters = function () { return []; };
+EmailValidator.propDecorators = {
+    'email': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+};
+/**
+ * Provider which adds {\@link MinLengthValidator} to {\@link NG_VALIDATORS}.
+ *
+ * ## Example:
+ *
+ * {\@example common/forms/ts/validators/validators.ts region='min'}
+ */
+var MIN_LENGTH_VALIDATOR = {
+    provide: NG_VALIDATORS,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return MinLengthValidator; }),
+    multi: true
+};
+/**
+ * A directive which installs the {\@link MinLengthValidator} for any `formControlName`,
+ * `formControl`, or control with `ngModel` that also has a `minlength` attribute.
+ *
+ * \@stable
+ */
+var MinLengthValidator = (function () {
+    function MinLengthValidator() {
+    }
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    MinLengthValidator.prototype.ngOnChanges = function (changes) {
+        if ('minlength' in changes) {
+            this._createValidator();
+            if (this._onChange)
+                this._onChange();
+        }
+    };
+    /**
+     * @param {?} c
+     * @return {?}
+     */
+    MinLengthValidator.prototype.validate = function (c) {
+        return this.minlength == null ? null : this._validator(c);
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    MinLengthValidator.prototype.registerOnValidatorChange = function (fn) { this._onChange = fn; };
+    /**
+     * @return {?}
+     */
+    MinLengthValidator.prototype._createValidator = function () {
+        this._validator = Validators.minLength(parseInt(this.minlength, 10));
+    };
+    return MinLengthValidator;
+}());
+MinLengthValidator.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: '[minlength][formControlName],[minlength][formControl],[minlength][ngModel]',
+                providers: [MIN_LENGTH_VALIDATOR],
+                host: { '[attr.minlength]': 'minlength ? minlength : null' }
+            },] },
+];
+/**
+ * @nocollapse
+ */
+MinLengthValidator.ctorParameters = function () { return []; };
+MinLengthValidator.propDecorators = {
+    'minlength': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+};
+/**
+ * Provider which adds {\@link MaxLengthValidator} to {\@link NG_VALIDATORS}.
+ *
+ * ## Example:
+ *
+ * {\@example common/forms/ts/validators/validators.ts region='max'}
+ */
+var MAX_LENGTH_VALIDATOR = {
+    provide: NG_VALIDATORS,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return MaxLengthValidator; }),
+    multi: true
+};
+/**
+ * A directive which installs the {\@link MaxLengthValidator} for any `formControlName,
+ * `formControl`,
+ * or control with `ngModel` that also has a `maxlength` attribute.
+ *
+ * \@stable
+ */
+var MaxLengthValidator = (function () {
+    function MaxLengthValidator() {
+    }
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    MaxLengthValidator.prototype.ngOnChanges = function (changes) {
+        if ('maxlength' in changes) {
+            this._createValidator();
+            if (this._onChange)
+                this._onChange();
+        }
+    };
+    /**
+     * @param {?} c
+     * @return {?}
+     */
+    MaxLengthValidator.prototype.validate = function (c) {
+        return this.maxlength != null ? this._validator(c) : null;
+    };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    MaxLengthValidator.prototype.registerOnValidatorChange = function (fn) { this._onChange = fn; };
+    /**
+     * @return {?}
+     */
+    MaxLengthValidator.prototype._createValidator = function () {
+        this._validator = Validators.maxLength(parseInt(this.maxlength, 10));
+    };
+    return MaxLengthValidator;
+}());
+MaxLengthValidator.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: '[maxlength][formControlName],[maxlength][formControl],[maxlength][ngModel]',
+                providers: [MAX_LENGTH_VALIDATOR],
+                host: { '[attr.maxlength]': 'maxlength ? maxlength : null' }
+            },] },
+];
+/**
+ * @nocollapse
+ */
+MaxLengthValidator.ctorParameters = function () { return []; };
+MaxLengthValidator.propDecorators = {
+    'maxlength': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+};
+var PATTERN_VALIDATOR = {
+    provide: NG_VALIDATORS,
+    useExisting: Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["forwardRef"])(function () { return PatternValidator; }),
+    multi: true
+};
+/**
+ * A Directive that adds the `pattern` validator to any controls marked with the
+ * `pattern` attribute, via the {\@link NG_VALIDATORS} binding. Uses attribute value
+ * as the regex to validate Control value against.  Follows pattern attribute
+ * semantics; i.e. regex must match entire Control value.
+ *
+ * ### Example
+ *
+ * ```
+ * <input [name]="fullName" pattern="[a-zA-Z ]*" ngModel>
+ * ```
+ * \@stable
+ */
+var PatternValidator = (function () {
+    function PatternValidator() {
+    }
+    /**
+     * @param {?} changes
+     * @return {?}
+     */
+    PatternValidator.prototype.ngOnChanges = function (changes) {
+        if ('pattern' in changes) {
+            this._createValidator();
+            if (this._onChange)
+                this._onChange();
+        }
+    };
+    /**
+     * @param {?} c
+     * @return {?}
+     */
+    PatternValidator.prototype.validate = function (c) { return this._validator(c); };
+    /**
+     * @param {?} fn
+     * @return {?}
+     */
+    PatternValidator.prototype.registerOnValidatorChange = function (fn) { this._onChange = fn; };
+    /**
+     * @return {?}
+     */
+    PatternValidator.prototype._createValidator = function () { this._validator = Validators.pattern(this.pattern); };
+    return PatternValidator;
+}());
+PatternValidator.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: '[pattern][formControlName],[pattern][formControl],[pattern][ngModel]',
+                providers: [PATTERN_VALIDATOR],
+                host: { '[attr.pattern]': 'pattern ? pattern : null' }
+            },] },
+];
+/**
+ * @nocollapse
+ */
+PatternValidator.ctorParameters = function () { return []; };
+PatternValidator.propDecorators = {
+    'pattern': [{ type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Input"] },],
+};
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * \@whatItDoes Creates an {\@link AbstractControl} from a user-specified configuration.
+ *
+ * It is essentially syntactic sugar that shortens the `new FormGroup()`,
+ * `new FormControl()`, and `new FormArray()` boilerplate that can build up in larger
+ * forms.
+ *
+ * \@howToUse
+ *
+ * To use, inject `FormBuilder` into your component class. You can then call its methods
+ * directly.
+ *
+ * {\@example forms/ts/formBuilder/form_builder_example.ts region='Component'}
+ *
+ *  * **npm package**: `\@angular/forms`
+ *
+ *  * **NgModule**: {\@link ReactiveFormsModule}
+ *
+ * \@stable
+ */
+var FormBuilder = (function () {
+    function FormBuilder() {
+    }
+    /**
+     * Construct a new {\@link FormGroup} with the given map of configuration.
+     * Valid keys for the `extra` parameter map are `validator` and `asyncValidator`.
+     *
+     * See the {\@link FormGroup} constructor for more details.
+     * @param {?} controlsConfig
+     * @param {?=} extra
+     * @return {?}
+     */
+    FormBuilder.prototype.group = function (controlsConfig, extra) {
+        if (extra === void 0) { extra = null; }
+        var /** @type {?} */ controls = this._reduceControls(controlsConfig);
+        var /** @type {?} */ validator = extra != null ? extra['validator'] : null;
+        var /** @type {?} */ asyncValidator = extra != null ? extra['asyncValidator'] : null;
+        return new FormGroup(controls, validator, asyncValidator);
+    };
+    /**
+     * Construct a new {\@link FormControl} with the given `formState`,`validator`, and
+     * `asyncValidator`.
+     *
+     * `formState` can either be a standalone value for the form control or an object
+     * that contains both a value and a disabled status.
+     *
+     * @param {?} formState
+     * @param {?=} validator
+     * @param {?=} asyncValidator
+     * @return {?}
+     */
+    FormBuilder.prototype.control = function (formState, validator, asyncValidator) {
+        return new FormControl(formState, validator, asyncValidator);
+    };
+    /**
+     * Construct a {\@link FormArray} from the given `controlsConfig` array of
+     * configuration, with the given optional `validator` and `asyncValidator`.
+     * @param {?} controlsConfig
+     * @param {?=} validator
+     * @param {?=} asyncValidator
+     * @return {?}
+     */
+    FormBuilder.prototype.array = function (controlsConfig, validator, asyncValidator) {
+        var _this = this;
+        var /** @type {?} */ controls = controlsConfig.map(function (c) { return _this._createControl(c); });
+        return new FormArray(controls, validator, asyncValidator);
+    };
+    /**
+     * \@internal
+     * @param {?} controlsConfig
+     * @return {?}
+     */
+    FormBuilder.prototype._reduceControls = function (controlsConfig) {
+        var _this = this;
+        var /** @type {?} */ controls = {};
+        Object.keys(controlsConfig).forEach(function (controlName) {
+            controls[controlName] = _this._createControl(controlsConfig[controlName]);
+        });
+        return controls;
+    };
+    /**
+     * \@internal
+     * @param {?} controlConfig
+     * @return {?}
+     */
+    FormBuilder.prototype._createControl = function (controlConfig) {
+        if (controlConfig instanceof FormControl || controlConfig instanceof FormGroup ||
+            controlConfig instanceof FormArray) {
+            return controlConfig;
+        }
+        else if (Array.isArray(controlConfig)) {
+            var /** @type {?} */ value = controlConfig[0];
+            var /** @type {?} */ validator = controlConfig.length > 1 ? controlConfig[1] : null;
+            var /** @type {?} */ asyncValidator = controlConfig.length > 2 ? controlConfig[2] : null;
+            return this.control(value, validator, asyncValidator);
+        }
+        else {
+            return this.control(controlConfig);
+        }
+    };
+    return FormBuilder;
+}());
+FormBuilder.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Injectable"] },
+];
+/**
+ * @nocollapse
+ */
+FormBuilder.ctorParameters = function () { return []; };
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @module
+ * @description
+ * Entry point for all public APIs of the common package.
+ */
+/**
+ * \@stable
+ */
+var VERSION = new __WEBPACK_IMPORTED_MODULE_1__angular_core__["Version"]('4.3.4');
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * \@whatItDoes Adds `novalidate` attribute to all forms by default.
+ *
+ * `novalidate` is used to disable browser's native form validation.
+ *
+ * If you want to use native validation with Angular forms, just add `ngNativeValidate` attribute:
+ *
+ * ```
+ * <form ngNativeValidate></form>
+ * ```
+ *
+ * \@experimental
+ */
+var NgNoValidate = (function () {
+    function NgNoValidate() {
+    }
+    return NgNoValidate;
+}());
+NgNoValidate.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["Directive"], args: [{
+                selector: 'form:not([ngNoForm]):not([ngNativeValidate])',
+                host: { 'novalidate': '' },
+            },] },
+];
+/**
+ * @nocollapse
+ */
+NgNoValidate.ctorParameters = function () { return []; };
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+var SHARED_FORM_DIRECTIVES = [
+    NgNoValidate,
+    NgSelectOption,
+    NgSelectMultipleOption,
+    DefaultValueAccessor,
+    NumberValueAccessor,
+    RangeValueAccessor,
+    CheckboxControlValueAccessor,
+    SelectControlValueAccessor,
+    SelectMultipleControlValueAccessor,
+    RadioControlValueAccessor,
+    NgControlStatus,
+    NgControlStatusGroup,
+    RequiredValidator,
+    MinLengthValidator,
+    MaxLengthValidator,
+    PatternValidator,
+    CheckboxRequiredValidator,
+    EmailValidator,
+];
+var TEMPLATE_DRIVEN_DIRECTIVES = [NgModel, NgModelGroup, NgForm];
+var REACTIVE_DRIVEN_DIRECTIVES = [FormControlDirective, FormGroupDirective, FormControlName, FormGroupName, FormArrayName];
+/**
+ * Internal module used for sharing directives between FormsModule and ReactiveFormsModule
+ */
+var InternalFormsSharedModule = (function () {
+    function InternalFormsSharedModule() {
+    }
+    return InternalFormsSharedModule;
+}());
+InternalFormsSharedModule.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"], args: [{
+                declarations: SHARED_FORM_DIRECTIVES,
+                exports: SHARED_FORM_DIRECTIVES,
+            },] },
+];
+/**
+ * @nocollapse
+ */
+InternalFormsSharedModule.ctorParameters = function () { return []; };
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * The ng module for forms.
+ * \@stable
+ */
+var FormsModule = (function () {
+    function FormsModule() {
+    }
+    return FormsModule;
+}());
+FormsModule.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"], args: [{
+                declarations: TEMPLATE_DRIVEN_DIRECTIVES,
+                providers: [RadioControlRegistry],
+                exports: [InternalFormsSharedModule, TEMPLATE_DRIVEN_DIRECTIVES]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+FormsModule.ctorParameters = function () { return []; };
+/**
+ * The ng module for reactive forms.
+ * \@stable
+ */
+var ReactiveFormsModule = (function () {
+    function ReactiveFormsModule() {
+    }
+    return ReactiveFormsModule;
+}());
+ReactiveFormsModule.decorators = [
+    { type: __WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"], args: [{
+                declarations: [REACTIVE_DRIVEN_DIRECTIVES],
+                providers: [FormBuilder, RadioControlRegistry],
+                exports: [InternalFormsSharedModule, REACTIVE_DRIVEN_DIRECTIVES]
+            },] },
+];
+/**
+ * @nocollapse
+ */
+ReactiveFormsModule.ctorParameters = function () { return []; };
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @module
+ * @description
+ * This module is used for handling user input, by defining and building a {@link FormGroup} that
+ * consists of {@link FormControl} objects, and mapping them onto the DOM. {@link FormControl}
+ * objects can then be used to read information from the form DOM elements.
+ *
+ * Forms providers are not included in default providers; you must import these providers
+ * explicitly.
+ */
+/**
+ * @license
+ * Copyright Google Inc. All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+/**
+ * @module
+ * @description
+ * Entry point for all public APIs of the forms package.
+ */
+// This file only reexports content of the `src` folder. Keep it that way.
+/**
+ * Generated bundle index. Do not edit.
+ */
+
+//# sourceMappingURL=forms.es5.js.map
+
+
+/***/ }),
+
 /***/ "../../../http/@angular/http.es5.js":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -89686,9 +102424,9 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Version"]('4.3.4'
 /* unused harmony export RouterOutlet */
 /* unused harmony export GuardsCheckEnd */
 /* unused harmony export GuardsCheckStart */
-/* unused harmony export NavigationCancel */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return NavigationEnd; });
-/* unused harmony export NavigationError */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return NavigationCancel; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return NavigationEnd; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return NavigationError; });
 /* unused harmony export NavigationStart */
 /* unused harmony export ResolveEnd */
 /* unused harmony export ResolveStart */
@@ -89696,11 +102434,11 @@ var VERSION = new __WEBPACK_IMPORTED_MODULE_2__angular_core__["Version"]('4.3.4'
 /* unused harmony export RouteConfigLoadStart */
 /* unused harmony export RoutesRecognized */
 /* unused harmony export RouteReuseStrategy */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Router; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return Router; });
 /* unused harmony export ROUTES */
 /* unused harmony export ROUTER_CONFIGURATION */
 /* unused harmony export ROUTER_INITIALIZER */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return RouterModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return RouterModule; });
 /* unused harmony export provideRoutes */
 /* unused harmony export ChildrenOutletContexts */
 /* unused harmony export OutletContext */

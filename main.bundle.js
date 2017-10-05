@@ -8,13 +8,25 @@ var map = {
 		"../../../../../src/app/dashboard/dashboard.module.ts",
 		"dashboard.module"
 	],
+	"./landing/landing.module": [
+		"../../../../../src/app/landing/landing.module.ts",
+		"landing.module"
+	],
 	"./mystations/mystations.module": [
 		"../../../../../src/app/mystations/mystations.module.ts",
 		"mystations.module"
 	],
+	"./station-history/station-history.module": [
+		"../../../../../src/app/station-history/station-history.module.ts",
+		"station-history.module"
+	],
 	"./station/station.module": [
 		"../../../../../src/app/station/station.module.ts",
 		"station.module"
+	],
+	"./stations-list/stations-list.module": [
+		"../../../../../src/app/stations-list/stations-list.module.ts",
+		"stations-list.module"
 	]
 };
 function webpackAsyncContext(req) {
@@ -75,16 +87,19 @@ var AppComponent = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_ngx_bootstrap_dropdown__ = __webpack_require__("../../../../ngx-bootstrap/dropdown/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ngx_bootstrap_tabs__ = __webpack_require__("../../../../ngx-bootstrap/tabs/index.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__shared_nav_dropdown_directive__ = __webpack_require__("../../../../../src/app/shared/nav-dropdown.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_ng2_charts_ng2_charts__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__shared_sidebar_directive__ = __webpack_require__("../../../../../src/app/shared/sidebar.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__shared_aside_directive__ = __webpack_require__("../../../../../src/app/shared/aside.directive.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_breadcrumb_component__ = __webpack_require__("../../../../../src/app/shared/breadcrumb.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__app_routing__ = __webpack_require__("../../../../../src/app/app.routing.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__layouts_full_layout_component__ = __webpack_require__("../../../../../src/app/layouts/full-layout.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__shared_services_frost_service__ = __webpack_require__("../../../../../src/app/shared/services/frost.service.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__shared_shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_ngx_bootstrap_collapse__ = __webpack_require__("../../../../ngx-bootstrap/collapse/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_ngx_bootstrap_datepicker__ = __webpack_require__("../../../../ngx-bootstrap/datepicker/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__shared_nav_dropdown_directive__ = __webpack_require__("../../../../../src/app/shared/nav-dropdown.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_ng2_charts_ng2_charts__ = __webpack_require__("../../../../ng2-charts/ng2-charts.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_ng2_charts_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_ng2_charts_ng2_charts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__shared_sidebar_directive__ = __webpack_require__("../../../../../src/app/shared/sidebar.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__shared_aside_directive__ = __webpack_require__("../../../../../src/app/shared/aside.directive.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__shared_breadcrumb_component__ = __webpack_require__("../../../../../src/app/shared/breadcrumb.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__app_routing__ = __webpack_require__("../../../../../src/app/app.routing.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__layouts_full_layout_component__ = __webpack_require__("../../../../../src/app/layouts/full-layout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__layouts_simple_layout_component__ = __webpack_require__("../../../../../src/app/layouts/simple-layout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__shared_services_frost_service__ = __webpack_require__("../../../../../src/app/shared/services/frost.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__shared_shared_module__ = __webpack_require__("../../../../../src/app/shared/shared.module.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -103,9 +118,12 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 
 
+
+
 // Routing Module
 
 // Layouts
+
 
 // Services
 
@@ -118,23 +136,26 @@ var AppModule = (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             imports: [
                 __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */],
-                __WEBPACK_IMPORTED_MODULE_12__app_routing__["a" /* AppRoutingModule */],
+                __WEBPACK_IMPORTED_MODULE_14__app_routing__["a" /* AppRoutingModule */],
                 __WEBPACK_IMPORTED_MODULE_5_ngx_bootstrap_dropdown__["a" /* BsDropdownModule */].forRoot(),
                 __WEBPACK_IMPORTED_MODULE_6_ngx_bootstrap_tabs__["a" /* TabsModule */].forRoot(),
-                __WEBPACK_IMPORTED_MODULE_8_ng2_charts_ng2_charts__["ChartsModule"],
+                __WEBPACK_IMPORTED_MODULE_7_ngx_bootstrap_collapse__["a" /* CollapseModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_8_ngx_bootstrap_datepicker__["a" /* BsDatepickerModule */].forRoot(),
+                __WEBPACK_IMPORTED_MODULE_10_ng2_charts_ng2_charts__["ChartsModule"],
                 __WEBPACK_IMPORTED_MODULE_3__angular_http__["c" /* HttpModule */],
-                __WEBPACK_IMPORTED_MODULE_15__shared_shared_module__["a" /* SharedModule */].forRoot()
+                __WEBPACK_IMPORTED_MODULE_18__shared_shared_module__["a" /* SharedModule */].forRoot()
             ],
             declarations: [
                 __WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */],
-                __WEBPACK_IMPORTED_MODULE_13__layouts_full_layout_component__["a" /* FullLayoutComponent */],
-                __WEBPACK_IMPORTED_MODULE_7__shared_nav_dropdown_directive__["a" /* NAV_DROPDOWN_DIRECTIVES */],
-                __WEBPACK_IMPORTED_MODULE_11__shared_breadcrumb_component__["a" /* BreadcrumbsComponent */],
-                __WEBPACK_IMPORTED_MODULE_9__shared_sidebar_directive__["a" /* SIDEBAR_TOGGLE_DIRECTIVES */],
-                __WEBPACK_IMPORTED_MODULE_10__shared_aside_directive__["a" /* AsideToggleDirective */]
+                __WEBPACK_IMPORTED_MODULE_15__layouts_full_layout_component__["a" /* FullLayoutComponent */],
+                __WEBPACK_IMPORTED_MODULE_16__layouts_simple_layout_component__["a" /* SimpleLayoutComponent */],
+                __WEBPACK_IMPORTED_MODULE_9__shared_nav_dropdown_directive__["a" /* NAV_DROPDOWN_DIRECTIVES */],
+                __WEBPACK_IMPORTED_MODULE_13__shared_breadcrumb_component__["a" /* BreadcrumbsComponent */],
+                __WEBPACK_IMPORTED_MODULE_11__shared_sidebar_directive__["a" /* SIDEBAR_TOGGLE_DIRECTIVES */],
+                __WEBPACK_IMPORTED_MODULE_12__shared_aside_directive__["a" /* AsideToggleDirective */]
             ],
             providers: [
-                __WEBPACK_IMPORTED_MODULE_14__shared_services_frost_service__["a" /* FrostService */], {
+                __WEBPACK_IMPORTED_MODULE_17__shared_services_frost_service__["a" /* FrostService */], {
                     provide: __WEBPACK_IMPORTED_MODULE_2__angular_common__["g" /* LocationStrategy */],
                     useClass: __WEBPACK_IMPORTED_MODULE_2__angular_common__["d" /* HashLocationStrategy */]
                 }
@@ -158,6 +179,7 @@ var AppModule = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__layouts_full_layout_component__ = __webpack_require__("../../../../../src/app/layouts/full-layout.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__layouts_simple_layout_component__ = __webpack_require__("../../../../../src/app/layouts/simple-layout.component.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -168,10 +190,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 
 // Layouts
 
+
 var routes = [
     {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'home',
         pathMatch: 'full',
     },
     {
@@ -193,6 +216,27 @@ var routes = [
                 path: 'mystations/:id',
                 loadChildren: './mystations/mystations.module#MyStationsModule'
             },
+            {
+                path: 'station-history/:id',
+                loadChildren: './station-history/station-history.module#StationHistoryModule'
+            },
+            {
+                path: 'stations-list',
+                loadChildren: './stations-list/stations-list.module#StationsListModule'
+            }
+        ]
+    },
+    {
+        path: 'home',
+        component: __WEBPACK_IMPORTED_MODULE_3__layouts_simple_layout_component__["a" /* SimpleLayoutComponent */],
+        data: {
+            title: 'Home'
+        },
+        children: [
+            {
+                path: '',
+                loadChildren: './landing/landing.module#LandingModule'
+            }
         ]
     }
 ];
@@ -201,8 +245,8 @@ var AppRoutingModule = (function () {
     }
     AppRoutingModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */].forRoot(routes)],
-            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */]]
+            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* RouterModule */].forRoot(routes)],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* RouterModule */]]
         })
     ], AppRoutingModule);
     return AppRoutingModule;
@@ -215,7 +259,7 @@ var AppRoutingModule = (function () {
 /***/ "../../../../../src/app/layouts/full-layout.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<header class=\"app-header navbar\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>&#9776;</button>\n  <a class=\"navbar-brand\" href=\"#\">Alerta Temprana y <br/> Sectorizada de Heladas</a>\n  <ul class=\"nav navbar-nav mr-auto d-md-down-none\">\n    <li class=\"nav-item\">\n      <a class=\"nav-link navbar-toggler\" href=\"#\" appSidebarToggler>&#9776;</a>\n    </li>\n  </ul>\n</header>\n\n<div class=\"app-body\">\n  <div class=\"sidebar\">\n    <nav class=\"sidebar-nav\">\n      <ul class=\"nav\">\n        <!--\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" routerLinkActive=\"active\" [routerLink]=\"['/dashboard']\"><i class=\"icon-list\"></i> Estaciones </a>\n        </li>-->\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" routerLinkActive=\"active\" [routerLink]=\"['/dashboard']\"><i class=\"icon-list\"></i> Heladas </a>\n        </li>\n      </ul>\n    </nav>\n  </div>\n\n  <!-- Main content -->\n  <main class=\"main\">\n\n    <!-- Breadcrumb -->\n    <ol class=\"breadcrumb\">\n      <app-breadcrumbs></app-breadcrumbs>\n    </ol>\n\n    <div class=\"container-fluid\">\n      <router-outlet></router-outlet>\n    </div><!-- /.conainer-fluid -->\n  </main>\n</div>\n\n<footer class=\"app-footer\">\n  Proyecto FIC, Transferencia Sistema de Alerta Temprana y Sectorizada de Heladas\n  <!--<span class=\"float-right\">Powered by <a href=\"http://coreui.io\">CoreUI</a></span>-->\n</footer>\n"
+module.exports = "<header class=\"app-header navbar navbar-dark bg-primary\">\n  <button class=\"navbar-toggler d-lg-none\" type=\"button\" appMobileSidebarToggler>&#9776;</button>\n  <a class=\"navbar-brand\" href=\"#\">Alerta Temprana y <br/> Sectorizada de Heladas</a>\n  <ul class=\"nav navbar-nav mr-auto d-md-down-none\">\n    <li class=\"nav-item\">\n      <a class=\"nav-link navbar-toggler\" href=\"#\" appSidebarToggler>&#9776;</a>\n    </li>\n  </ul>\n</header>\n\n<div class=\"app-body\">\n  <div class=\"sidebar\">\n    <nav class=\"sidebar-nav\">\n      <ul class=\"nav\">\n        <!--\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" routerLinkActive=\"active\" [routerLink]=\"['/dashboard']\"><i class=\"icon-list\"></i> Estaciones </a>\n        </li>-->\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" routerLinkActive=\"active\" [routerLink]=\"['/dashboard']\"><i class=\"icon-speedometer\"></i> Heladas </a>\n        </li>\n        <!--\n        <li class=\"nav-item\">\n          <a class=\"nav-link\" routerLinkActive=\"active\" [routerLink]=\"['/stations-list']\"><i class=\"icon-list\"></i> Lista de Estaciones </a>\n        </li>\n        -->\n      </ul>\n    </nav>\n  </div>\n\n  <!-- Main content -->\n  <main class=\"main\">\n\n    <!-- Breadcrumb -->\n    <ol class=\"breadcrumb\">\n      <app-breadcrumbs></app-breadcrumbs>\n    </ol>\n\n    <div class=\"container-fluid\">\n      <router-outlet></router-outlet>\n    </div><!-- /.conainer-fluid -->\n  </main>\n</div>\n\n<footer class=\"app-footer\">\n  Proyecto FIC, Transferencia Sistema de Alerta Temprana y Sectorizada de Heladas\n  <!--<span class=\"float-right\">Powered by <a href=\"http://coreui.io\">CoreUI</a></span>-->\n</footer>\n"
 
 /***/ }),
 
@@ -256,6 +300,52 @@ var FullLayoutComponent = (function () {
 }());
 
 //# sourceMappingURL=full-layout.component.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/layouts/simple-layout.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<!--\n<header class=\"app-header navbar navbar-dark bg-primary\">\n  <a class=\"navbar-brand\" href=\"#\">Alerta Temprana y <br/> Sectorizada de Heladas</a>\n  <ul class=\"nav justify-content-end\">\n    <li class=\"nav-item\">\n      <a class=\"nav-link text-white\" href=\"#content\">¿Qué es una helada?</a>\n    </li>\n    <li class=\"nav-item\">\n      <a class=\"nav-link text-white\" href=\"/#/dashboard\">Acceder</a>\n    </li>\n  </ul>\n</header>\n-->\n\n<nav class=\"navbar navbar-expand-lg navbar-dark bg-primary\">\n  <a class=\"navbar-brand\" href=\"#\"><h6>Alerta Temprana y <br/> Sectorizada de Heladas</h6></a>\n  <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNav\" aria-controls=\"navbarNav\" aria-expanded=\"false\" aria-label=\"Toggle navigation\" (click)=\"toggleCollapse()\">\n    <span class=\"navbar-toggler-icon\"></span>\n  </button>\n  <div class=\"collapse navbar-collapse justify-content-end\" id=\"navbarNav\" [collapse]=\"isCollapsed\">\n    <ul class=\"navbar-nav\">\n      <li class=\"nav-item active\">\n        <a class=\"nav-link\" pageScroll pageScrollDuration=\"300\" href=\"#content\">¿Qué son las Heladas?</a>\n      </li>\n      <li class=\"nav-item active\">\n        <a class=\"nav-link\" href=\"/#/dashboard\">Acceder</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n\n<router-outlet></router-outlet>\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/layouts/simple-layout.component.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SimpleLayoutComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var SimpleLayoutComponent = (function () {
+    function SimpleLayoutComponent() {
+        this.isCollapsed = true;
+    }
+    SimpleLayoutComponent.prototype.ngOnInit = function () { };
+    SimpleLayoutComponent.prototype.toggleCollapse = function () {
+        console.log("Toggling");
+        this.isCollapsed = !this.isCollapsed;
+    };
+    SimpleLayoutComponent = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+            selector: 'app-dashboard',
+            template: __webpack_require__("../../../../../src/app/layouts/simple-layout.component.html")
+        }),
+        __metadata("design:paramtypes", [])
+    ], SimpleLayoutComponent);
+    return SimpleLayoutComponent;
+}());
+
+//# sourceMappingURL=simple-layout.component.js.map
 
 /***/ }),
 
@@ -330,7 +420,7 @@ var BreadcrumbsComponent = (function () {
         var _this = this;
         this.router = router;
         this.route = route;
-        this.router.events.filter(function (event) { return event instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* NavigationEnd */]; }).subscribe(function (event) {
+        this.router.events.filter(function (event) { return event instanceof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* NavigationEnd */]; }).subscribe(function (event) {
             _this.breadcrumbs = [];
             var currentRoute = _this.route.root, url = '';
             do {
@@ -355,7 +445,7 @@ var BreadcrumbsComponent = (function () {
             selector: 'app-breadcrumbs',
             template: "\n  <ng-template ngFor let-breadcrumb [ngForOf]=\"breadcrumbs\" let-last = last>\n    <li class=\"breadcrumb-item\"\n        *ngIf=\"breadcrumb.label.title&&breadcrumb.url.substring(breadcrumb.url.length-1) == '/'||breadcrumb.label.title&&last\"\n        [ngClass]=\"{active: last}\">\n      <a *ngIf=\"!last\" [routerLink]=\"breadcrumb.url\">{{breadcrumb.label.title}}</a>\n      <span *ngIf=\"last\" [routerLink]=\"breadcrumb.url\">{{breadcrumb.label.title}}</span>\n    </li>\n  </ng-template>"
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["c" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _b || Object])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["e" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["e" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["a" /* ActivatedRoute */]) === "function" && _b || Object])
     ], BreadcrumbsComponent);
     return BreadcrumbsComponent;
     var _a, _b;
@@ -431,6 +521,49 @@ var NAV_DROPDOWN_DIRECTIVES = [NavDropdownDirective, NavDropdownToggleDirective]
 
 /***/ }),
 
+/***/ "../../../../../src/app/shared/pipes/prediction-translate.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PredictionTranslatePipe; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+var PredictionTranslatePipe = (function () {
+    function PredictionTranslatePipe() {
+        this.items = [
+            { value: "n", name: "Sin Probabilidad" },
+            { value: "y", name: "Probabilidad de Heladas" },
+            { value: undefined, name: "Sin Datos" },
+            { value: "sd", name: "Sin Datos" }
+        ];
+    }
+    PredictionTranslatePipe.prototype.transform = function (str) {
+        for (var _i = 0, _a = this.items; _i < _a.length; _i++) {
+            var itm = _a[_i];
+            if (itm.value == str)
+                return itm.name;
+        }
+        return str;
+    };
+    PredictionTranslatePipe = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Pipe"])({
+            name: 'predictionTranslate',
+            pure: false
+        })
+    ], PredictionTranslatePipe);
+    return PredictionTranslatePipe;
+}());
+
+//# sourceMappingURL=prediction-translate.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/shared/services/frost.service.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -473,6 +606,19 @@ var FrostService = (function () {
         });
         return this.http.post(this.baseURL + '/consulta/index.php?id_est=' + stationId, { id_est: stationId }, options).map(function (response) { return response.json(); });
     };
+    FrostService.prototype.getHistory = function (stationId, predictionHour, year, month) {
+        var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({});
+        var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({
+            headers: headers
+        });
+        return this.http.post(this.baseURL + '/monitor/acciones.php?acc=1&id_est=' + stationId + "&id_hor=" + predictionHour + "&anno=" + year + "&mes=" + month, {
+            acc: 1,
+            id_est: stationId,
+            id_hor: predictionHour,
+            anno: year,
+            mes: month
+        }, options).map(function (response) { return response.json(); });
+    };
     FrostService.prototype.getStations = function () {
         var headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["a" /* Headers */]({});
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["d" /* RequestOptions */]({
@@ -500,12 +646,16 @@ var FrostService = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_moment__ = __webpack_require__("../../../../angular2-moment/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular2_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular2_moment__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__pipes_prediction_translate__ = __webpack_require__("../../../../../src/app/shared/pipes/prediction-translate.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ng2_page_scroll__ = __webpack_require__("../../../../ng2-page-scroll/ng2-page-scroll.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 var SharedModule = (function () {
@@ -521,12 +671,17 @@ var SharedModule = (function () {
     SharedModule = SharedModule_1 = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
             imports: [
-                __WEBPACK_IMPORTED_MODULE_1_angular2_moment__["MomentModule"]
+                __WEBPACK_IMPORTED_MODULE_1_angular2_moment__["MomentModule"],
+                __WEBPACK_IMPORTED_MODULE_3_ng2_page_scroll__["a" /* Ng2PageScrollModule */]
             ],
             providers: [],
-            declarations: [],
+            declarations: [
+                __WEBPACK_IMPORTED_MODULE_2__pipes_prediction_translate__["a" /* PredictionTranslatePipe */]
+            ],
             exports: [
-                __WEBPACK_IMPORTED_MODULE_1_angular2_moment__["MomentModule"]
+                __WEBPACK_IMPORTED_MODULE_1_angular2_moment__["MomentModule"],
+                __WEBPACK_IMPORTED_MODULE_3_ng2_page_scroll__["a" /* Ng2PageScrollModule */],
+                __WEBPACK_IMPORTED_MODULE_2__pipes_prediction_translate__["a" /* PredictionTranslatePipe */]
             ]
         })
     ], SharedModule);

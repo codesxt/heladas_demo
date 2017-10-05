@@ -31,8 +31,8 @@ var MyStationsRoutingModule = (function () {
     }
     MyStationsRoutingModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */].forChild(routes)],
-            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */]]
+            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* RouterModule */].forChild(routes)],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* RouterModule */]]
         })
     ], MyStationsRoutingModule);
     return MyStationsRoutingModule;
@@ -45,7 +45,7 @@ var MyStationsRoutingModule = (function () {
 /***/ "../../../../../src/app/mystations/mystations.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"animated fadeIn\">\n  <div class=\"card\">\n    <div class=\"card-header\">\n      <strong>Estaciones Disponibles para su Consulta</strong>\n    </div>\n    <div class=\"card-body\">\n      <table class=\"table\">\n        <thead>\n          <tr>\n            <th>Nombre Estación</th>\n            <th class=\"col-3\">Opciones</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let station of stations\">\n            <td>{{station.nom_est}}</td>\n            <td>\n              <a href=\"#/station/{{station.id_est}}\" class=\"btn btn-primary btn-sm\">\n                <i class=\"fa fa-thermometer-0\"></i>\n                Ver Alertas\n              </a>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n  </div>\n</div>\n"
+module.exports = "<div class=\"animated fadeIn\">\n  <div class=\"card\">\n    <div class=\"card-header\">\n      <strong>Estaciones Disponibles para su Consulta</strong>\n    </div>\n    <div class=\"card-body\">\n      <table class=\"table\">\n        <thead>\n          <tr>\n            <th>Nombre Estación</th>\n            <th class=\"col-3\">Opciones</th>\n          </tr>\n        </thead>\n        <tbody>\n          <tr *ngFor=\"let station of stations\">\n            <td>{{station.nom_est}}</td>\n            <td>\n              <a href=\"#/station/{{station.id_est}}\" class=\"btn btn-primary btn-sm\">\n                <i class=\"fa fa-thermometer-0\"></i>\n                Ver Alertas\n              </a>\n              <a href=\"#/station-history/{{station.id_est}}\" class=\"btn btn-primary btn-sm\">\n                <i class=\"fa fa-bar-chart\"></i>\n                Histórico\n              </a>\n            </td>\n          </tr>\n        </tbody>\n      </table>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -80,6 +80,7 @@ var MyStationsComponent = (function () {
         this.route.params.subscribe(function (params) {
             var userId = params['id'];
             // Los IDS son hashes CRC32 de los números
+            // Hash creado con http://www.fileformat.info/tool/hash.htm
             // ID: 1 -> Tutuquén (Soler)
             if (userId == '83dcefb7') {
                 _this.stations = [
@@ -108,6 +109,14 @@ var MyStationsComponent = (function () {
                     {
                         id_est: 97,
                         nom_est: 'Yerbas Buenas'
+                    }
+                ];
+            }
+            if (userId == 'f3b61b38') {
+                _this.stations = [
+                    {
+                        id_est: 198,
+                        nom_est: 'La Pampa'
                     }
                 ];
             }

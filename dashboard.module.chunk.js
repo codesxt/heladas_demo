@@ -31,8 +31,8 @@ var DashboardRoutingModule = (function () {
     }
     DashboardRoutingModule = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */].forChild(routes)],
-            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["d" /* RouterModule */]]
+            imports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* RouterModule */].forChild(routes)],
+            exports: [__WEBPACK_IMPORTED_MODULE_1__angular_router__["f" /* RouterModule */]]
         })
     ], DashboardRoutingModule);
     return DashboardRoutingModule;
@@ -45,7 +45,7 @@ var DashboardRoutingModule = (function () {
 /***/ "../../../../../src/app/dashboard/dashboard.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"animated fadeIn\">\n  <div class=\"card\">\n    <div class=\"card-header\">\n      <strong>Sistema de Alerta Temprana y Sectorizada de Heladas</strong>\n    </div>\n    <div class=\"card-body\">\n      <p>Bienvenido al Sistema de Alerta Temprana y Sectorizada de Heladas desarrollado mediante un Proyecto FIC.</p>\n      <p>Para consultar la predicción de heladas disponible, por favor, utilice el link que se le envió.</p>\n  </div>\n</div>\n"
+module.exports = "<div class=\"animated fadeIn\">\n  <div class=\"card\">\n    <div class=\"card-header\">\n      <strong>Sistema de Alerta Temprana y Sectorizada de Heladas</strong>\n    </div>\n    <div class=\"card-body\">\n      <div class=\"row\">\n        <div class=\"col-6 col-lg-3\" *ngIf=\"stations\">\n          <!--\n          <div class=\"card\">\n            <div class=\"card-block p-1 clearfix\">\n              <i class=\"fa fa-podcast bg-primary p-1 font-2xl mr-1 float-left\"></i>\n              <div class=\"h5 text-primary mb-0 mt-h\">{{stations.length}}</div>\n              <div class=\"text-muted text-uppercase font-weight-bold font-xs\">Estaciones Disponibles</div>\n            </div>\n            <div class=\"card-footer p-x-1 py-h\">\n              <a class=\"font-weight-bold font-xs btn-block text-muted\" href=\"/#/stations-list\">Ver Estaciones <i class=\"fa fa-angle-right float-right font-lg\"></i></a>\n            </div>\n          </div>\n          -->\n        </div>\n      </div>\n      <p>Bienvenido al Sistema de Alerta Temprana y Sectorizada de Heladas desarrollado mediante un Proyecto FIC.</p>\n      <p>Para consultar la predicción de heladas disponible, por favor, utilice el link que se le envió.</p>\n    </div>\n  </div>\n</div>\n"
 
 /***/ }),
 
@@ -55,6 +55,7 @@ module.exports = "<div class=\"animated fadeIn\">\n  <div class=\"card\">\n    <
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DashboardComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shared_services_frost_service__ = __webpack_require__("../../../../../src/app/shared/services/frost.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -65,18 +66,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var DashboardComponent = (function () {
-    function DashboardComponent() {
+    function DashboardComponent(frostService) {
+        this.frostService = frostService;
     }
     DashboardComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this.frostService.getStations()
+            .subscribe(function (data) {
+            _this.stations = data.data;
+        }, function (error) {
+        });
     };
     DashboardComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             template: __webpack_require__("../../../../../src/app/dashboard/dashboard.component.html")
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__shared_services_frost_service__["a" /* FrostService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__shared_services_frost_service__["a" /* FrostService */]) === "function" && _a || Object])
     ], DashboardComponent);
     return DashboardComponent;
+    var _a;
 }());
 
 //# sourceMappingURL=dashboard.component.js.map
